@@ -1,3 +1,0 @@
-src\test\features\AddModule.feature:12
-src\test\features\Login.feature:8
-src\test\features\CourseCategory.feature:19:20

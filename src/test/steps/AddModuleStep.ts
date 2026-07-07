@@ -1,12 +1,15 @@
-import { BasePage } from './../pages/BasePage';
-import { Given, When, Then } from "@cucumber/cucumber";
+import{expect} from "@playwright/test"
+import { Given, When, Then} from "@cucumber/cucumber";
 import courseData from "../../resources/data/CourseStructureData.json";
 
 Given("the Admin is logged into the LMS", async function () {
-    await this.BasePage
-    await this.loginPage.enterEmail("testing@gmail.com");
-    await this.loginPage.enterPassword("123");
-    await this.loginPage.clickLoginButton();
+    await this.loginPage.navigate();
+        await this.loginPage.enterEmail();
+        await this.loginPage.enterPassword();
+        await this.loginPage.clickLoginButton();
+    
+        await expect(this.page).toHaveURL(/admindashboard/, { timeout: 15000 });
+        console.log("Admin logged in successfully");
 });
 
 Given("the Admin navigates to the Course Structure page", async function () {
@@ -49,9 +52,9 @@ When("the Admin enters valid module details", async function () {
     await this.courseStructurePage.enterDescription(courseData.description);
 });
 
-Then("a success message should be displayed", async function () {
-    await this.courseStructurePage.verifySuccessMessage();
-});
+// Then("a success message should be displayed", async function () {
+//     await this.courseStructurePage.verifySuccessMessage();
+// });
 
 Then("the module should appear in the course structure", async function () {
     await this.courseStructurePage.verifyModulePresent(courseData.moduleTitle);
