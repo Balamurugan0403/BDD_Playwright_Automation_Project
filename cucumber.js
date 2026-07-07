@@ -22,6 +22,7 @@ module.exports = {
             "rerun:rerun/@rerun.txt",
             "json:reports/cucumber-report.json",
             "message:reports/messages.ndjson",
+            "html:reports/cucumber-report.html",
             "allure-cucumberjs/reporter"
         ],
         parallel: 2
@@ -44,7 +45,13 @@ module.exports = {
             "progress-bar",
             "rerun:rerun/@rerun.txt",
             "json:reports/cucumber-report.json",
+<<<<<<< HEAD
             "message:reports/messages.ndjson"
+=======
+            "message:reports/messages.ndjson",
+            "html:reports/cucumber-report.html",
+            "allure-cucumberjs/reporter"
+>>>>>>> 10dd3521b7612c4ef72140b572b1a0c105606598
         ],
         parallel: 1
     }
