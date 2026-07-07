@@ -1,6 +1,7 @@
 import{Before, After, BeforeAll, AfterAll} from '@cucumber/cucumber';
 import { chromium, Browser } from '@playwright/test';
 import {CustomWorld} from '../../main/support/CustomWorld';
+import { LoginPage } from '../pages/LoginPage';
 
 let browser: Browser;
 BeforeAll(async () =>{
@@ -11,6 +12,7 @@ BeforeAll(async () =>{
 Before(async function (this: CustomWorld, scenario) {
     this.context = await browser.newContext();
     this.page = await this.context.newPage();
+    this.loginPage = new LoginPage(this.page);
 });
 
 After(async function (this: CustomWorld, scenario) {

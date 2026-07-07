@@ -16,7 +16,7 @@ module.exports = {
         },
 
         publishQuiet: true,
-        dryRun: false,
+        dryRun: true,
         format: [
             "progress",
             "rerun:rerun/@rerun.txt",
@@ -39,7 +39,7 @@ module.exports = {
         },
 
         publishQuiet: true,
-        dryRun: false,
+        dryRun: true,
         format: [
             "progress",
             "rerun:rerun/@rerun.txt",

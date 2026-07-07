@@ -15,19 +15,19 @@ export class BasePage{
         await locator.fill(value);
     }
 
-    async getText(locator:Locator):Promise<string> {
-        return (await locator.textContent()) ?? "";
+    async getText(locator:Locator) {
+        return await locator.textContent();
     }
 
     async check(locator:Locator) {
         await locator.check();
     }
 
-    async isVisible(locator:Locator):Promise<boolean> {
+    async isVisible(locator:Locator){
         return await locator.isVisible();
     }
 
-    async isEnabled(locator:Locator):Promise<boolean> {
+    async isEnabled(locator:Locator) {
         return await locator.isEnabled();
     }
 
