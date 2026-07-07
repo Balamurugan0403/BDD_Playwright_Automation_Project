@@ -1,45 +1,65 @@
+import { expect, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
-import loginData from "../../resources/data/loginData.json";
-import { config } from "../../main/config/config";
 
 export class LoginPage extends BasePage {
 
-<<<<<<< HEAD
-=======
-export class LoginPage extends BasePage {
-
->>>>>>> 323b9dd (CourseCategory feature Created)
     private email = this.page.locator("#email");
     private password = this.page.locator("#password");
     private loginButton = this.page.locator("button[type='submit']");
 
-<<<<<<< HEAD
-=======
-    async navigate() {
-        await this.page.goto("https://lms-smartcliff.vercel.app/login");
-        await this.email.waitFor({ state: "visible" });
-    }
->>>>>>> 323b9dd (CourseCategory feature Created)
 
-    async enterEmail() {
-        await this.email.fill(loginData.validlogin.email);
+    async enterEmail(email: string) {
+        await this.email.fill(email);
     }
 
-    async enterPassword() {
-        await this.password.fill(loginData.validlogin.password);
+    async enterPassword(password: string) {
+        await this.password.fill(password);
+    }
+
+    async enterCredentials(email: string, password: string) {
+        await this.enterEmail(email);
+        await this.enterPassword(password);
+    }
+
+    async login(email: string, password: string) {
+        await this.enterCredentials(email, password);
+        await this.clickLoginButton();
     }
 
     async clickLoginButton() {
-        await this.loginButton.click();
-       
-    }
-<<<<<<< HEAD
 
-    async login(email:string, password:string) {
-        await this.enterEmail(email);
-        await this.enterPassword(password);
-        await this.clickLoginButton();
+        await expect(this.loginButton).toBeEnabled();
+
+        await Promise.all([
+            this.page.waitForResponse(response =>
+                response.url().includes("login") &&
+                response.request().method() === "POST"
+            ),
+            this.loginButton.click()
+        ]);
+
     }
-=======
->>>>>>> 323b9dd (CourseCategory feature Created)
+
+    async verifyToastMessage(expectedMessage: string) {
+
+        const toast = this.page.getByText(expectedMessage, {
+            exact: false
+        });
+
+        await expect(toast).toBeVisible({
+            timeout: 10000
+        });
+
+        await expect(toast).toContainText(expectedMessage);
+
+    }
+
+    async getToastMessage(): Promise<string> {
+
+        const toast = this.page.getByText(/.+/).filter({
+            has: this.page.locator("div[role='status']")
+        });
+
+        return (await toast.textContent())?.trim() || "";
+    }
 }

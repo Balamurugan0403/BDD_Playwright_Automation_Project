@@ -45,4 +45,5 @@ package-lock.json.bak
 /playwright/.cache/
 /playwright/.auth/
 
-rerun/
+
+rerun/@rerun.txt
