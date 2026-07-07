@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Test results & reports
+test-results/
+reports/
+playwright-report/
+playwright/.cache/
+allure-results/
+allure-report/
+.last-run.json
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# IDE / Editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Screenshots/videos/traces from failed test runs
+**/screenshots/
+**/videos/
+**/traces/
+
+# Package manager artifacts
+package-lock.json.bak
+.npm/
