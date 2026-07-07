@@ -5,7 +5,4 @@ export class CustomWorld {
     context!:BrowserContext;
     page!:Page;
 
-    loginPage!:LoginPage;
-    registerPage!:RegisterPage;
-    log=logger;
 }
