@@ -1,2 +1,1 @@
-src\test\features\ServiceManagement\AddService.feature:9:28:29:30
-src\test\features\Login.feature:8
+src\test\features\CourseCategory.feature:19:20
