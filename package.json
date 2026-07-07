@@ -18,6 +18,7 @@
   },
   "scripts": {
     "test": "cucumber-js",
+    "posttest": "npx ts-node src/main/utils/report.mts",
     "sowndariya": "cucumber-js src/test/features --tags @sowndariya",
     "Samiha": "cucumber-js src/test/features --tags @Samiha",
     "vignesh": "cucumber-js src/test/features --tags @vignesh",
