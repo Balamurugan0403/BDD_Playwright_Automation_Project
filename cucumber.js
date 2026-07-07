@@ -38,33 +38,15 @@ module.exports = {
             snippetInterface: "async-await"
         },
 
-        
-        format: [
-        "progress",
-        "allure-cucumberjs/reporter",
-        "json:reports/cucumber-report.json",
-        "html:reports/cucumber-report.html",
-        "rerun:rerun/@rerun.txt"
-    ],
-        parallel: 1
-    },
-    rerun:{
-        requireModule: ["ts-node/register"],
-
-
-        formatOptions: {
-            snippetInterface: "async-await"
-        },
-
         publishQuiet: true,
         dryRun: false,
         format: [
-        "progress",
+            "progress",
         "allure-cucumberjs/reporter",
         "json:reports/cucumber-report.json",
         "html:reports/cucumber-report.html",
         "rerun:rerun/@rerun.txt"
-    ],
+        ],
         parallel: 1
     }
 };
