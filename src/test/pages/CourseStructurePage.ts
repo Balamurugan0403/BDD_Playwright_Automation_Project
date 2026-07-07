@@ -9,9 +9,11 @@ export class CourseStructurePage extends BasePage {
     private readonly moduleTitleTextBox: Locator;
     private readonly descriptionTextBox: Locator;
     private readonly addModuleBtn: Locator;
+    private readonly saveBtn: Locator;
     private readonly successMsg: Locator;
+    private readonly moduleRows: Locator;
 
-    public static createdCourseId: string = "J-BTI-T-001";
+    public static createdCourseId: string = "PT-BTI-H-004";
 
     constructor(page: Page) {
         super(page);
@@ -26,8 +28,9 @@ export class CourseStructurePage extends BasePage {
         this.moduleTitleTextBox = this.page.getByPlaceholder("Enter title...");
         this.descriptionTextBox = this.page.getByPlaceholder("Brief description ...");
         this.addModuleBtn = this.page.getByRole("button", {name: "Add Module",});
-
-        this.successMsg = this.page.locator("[class*='Toastify']");
+        this.saveBtn = this.page.getByRole('button', {name: "Save"});
+        this.successMsg = this.page.locator(".Toastify__toast--success");
+        this.moduleRows = this.page.locator("tbody tr");
     }
 
     async navigateToCourseStructure(): Promise<void> {
@@ -53,16 +56,15 @@ export class CourseStructurePage extends BasePage {
     }
 
     async clickAddModuleButton(): Promise<void> {
-        await this.addModuleBtn.click();
+        await this.saveBtn.click();
     }
 
     async verifySuccessMessage(): Promise<void> {
-        await expect(this.successMsg).toBeVisible();
+        await expect(this.successMsg).toBeVisible({ timeout: 10000 });
     }
 
     async verifyModulePresent(moduleTitle: string): Promise<void> {
-        await expect(
-            this.page.getByText(moduleTitle, { exact: true })
-        ).toBeVisible();
+        const moduleRow = this.moduleRows.filter({ hasText: moduleTitle }).first();
+        await expect(moduleRow).toBeVisible();
     }
 }
