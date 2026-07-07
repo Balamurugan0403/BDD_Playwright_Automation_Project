@@ -1,26 +1,27 @@
 import { BasePage } from "./BasePage";
 import loginData from "../../resources/data/loginData.json";
 
-export class LoginPage extends BasePage{
+export class LoginPage extends BasePage {
+
     private email = this.page.locator("#email");
     private password = this.page.locator("#password");
     private loginButton = this.page.locator("button[type='submit']");
 
     async navigate() {
-        await this.page.goto("https://your-lms-url.com/login");
+        await this.page.goto("https://lms-smartcliff.vercel.app/login");
+        await this.email.waitFor({ state: "visible" });
     }
 
-    async enterEmail(email: string) {
+    async enterEmail() {
         await this.email.fill(loginData.validlogin.email);
     }
 
-    async enterPassword(password: string) {
+    async enterPassword() {
         await this.password.fill(loginData.validlogin.password);
     }
 
     async clickLoginButton() {
         await this.loginButton.click();
+       
     }
-
-
 }
