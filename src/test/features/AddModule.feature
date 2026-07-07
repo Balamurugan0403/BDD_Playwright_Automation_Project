@@ -14,5 +14,5 @@ Scenario: Add module with all mandatory fields
     And the Admin clicks the "Add module" icon
     And the Admin enters valid module details
     And the Admin clicks the "Add Module" button
-    #Then a success message should be displayed
-    Then the module should appear in the course structure
+    Then a success message should be displayed
+    And the module should appear in the course structure

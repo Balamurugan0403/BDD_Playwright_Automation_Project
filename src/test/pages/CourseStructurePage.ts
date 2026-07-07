@@ -11,10 +11,9 @@ export class CourseStructurePage extends BasePage {
     private readonly descriptionTextBox: Locator;
     private readonly addModuleBtn: Locator;
     private readonly saveBtn: Locator;
-    private readonly successMsg: Locator;
     private readonly moduleRows: Locator;
-
-    public static createdCourseId: string = "PT-BTI-H-004";
+    private readonly successMsg: Locator;
+    public static createdCourseId: string = "J-BTI-T-001";
 
     constructor(page: Page) {
         super(page);
