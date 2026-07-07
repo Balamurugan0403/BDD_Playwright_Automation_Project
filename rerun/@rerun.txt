@@ -1,1 +1,2 @@
+src\test\features\AddModule.feature:12
 src\test\features\Login.feature:8

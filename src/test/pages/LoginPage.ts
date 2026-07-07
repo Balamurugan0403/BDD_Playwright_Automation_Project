@@ -7,7 +7,7 @@ export class LoginPage extends BasePage{
     private loginButton = this.page.locator("button[type='submit']");
 
     async navigate() {
-        await this.page.goto("https://your-lms-url.com/login");
+        await this.page.goto("https://your-lms-url.com/login/");
     }
 
     async enterEmail(email: string) {
