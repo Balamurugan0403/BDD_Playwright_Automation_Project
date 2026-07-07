@@ -2,6 +2,7 @@ import{Before, After, BeforeAll, AfterAll} from '@cucumber/cucumber';
 import { chromium, Browser, firefox, webkit } from '@playwright/test';
 import {CustomWorld} from '../../main/support/CustomWorld';
 import { LoginPage } from '../pages/LoginPage';
+<<<<<<< HEAD
 import { CourseCategoryPage } from '../pages/CourseCategoryPage';
 import { DynamicFieldManagementPage } from '../pages/DynamicFieldManagementPage';
 import { config } from '../../main/config/config';
@@ -16,6 +17,13 @@ BeforeAll(async () =>{
         browser = await firefox.launch({headless:config.headless});
     else 
         browser = await webkit.launch({headless:config.headless});
+=======
+import { CourseStructurePage } from '../pages/CourseStructurePage';
+
+let browser: Browser;
+BeforeAll(async () =>{
+    browser=await chromium.launch({headless:false, slowMo: 1000});
+>>>>>>> aa5614b (Configuration updated)
 });
 
 
@@ -25,10 +33,14 @@ Before(async function (this: CustomWorld, scenario) {
     this.page = await this.context.newPage();
 
     this.loginPage = new LoginPage(this.page);
+<<<<<<< HEAD
     this.courseCategoryPage = new CourseCategoryPage(this.page);
     this.dynamicFieldManagementPage = new DynamicFieldManagementPage(this.page);
     this.sidebarPage = new SidebarPage(this.page);
     this.serviceModelPage = new ServiceModelPage(this.page)
+=======
+    this.courseStructurePage = new CourseStructurePage(this.page);
+>>>>>>> aa5614b (Configuration updated)
 });
 
 After(async function (this: CustomWorld, scenario) {
