@@ -16,7 +16,7 @@ module.exports = {
         },
 
         publishQuiet: true,
-        dryRun: true,
+        dryRun: false,
         format: [
       "progress",
     "allure-cucumberjs/reporter",
@@ -40,7 +40,7 @@ module.exports = {
         },
 
         publishQuiet: true,
-        dryRun: true,
+        dryRun: false,
         format: [
       "progress",
     "allure-cucumberjs/reporter",
