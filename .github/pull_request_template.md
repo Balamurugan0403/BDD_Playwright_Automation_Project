@@ -4,64 +4,86 @@
 
 | Field | Details |
 |-------|---------|
+| PR Number | |
+| PR Title | |
 | Author | |
 | Date | |
-| Module | |
 | Branch | |
+| Module | |
 
 ---
 
-# Feature Coverage
+## Summary
 
--
+Briefly describe the purpose of this pull request and the problem it solves.
 
 ---
 
-# Scenario Coverage
+## Changes
+
+### Added
+
+- 
+
+### Modified
+
+- 
+
+### Removed
 
 - 
 
 ---
 
-# Framework Changes
+## Feature & Scenario Coverage
 
--
+### Features
 
----
+- 
 
-# Features Added
+### Scenarios
 
--
-
----
-
-# Files Changed
-
--
+- 
 
 ---
 
-# Execution Details
+## Test Execution
 
-| Parameter | Value |
-|-----------|-------|
+| Metric | Result |
+|--------|--------|
+| Total Test Cases | |
+| Passed | |
+| Failed | |
+| Skipped | |
 | Browser | |
-| Framework | |
-| Execution Status | |
+| Framework | Playwright + TypeScript + Cucumber BDD |
+| Execution Status | Pass / Partial Pass / Fail |
 
 ---
 
-# Checklist
+## Report Validation
 
-- [ ] Code Executed Successfully
-- [ ] Test Cases Passed
-- [ ] No Hardcoded Values Added
-- [ ] Reusable Methods Utilized
-- [ ] No Unwanted Files Added
-- [ ] Ready For Review
+- [ ] Cucumber HTML Report Generated
+- [ ] JUnit XML Report Generated
+- [ ] Screenshots Captured (On Failure)
+- [ ] Execution Logs Generated
 
 ---
 
-# Notes
+## Code Review Checklist
 
--
+### Framework
+
+- [ ] POM Structure Followed
+- [ ] Reusable Methods Used
+- [ ] No Hardcoded Values
+- [ ] Proper Locator Strategy Used
+- [ ] Logging Implemented
+- [ ] Exception Handling Added
+
+### Code Quality
+
+- [ ] Naming Conventions Followed
+- [ ] Unused Imports Removed
+- [ ] Clean and Readable Code
+- [ ] Existing Functionality Not Impacted
