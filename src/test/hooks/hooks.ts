@@ -20,8 +20,10 @@ BeforeAll(async () =>{
 
 
 Before(async function (this: CustomWorld, scenario) {
-    this.context = await browser.newContext();
+    this.browser = browser;
+    this.context = await this.browser.newContext();
     this.page = await this.context.newPage();
+
     this.loginPage = new LoginPage(this.page);
     this.courseCategoryPage = new CourseCategoryPage(this.page);
     this.dynamicFieldManagementPage = new DynamicFieldManagementPage(this.page);
