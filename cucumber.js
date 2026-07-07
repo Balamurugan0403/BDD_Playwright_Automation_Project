@@ -16,7 +16,7 @@ module.exports = {
         },
 
         publishQuiet: true,
-        dryRun: true,
+        dryRun: false,
         format: [
             "progress",
             "rerun:rerun/@rerun.txt",
@@ -39,13 +39,12 @@ module.exports = {
         },
 
         publishQuiet: true,
-        dryRun: true,
+        dryRun: false,
         format: [
-            "progress",
+            "progress-bar",
             "rerun:rerun/@rerun.txt",
             "json:reports/cucumber-report.json",
-            "message:reports/messages.ndjson",
-            "allure-cucumberjs/reporter"
+            "message:reports/messages.ndjson"
         ],
         parallel: 1
     }
