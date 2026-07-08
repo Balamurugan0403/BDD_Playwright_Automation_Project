@@ -23,7 +23,7 @@
     "posttest": "npx ts-node src/main/utils/report.mts",
     "sowndariya": "cucumber-js src/test/features --tags @sowndariya",
     "Samiha": "cucumber-js src/test/features --tags @Samiha",
-    "vignesh": "cucumber-js src/test/features --tags @vignesh",
+    "vignesh": "cucumber-js --tags @vignesh",
     "rohini": "cucumber-js src/test/features --tags @rohini",
     "bala": "cucumber-js src/test/features --tags @bala",
     "parallel": "cucumber-js src/test/features --parallel 2",

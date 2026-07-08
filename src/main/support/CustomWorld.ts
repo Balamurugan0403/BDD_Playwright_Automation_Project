@@ -7,6 +7,7 @@ import { ServiceModelPage } from "../../test/pages/ServiceModelPage";
 import { CourseStructurePage } from "../../test/pages/CourseStructurePage";
 import { World, setWorldConstructor } from "@cucumber/cucumber";
 import { AddCoursePage } from "../../test/pages/AddCoursePage";
+import { Service } from "../types/Service";
 
 export class CustomWorld extends World{
     browser!:Browser;
@@ -19,7 +20,7 @@ export class CustomWorld extends World{
     serviceModelPage!: ServiceModelPage; 
     courseStructurePage!: CourseStructurePage;
     addCoursePage!:AddCoursePage;
-
+    service!: Service
 }
 
 setWorldConstructor(CustomWorld);

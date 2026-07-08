@@ -4,10 +4,12 @@ import { expect } from "@playwright/test";
 export class ServiceModelPage extends BasePage {
 
     private addServiceButton = this.page.getByRole("button", { name: "Add Service" });
-    private serviceName = this.page.getByRole('textbox', { name: "e.g., 'Software Development'" })
-    private serviceDescription = this.page.getByRole('textbox', { name: "Describe the service..." })
+    private serviceName = this.page.locator("//input[@placeholder = \"e.g., 'Software Development'\"]")
+    private serviceDescription = this.page.locator("//textarea[@placeholder = 'Describe the service...']")
     private createService = this.page.getByRole('button', { name: "Create Service" })
-    private successmessage = this.page.getByRole('heading', { name: 'Service Created Successfully' });
+    private successMessage = this.page.getByRole("alert").filter({ hasText: "Service created successfully" });
+    private errorMessage = this.page.getByRole("alert").filter({ hasText: "Request failed with status code 400" });
+    
 
     async clickAddService() {
         await this.click(this.addServiceButton);
@@ -25,7 +27,27 @@ export class ServiceModelPage extends BasePage {
         await this.click(this.createService);
     }
 
-    async verifyCategoryCreated(expectedMessage: string) {
-        await expect(this.successmessage).toContainText(expectedMessage,{ timeout: 10000 });
+    async verifyServiceCreated(expectedMessage: string) {
+        await expect(this.successMessage).toContainText(expectedMessage,{ timeout: 10000 });
     }
+
+    async verifyErrorMessageDisplayed(expectedMessage: string) {
+        await expect(this.errorMessage).toContainText(expectedMessage,{ timeout: 10000 });
+    }
+
+    async verifyValidity() {
+        const isNameValid = await this.serviceName.evaluate(
+            (el: HTMLInputElement) => el.validity.valid
+        );
+
+        const isDescriptionValid = await this.serviceDescription.evaluate(
+            (el: HTMLTextAreaElement) => el.validity.valid
+        );
+
+        return {
+            isNameValid,
+            isDescriptionValid
+        };
+    }
+    
 }
