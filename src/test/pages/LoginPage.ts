@@ -7,7 +7,6 @@ export class LoginPage extends BasePage {
     private password = this.page.locator("#password");
     private loginButton = this.page.locator("button[type='submit']");
 
-
     async enterEmail(email: string) {
         await this.email.fill(email);
     }
@@ -16,51 +15,19 @@ export class LoginPage extends BasePage {
         await this.password.fill(password);
     }
 
-    async enterCredentials(email: string, password: string) {
-        await this.enterEmail(email);
-        await this.enterPassword(password);
+    async clickLoginButton() {
+        await this.loginButton.click();
     }
 
     async login(email: string, password: string) {
-        await this.enterCredentials(email, password);
+        await this.enterEmail(email);
+        await this.enterPassword(password);
         await this.clickLoginButton();
     }
 
-    async clickLoginButton() {
-
-        await expect(this.loginButton).toBeEnabled();
-
-        await Promise.all([
-            this.page.waitForResponse(response =>
-                response.url().includes("login") &&
-                response.request().method() === "POST"
-            ),
-            this.loginButton.click()
-        ]);
-
+    async loginWithInvalidCredentials(email: string, password: string) {
+        await this.enterEmail(email);
+        await this.enterPassword(password);
+        await this.clickLoginButton();
     }
-
-    async verifyToastMessage(expectedMessage: string) {
-
-        const toast = this.page.getByText(expectedMessage, {
-            exact: false
-        });
-
-        await expect(toast).toBeVisible({
-            timeout: 10000
-        });
-
-        await expect(toast).toContainText(expectedMessage);
-
-    }
-
-    async getToastMessage(): Promise<string> {
-
-        const toast = this.page.getByText(/.+/).filter({
-            has: this.page.locator("div[role='status']")
-        });
-
-        return (await toast.textContent())?.trim() || "";
-    }
-
 }

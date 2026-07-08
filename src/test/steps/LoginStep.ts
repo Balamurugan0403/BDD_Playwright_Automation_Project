@@ -9,55 +9,38 @@ Given("the user launched the application", async function (this: CustomWorld) {
     await this.loginPage.navigate();
 });
 
+// VALID LOGIN
 
-When("the user enters a valid email", async function (this: CustomWorld) {
-    await this.loginPage.enterEmail(loginData.validlogin.email);
-});
+When("the user logs in with valid credentials", async function (this: CustomWorld) {
 
-When("the user enters a valid password", async function (this: CustomWorld) {
-    await this.loginPage.enterPassword(loginData.validlogin.password);
-});
+    await this.loginPage.login(
+        loginData.validlogin.email,
+        loginData.validlogin.password
+    );
 
-When("the user clicks the Login button", async function (this: CustomWorld) {
-    await this.loginPage.clickLoginButton();
 });
 
 Then("the user should be redirected to the dashboard", async function (this: CustomWorld) {
-    await expect(this.page).toHaveURL(/admindashboard/, {timeout: 120000,});
+    await expect(this.page).toHaveURL(/admindashboard/);
 });
 
-// -------------------- Invalid Login --------------------
+// INVALID LOGIN
 
-When(
-    "the user enters {string} credentials",
-    async function (this: CustomWorld, loginType: string) {
+When("the user enters {string} credentials", async function (this: CustomWorld, loginType: string) {
 
-        const credentials = (loginData as any)[loginType];
+    const credentials = (loginData as any)[loginType];
 
-        await this.loginPage.enterCredentials(
-            credentials.email,
-            credentials.password
-        );
-    }
-);
+    await this.loginPage.loginWithInvalidCredentials(
+        credentials.email,
+        credentials.password
+    );
+
+});
 
 Then("the login should fail", async function (this: CustomWorld) {
-
-    await expect(this.page).toHaveURL(/login/, {
-        timeout: 10000
-    });
+    await expect(this.page).toHaveURL(/login/);
 });
 
-Then(
-    "{string} should be displayed",
-    async function (this: CustomWorld, expectedMessage: string) {
-
-        await this.loginPage.verifyToastMessage(expectedMessage);
-
-    }
-);
-
-    
-
-
-    
+Then("an error message should be displayed", async function (this: CustomWorld) {
+    await expect( this.page.locator("text=Invalid email or password")).toBeVisible();
+});
