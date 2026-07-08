@@ -4,7 +4,7 @@ import { CustomWorld } from "../../main/support/CustomWorld";
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 
 setDefaultTimeout(60000);
-Given("the user navigates to the login page", async function (this: CustomWorld) {
+Given("the user launched the application", async function (this: CustomWorld) {
     await this.loginPage.navigate();
 });
 
@@ -22,5 +22,4 @@ When("the user clicks the Login button", async function (this: CustomWorld) {
 
 Then("the user should be redirected to the dashboard", async function (this: CustomWorld) {
     await expect(this.page).toHaveURL(/admindashboard/, { timeout: 15000 });
-    console.log("Admin logged in successfully");
 });
