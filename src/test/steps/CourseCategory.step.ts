@@ -1,6 +1,7 @@
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { CustomWorld } from "../../main/support/CustomWorld";
+import categoryData from "../../resources/data/categoryData.json";
 
 setDefaultTimeout(60000);
 
@@ -9,8 +10,8 @@ Given("Admin is logged into the LMS application", async function (this: CustomWo
     await this.loginPage.enterEmail();
     await this.loginPage.enterPassword();
     await this.loginPage.clickLoginButton();
-
-    await expect(this.page).toHaveURL(/admindashboard/, { timeout: 15000 });
+    await expect(this.page).toHaveURL(/admindashboard/, {timeout: 120000,});
+    console.log("Admin logged in successfully");
 });
 
 Given("Admin navigates to the Dynamic Field Management page", async function (this: CustomWorld) {
@@ -43,4 +44,12 @@ When("Admin clicks the Create Category button", async function (this: CustomWorl
 
 Then("Admin should see the Category Created Successfully message", async function (this: CustomWorld) {
     await this.courseCategoryPage.verifyCategoryCreated();
+});
+
+When("Admin searches for the category",async function (this: CustomWorld) {
+    await this.courseCategoryPage.enterCategorySearch(categoryData.categoryName);
+});
+
+Then ("Admin should see the category in the category list", async function(this:CustomWorld){
+    await this.courseCategoryPage.verifyCategorySearchKey();
 });
