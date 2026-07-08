@@ -4,7 +4,7 @@ import { CourseStructurePage } from "../../test/pages/CourseStructurePage";
 import { World, setWorldConstructor } from "@cucumber/cucumber";
 import { CourseCategoryPage } from "../../test/pages/CourseCategoryPage";
 import { DynamicFieldManagementPage } from "../../test/pages/DynamicFieldManagementPage";
-
+import { AddCoursePage } from "../../test/pages/AddCoursePage";
 export class CustomWorld extends World{
     browser!:Browser;
     context!:BrowserContext;
@@ -15,6 +15,8 @@ export class CustomWorld extends World{
 
     courseCategoryPage!:CourseCategoryPage;
     dynamicFieldManagementPage!: DynamicFieldManagementPage;
+    addCoursePage!:AddCoursePage;
+
 }
 
 setWorldConstructor(CustomWorld);

@@ -5,6 +5,7 @@ import { LoginPage } from '../pages/LoginPage';
 import { CourseStructurePage } from '../pages/CourseStructurePage';
 import { CourseCategoryPage } from '../pages/CourseCategoryPage';
 import { DynamicFieldManagementPage } from '../pages/DynamicFieldManagementPage';
+import { AddCoursePage } from '../pages/AddCoursePage';
 
 let browser: Browser;
 BeforeAll(async () =>{
@@ -21,6 +22,7 @@ Before(async function (this: CustomWorld, scenario) {
     this.courseStructurePage = new CourseStructurePage(this.page);
     this.courseCategoryPage = new CourseCategoryPage(this.page);
     this.dynamicFieldManagementPage = new DynamicFieldManagementPage(this.page);
+    this.addCoursePage=new AddCoursePage(this.page);
 });
 
 After(async function (this: CustomWorld, scenario) {
