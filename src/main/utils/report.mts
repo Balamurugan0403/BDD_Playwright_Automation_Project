@@ -3,7 +3,7 @@ report.generate({
     jsonDir: "reports",
     reportPath: "./reports/detailed-html",
     reportName: "Playwright BDD Report",
-    pageTitle: "LMS est Report",
+    pageTitle: "LMS test Report",
     displayDuration: false,
     metadata: {
         browser: {
