@@ -15,14 +15,14 @@ module.exports = {
             snippetInterface: "async-await"
         },
 
-        publishQuiet: true,
-        dryRun: false,
+        
         format: [
-      "progress",
+      
     "allure-cucumberjs/reporter",
     "json:reports/cucumber-report.json",
     "html:reports/cucumber-report.html",
-    "rerun:rerun/@rerun.txt"
+    "rerun:rerun/@rerun.txt",
+            "progress"
     ],
         parallel: 1
     },
