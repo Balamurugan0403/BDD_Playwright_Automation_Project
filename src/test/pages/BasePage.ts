@@ -1,7 +1,12 @@
 import{Locator, Page} from "@playwright/test"
+import { config } from "../../main/config/config";
 
 export class BasePage{
     constructor(protected page:Page){}
+
+    async navigate() {
+        await this.page.goto(config.baseUrl);
+    }
 
     async goto(url:string) {
         await this.page.goto(url);
