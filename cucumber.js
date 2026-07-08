@@ -22,7 +22,7 @@ module.exports = {
             "json:reports/cucumber-report.json",
             "message:reports/messages.ndjson",
             "html:reports/cucumber-report.html",
-            "allure-cucumberjs/reporter",
+            "allure-cucumberjs/reporter:allure-results",
             "progress"
         ],
         parallel: 2
@@ -46,7 +46,7 @@ module.exports = {
             "json:reports/cucumber-report.json",
             "message:reports/messages.ndjson",
             "html:reports/cucumber-report.html",
-            "allure-cucumberjs/reporter",
+            "allure-cucumberjs/reporter:allure-results",
             "progress"
         ],
         parallel: 1

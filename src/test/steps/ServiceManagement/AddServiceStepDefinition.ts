@@ -31,7 +31,6 @@ When('the user clicks the {string} option from the sidebar', async function (thi
 });
 
 When('the user clicks the Add Course button', async function (this: CustomWorld) {
-
 });
 
 When('the user clicks the Service type dropdown', async function (this: CustomWorld) {
