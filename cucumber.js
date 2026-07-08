@@ -15,8 +15,7 @@ module.exports = {
             snippetInterface: "async-await"
         },
 
-        publishQuiet: true,
-        dryRun: false,
+        
         format: [
 
         "progress",
