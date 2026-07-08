@@ -7,9 +7,9 @@ module.exports = {
             "src/test/hooks/**/*.ts"
         ],
 
-        paths: [
-            "src/test/features/**/*.feature"
-        ],
+        // paths: [
+        //     "src/test/features/**/*.feature"
+        // ],
 
         formatOptions: {
             snippetInterface: "async-await"
@@ -42,7 +42,7 @@ module.exports = {
         publishQuiet: true,
         dryRun: false,
         format: [
-            "progress",
+            "progress-bar",
             "rerun:rerun/@rerun.txt",
             "json:reports/cucumber-report.json",
             "message:reports/messages.ndjson",
