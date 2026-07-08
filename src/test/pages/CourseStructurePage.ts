@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import { logger } from "../../main/utils/logger";
 
 export class CourseStructurePage extends BasePage {
 
@@ -34,37 +35,118 @@ export class CourseStructurePage extends BasePage {
     }
 
     async navigateToCourseStructure(): Promise<void> {
-        await this.page.goto("https://lms-smartcliff.vercel.app/lms/pages/coursestructure");
+        try {
+            logger.info("Navigating to Course Structure page.");
+
+            await this.page.goto("https://lms-smartcliff.vercel.app/lms/pages/coursestructure");
+
+            logger.info("Successfully navigated to Course Structure page.");
+        } catch (error) {
+            logger.error(`Failed to navigate to Course Structure page: ${error}`);
+            throw new Error(`Failed to navigate to Course Structure page: ${error}`);
+        }
     }
 
     async clickAddCourseStructure(): Promise<void> {
-        await this.addCourseStructureButton.waitFor({ state: "visible" });
-        await this.addCourseStructureButton.click();
+        try {
+            logger.info(
+                `Clicking Add Course Structure button for Course ID: ${CourseStructurePage.createdCourseId}`
+            );
+
+            await this.addCourseStructureButton.waitFor({ state: "visible" });
+            await this.addCourseStructureButton.click();
+
+            logger.info("Successfully clicked Add Course Structure button.");
+        } catch (error) {
+            logger.error(`Failed to click Add Course Structure button: ${error}`);
+            throw new Error(`Failed to click Add Course Structure button: ${error}`);
+        }
     }
 
     async clickAddModuleIcon(): Promise<void> {
-        await this.addModuleIcon.waitFor({ state: "visible" });
-        await this.addModuleIcon.click();
+        try {
+            logger.info("Clicking Add Module icon.");
+
+            await this.addModuleIcon.waitFor({ state: "visible" });
+            await this.addModuleIcon.click();
+
+            logger.info("Successfully clicked Add Module icon.");
+        } catch (error) {
+            logger.error(`Failed to click Add Module icon: ${error}`);
+            throw new Error(`Failed to click Add Module icon: ${error}`);
+        }
     }
 
     async enterModuleTitle(moduleTitle: string): Promise<void> {
-        await this.moduleTitleTextBox.fill(moduleTitle);
+        try {
+            logger.info(`Entering module title: ${moduleTitle}`);
+
+            await this.moduleTitleTextBox.fill(moduleTitle);
+
+            logger.info("Module title entered successfully.");
+        } catch (error) {
+            logger.error(`Failed to enter module title '${moduleTitle}': ${error}`);
+            throw new Error(`Failed to enter module title '${moduleTitle}': ${error}`);
+        }
     }
 
     async enterDescription(description: string): Promise<void> {
-        await this.descriptionTextBox.fill(description);
+        try {
+            logger.info("Entering module description.");
+
+            await this.descriptionTextBox.fill(description);
+
+            logger.info("Module description entered successfully.");
+        } catch (error) {
+            logger.error(`Failed to enter module description: ${error}`);
+            throw new Error(`Failed to enter module description: ${error}`);
+        }
     }
 
     async clickAddModuleButton(): Promise<void> {
-        await this.saveBtn.click();
+        try {
+            logger.info("Clicking Save button.");
+
+            // await this.saveBtn.waitFor({ state: "visible" });
+            // await this.saveBtn.click();
+            
+            await this.addModuleBtn.waitFor({ state: "visible" });
+            await this.addModuleBtn.click();
+
+            logger.info("Successfully clicked Save button.");
+        } catch (error) {
+            logger.error(`Failed to click Save button: ${error}`);
+            throw new Error(`Failed to click Save button: ${error}`);
+        }
     }
 
     async verifySuccessMessage(): Promise<void> {
-        await expect(this.successMsg).toBeVisible({ timeout: 10000 });
+        try {
+            logger.info("Verifying success message.");
+
+            await expect(this.successMsg).toBeVisible({ timeout: 10000 });
+
+            logger.info("Success message verified successfully.");
+        } catch (error) {
+            logger.error(`Success message verification failed: ${error}`);
+            throw new Error(`Success message verification failed: ${error}`);
+        }
     }
 
     async verifyModulePresent(moduleTitle: string): Promise<void> {
-        const moduleRow = this.moduleRows.filter({ hasText: moduleTitle }).first();
-        await expect(moduleRow).toBeVisible();
+        try {
+            logger.info(`Verifying module '${moduleTitle}' is present.`);
+
+            const moduleRow = this.moduleRows
+                .filter({ hasText: moduleTitle })
+                .first();
+
+            await expect(moduleRow).toBeVisible();
+
+            logger.info(`Module '${moduleTitle}' verified successfully.`);
+        } catch (error) {
+            logger.error(`Module '${moduleTitle}' was not found: ${error}`);
+            throw new Error(`Module '${moduleTitle}' was not found: ${error}`);
+        }
     }
 }
