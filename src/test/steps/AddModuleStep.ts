@@ -47,8 +47,8 @@ When("the Admin clicks the {string} icon", async function (icon: string) {
 
 When("the Admin enters valid module details", async function () {
 
-    await this.courseStructurePage.enterModuleTitle(courseData.moduleTitle);
-    await this.courseStructurePage.enterDescription(courseData.description);
+    await this.courseStructurePage.enterModuleTitle(courseData[0].moduleTitle);
+    await this.courseStructurePage.enterDescription(courseData[0].description);
 });
 
 // Then("a success message should be displayed", async function () {
@@ -56,5 +56,5 @@ When("the Admin enters valid module details", async function () {
 // });
 
 Then("the module should appear in the course structure", async function () {
-    await this.courseStructurePage.verifyModulePresent(courseData.moduleTitle);
+    await this.courseStructurePage.verifyModulePresent(courseData[0].moduleTitle);
 });

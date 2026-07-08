@@ -1,4 +1,10 @@
-{
-  "moduleTitle": "Introduction to Java",
-  "description": "This module covers Java fundamentals."
-}
+[
+  {
+    "moduleTitle": "Introduction to Java",
+    "description": "This module covers Java fundamentals."
+  },
+  {
+    "moduleTitle": "Introduction to Selenium",
+    "description": "This module covers Selenium fundamentals."
+  }
+]
