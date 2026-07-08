@@ -8,6 +8,7 @@ import { config } from '../../main/config/config';
 import { SidebarPage } from '../pages/SidebarPage';
 import { ServiceModelPage } from '../pages/ServiceModelPage';
 import { CourseStructurePage } from '../pages/CourseStructurePage';
+import { AddCoursePage } from '../pages/AddCoursePage';
 
 let browser: Browser;
 BeforeAll(async () =>{
@@ -31,6 +32,7 @@ Before(async function (this: CustomWorld, scenario) {
     this.sidebarPage = new SidebarPage(this.page);
     this.serviceModelPage = new ServiceModelPage(this.page)
     this.courseStructurePage = new CourseStructurePage(this.page);
+    this.addCoursePage=new AddCoursePage(this.page);
 });
 
 After(async function (this: CustomWorld, scenario) {
