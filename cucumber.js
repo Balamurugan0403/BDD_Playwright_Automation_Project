@@ -7,9 +7,9 @@ module.exports = {
             "src/test/hooks/**/*.ts"
         ],
 
-        paths: [
-            "src/test/features/**/*.feature"
-        ],
+        // paths: [
+        //     "src/test/features/**/*.feature"
+        // ],
 
         formatOptions: {
             snippetInterface: "async-await"
