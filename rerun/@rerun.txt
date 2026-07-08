@@ -1,1 +1,4 @@
+<<<<<<< HEAD
 src\test\features\ServiceManagement\AddService.feature:29:10
+=======
+>>>>>>> 73dfc89142938a243ed41a515e970f3d3e32af68
