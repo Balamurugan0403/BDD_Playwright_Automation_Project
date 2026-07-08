@@ -11,7 +11,6 @@ Given("Admin is logged into the LMS application", async function (this: CustomWo
     await this.loginPage.clickLoginButton();
 
     await expect(this.page).toHaveURL(/admindashboard/, { timeout: 15000 });
-    console.log("Admin logged in successfully");
 });
 
 Given("Admin navigates to the Dynamic Field Management page", async function (this: CustomWorld) {

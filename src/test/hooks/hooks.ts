@@ -1,13 +1,21 @@
 import{Before, After, BeforeAll, AfterAll} from '@cucumber/cucumber';
-import { chromium, Browser } from '@playwright/test';
+import { chromium, Browser, firefox, webkit } from '@playwright/test';
 import {CustomWorld} from '../../main/support/CustomWorld';
 import { LoginPage } from '../pages/LoginPage';
 import { CourseCategoryPage } from '../pages/CourseCategoryPage';
 import { DynamicFieldManagementPage } from '../pages/DynamicFieldManagementPage';
+import { config } from '../../main/config/config';
+import { SidebarPage } from '../pages/SidebarPage';
+import { ServiceModelPage } from '../pages/ServiceModelPage';
 
 let browser: Browser;
 BeforeAll(async () =>{
-    browser=await chromium.launch({headless:false});
+    if(config.browser === "chromium") 
+        browser = await chromium.launch({headless:config.headless});
+    else if(config.browser === "firefox") 
+        browser = await firefox.launch({headless:config.headless});
+    else 
+        browser = await webkit.launch({headless:config.headless});
 });
 
 
@@ -17,6 +25,8 @@ Before(async function (this: CustomWorld, scenario) {
     this.loginPage = new LoginPage(this.page);
     this.courseCategoryPage = new CourseCategoryPage(this.page);
     this.dynamicFieldManagementPage = new DynamicFieldManagementPage(this.page);
+    this.sidebarPage = new SidebarPage(this.page);
+    this.serviceModelPage = new ServiceModelPage(this.page)
 });
 
 After(async function (this: CustomWorld, scenario) {
