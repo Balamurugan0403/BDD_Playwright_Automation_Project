@@ -2,7 +2,7 @@
 Feature: Login Functionality
 
   Background:
-    Given the user navigates to the login page
+    Given the user launched the application
 
   @Samiha
   Scenario: Verify successful login with valid credentials
