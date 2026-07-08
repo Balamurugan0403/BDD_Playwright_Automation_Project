@@ -1,4 +1,3 @@
-
 Feature: Add Modules to the course structure
     As an admin,
     I want to add a new module to a course
