@@ -9,32 +9,29 @@ Given("the user launched the application", async function (this: CustomWorld) {
     await this.loginPage.navigate();
 });
 
-// VALID LOGIN
+// Valid Login
 
-When("the user logs in with valid credentials", async function (this: CustomWorld) {
+When("the user enters a valid email", async function (this: CustomWorld) {
+    await this.loginPage.enterEmail(loginData.validlogin.email);
+});
 
-    await this.loginPage.login(
-        loginData.validlogin.email,
-        loginData.validlogin.password
-    );
+When("the user enters a valid password", async function (this: CustomWorld) {
+    await this.loginPage.enterPassword(loginData.validlogin.password);
+});
 
+When("the user clicks the Login button", async function (this: CustomWorld) {
+    await this.loginPage.clickLoginButton();
 });
 
 Then("the user should be redirected to the dashboard", async function (this: CustomWorld) {
     await expect(this.page).toHaveURL(/admindashboard/);
 });
 
-// INVALID LOGIN
+// Invalid Login
 
 When("the user enters {string} credentials", async function (this: CustomWorld, loginType: string) {
-
     const credentials = (loginData as any)[loginType];
-
-    await this.loginPage.loginWithInvalidCredentials(
-        credentials.email,
-        credentials.password
-    );
-
+    await this.loginPage.enterCredentials(credentials.email, credentials.password);
 });
 
 Then("the login should fail", async function (this: CustomWorld) {
