@@ -1,8 +1,6 @@
 module.exports = {
     default: {
-        requireModule: [
-            "ts-node/register"
-        ],
+        requireModule: ["ts-node/register"],
 
         require: [
             "src/test/steps/**/*.ts",
@@ -19,7 +17,6 @@ module.exports = {
 
         publishQuiet: true,
         dryRun: false,
-
         format: [
       "progress",
     "allure-cucumberjs/reporter",
@@ -30,11 +27,8 @@ module.exports = {
     ],
         parallel: 1
     },
-
-    rerun: {
-        requireModule: [
-            "ts-node/register"
-        ],
+    rerun:{
+        requireModule: ["ts-node/register"],
 
         require: [
             "src/test/steps/**/*.ts",
@@ -47,7 +41,6 @@ module.exports = {
 
         publishQuiet: true,
         dryRun: false,
-
         format: [
       "progress",
     "allure-cucumberjs/reporter",
