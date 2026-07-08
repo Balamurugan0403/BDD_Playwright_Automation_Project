@@ -1,6 +1,4 @@
 import { BasePage } from "./BasePage";
-import loginData from "../../resources/data/loginData.json";
-import { config } from "../../main/config/config";
 
 export class LoginPage extends BasePage {
 
@@ -8,24 +6,27 @@ export class LoginPage extends BasePage {
     private password = this.page.locator("#password");
     private loginButton = this.page.locator("button[type='submit']");
 
-    
-
-    async enterEmail() {
-        await this.email.fill(loginData.validlogin.email);
+    async enterEmail(email: string) {
+        await this.email.fill(email);
     }
 
-    async enterPassword() {
-        await this.password.fill(loginData.validlogin.password);
+    async enterPassword(password: string) {
+        await this.password.fill(password);
     }
 
     async clickLoginButton() {
         await this.loginButton.click();
-       
     }
 
-    async login() {
-        await this.enterEmail();
-        await this.enterPassword();
+    async login(email: string, password: string) {
+        await this.enterEmail(email);
+        await this.enterPassword(password);
+        await this.clickLoginButton();
+    }
+
+    async loginWithInvalidCredentials(email: string, password: string) {
+        await this.enterEmail(email);
+        await this.enterPassword(password);
         await this.clickLoginButton();
     }
 }

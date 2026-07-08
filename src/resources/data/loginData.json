@@ -1,6 +1,16 @@
 {
-    "validlogin":{
-        "email":"testing@gmail.com",
-        "password":"123"
-    }
+  "validlogin": {
+    "email": "testing@gmail.com",
+    "password": "123"
+  },
+
+  "InvalidEmail": {
+    "email": "testing1@gmail.com",
+    "password": "123"
+  },
+
+  "InvalidPassword": {
+    "email": "testing@gmail.com",
+    "password": "12345"
+  }
 }
