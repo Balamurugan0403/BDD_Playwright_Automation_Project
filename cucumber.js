@@ -18,12 +18,12 @@ module.exports = {
         publishQuiet: true,
         dryRun: false,
         format: [
-            "progress",
-            "rerun:rerun/@rerun.txt",
-            "json:reports/cucumber-report.json",
-            "message:reports/messages.ndjson",
-            "allure-cucumberjs/reporter"
-        ],
+      "progress",
+      "rerun:rerun/@rerun.txt",
+      "json:reports/cucumber-report.json",
+      "message:reports/messages.ndjson",
+      "allure-cucumberjs/reporter"
+    ],
         parallel: 2
     },
     rerun:{
@@ -41,12 +41,12 @@ module.exports = {
         publishQuiet: true,
         dryRun: false,
         format: [
-            "progress",
-            "rerun:rerun/@rerun.txt",
-            "json:reports/cucumber-report.json",
-            "message:reports/messages.ndjson",
-            "allure-cucumberjs/reporter"
-        ],
+      "progress",
+      "rerun:rerun/@rerun.txt",
+      "json:reports/cucumber-report.json",
+      "message:reports/messages.ndjson",
+      "allure-cucumberjs/reporter"
+    ],
         parallel: 1
     }
 };
