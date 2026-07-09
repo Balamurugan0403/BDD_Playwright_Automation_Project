@@ -29,10 +29,6 @@ module.exports = {
     rerun:{
         requireModule: ["ts-node/register"],
 
-        require: [
-            "src/test/steps/**/*.ts",
-            "src/test/hooks/**/*.ts"
-        ],
 
         formatOptions: {
             snippetInterface: "async-await"

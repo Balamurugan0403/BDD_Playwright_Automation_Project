@@ -1,5 +1,5 @@
 @Samiha
-Feature: Login Functionality_Samiha_07JUL2026
+Feature: Login Functionality
 
   Background:
     Given the user launched the application
@@ -14,9 +14,9 @@ Feature: Login Functionality_Samiha_07JUL2026
     When the user enters "<loginType>" credentials
     And the user clicks the Login button
     Then the login should fail
-    And an error message should be displayed
+    And "<message>" should be displayed
 
     Examples:
-      | loginType |
-      | InvalidEmail |
-      | InvalidPassword |
+      | loginType         | message                |
+      | InvalidEmail      | Email is invalid       |
+      | InvalidPassword   | Password is incorrect  |
