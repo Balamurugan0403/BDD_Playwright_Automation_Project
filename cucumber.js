@@ -41,8 +41,6 @@ module.exports = {
         publishQuiet: true,
         dryRun: false,
         format: [
-
-            "progress",
         "allure-cucumberjs/reporter",
         "json:reports/cucumber-report.json",
         "html:reports/cucumber-report.html",

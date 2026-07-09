@@ -1,23 +1,8 @@
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
-import { expect } from "@playwright/test";
 import { CustomWorld } from "../../main/support/CustomWorld";
-import categoryData from "../../resources/data/categoryData.json";
-import loginData from "../../resources/data/loginData.json";
+import { generateCourseCategoryData, getCourseCategoryData } from "../../resources/data/CourseCategoryData";
 
 setDefaultTimeout(60000);
-
-Given("Admin is logged into the LMS application", async function (this: CustomWorld) {
-    await this.loginPage.navigate();
-    await this.loginPage.login(
-        loginData.validlogin.email,
-        loginData.validlogin.password
-    );
-    await expect(this.page).toHaveURL(/admindashboard/, { timeout: 120000, });
-});
-
-Given("Admin navigates to the Dynamic Field Management page", async function (this: CustomWorld) {
-    await this.dynamicFieldManagementPage.openDynamicFieldManagement();
-});
 
 Given("Admin navigates to the Course Category section", async function (this: CustomWorld) {
     await this.dynamicFieldManagementPage.openCategoryManagement();
@@ -27,9 +12,13 @@ When("Admin clicks the Add Category button", async function (this: CustomWorld) 
     await this.courseCategoryPage.clickAddCategory();
 });
 
-When("Admin enters the Category Name as {string}", async function (this: CustomWorld, categoryName: string) {
-    await this.courseCategoryPage.enterCategoryName(categoryName);
-});
+When(
+    "Admin enters a dynamically generated Category Name for course {string} and description {string}",
+    async function (this: CustomWorld, courseName: string, description: string) {
+        const data = generateCourseCategoryData(courseName, description);
+        await this.courseCategoryPage.enterCategoryName(data.categoryName);
+    }
+);
 
 When("Admin selects the Course Name as {string}", async function (this: CustomWorld, courseName: string) {
     await this.courseCategoryPage.selectCourse(courseName);
@@ -48,9 +37,24 @@ Then("Admin should see the Category Created Successfully message", async functio
 });
 
 When("Admin searches for the category", async function (this: CustomWorld) {
-    await this.courseCategoryPage.enterCategorySearch(categoryData.categoryName);
+    const data = getCourseCategoryData();
+    await this.courseCategoryPage.enterCategorySearch(data.categoryName);
 });
 
 Then("Admin should see the category in the category list", async function (this: CustomWorld) {
-    await this.courseCategoryPage.verifyCategorySearchKey();
+    const data = getCourseCategoryData();
+    await this.courseCategoryPage.verifyCategorySearchKey(data.categoryName, data.courseName);
 });
+
+When(
+    "Admin clicks the Select Category dropdown",
+    async function (this: CustomWorld) {
+        await this.addCoursePage.clickCourseCategoryDropdown();
+    }
+);
+
+
+Then("Admin should see the category in the Category dropdown", async function (this: CustomWorld) {
+    await this.addCoursePage.verifyCategoryAvailable(getCourseCategoryData().categoryName);
+  }
+);

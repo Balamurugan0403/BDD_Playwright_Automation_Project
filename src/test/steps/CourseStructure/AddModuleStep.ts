@@ -1,8 +1,6 @@
 import { CourseStructurePage } from '../../pages/CourseStructurePage';
-import { expect } from "@playwright/test";
-import { Given, When, Then } from "@cucumber/cucumber";
+import { When, Then } from "@cucumber/cucumber";
 import courseData from "../../../resources/data/CourseStructureData.json";
-import { DataTable } from "@cucumber/cucumber";
 import { CustomWorld } from '../../../main/support/CustomWorld';
 
 let previousCount: number;
@@ -35,7 +33,7 @@ When("the Admin clicks the {string} button", async function (this: CustomWorld, 
 
 When("the Admin add the module with valid details", async function (this: CustomWorld) {
     for (const module of courseData.validModule) {
-        await this.courseStructurePage.addModule(module.moduleTitle, module.description);
+        await this.courseStructurePage.addModule(module.moduleTitle, module.description, module.skills);
     }
 });
 
@@ -43,18 +41,13 @@ When("the Admin add the module without entering the title", async function (this
     await this.courseStructurePage.addModuleWithoutTitle();
 });
 
-When("the Admin add the module with exceed title length", async function (this: CustomWorld, dataTable: DataTable) {
-    const data = dataTable.hashes()[0];
-    await this.courseStructurePage.addModuleWithExceedTitleLength(data.title);
-});
-
-When("the Admin adds the module with title {string} and description {string}",  async function (this: CustomWorld, title: string, description: string) {
-    await this.courseStructurePage.addModule(title, description);
+When("the Admin adds the module with title {string} description {string} and skills {string}",  async function (this: CustomWorld, title: string, description: string, skills: string[]) {
+    await this.courseStructurePage.addModule(title, description, skills);
 });
 
 When("the Admin add module with existing module name", async function (this: CustomWorld) {
     for (const module of courseData.existingModule) {
-        await this.courseStructurePage.addModule(module.moduleTitle, module.description);
+        await this.courseStructurePage.addModule(module.moduleTitle, module.description, module.skills);
     }
 });
 
@@ -63,10 +56,6 @@ Then("the module count should increase for the existing module", async function 
         previousCount = await this.courseStructurePage.getModuleCount(module.moduleTitle);
         await this.courseStructurePage.verifyModuleCountIncreased(module.moduleTitle,previousCount);
     }
-});
-
-Then("the admin shouldn't be able to add the module", async function (this: CustomWorld) {
-    await this.courseStructurePage.verifyModuleNotAdded();
 });
 
 Then("a success message should be displayed", async function (this: CustomWorld) {

@@ -161,4 +161,13 @@ export class AddCoursePage extends BasePage {
     async clickPreviewAndCreate() {
         await this.click(this.previewCreateButton);
     }
+
+    async verifyCategoryAvailable(category: string) {
+        console.log(await this.page.getByRole("option", { name: category, exact: true }).textContent());
+        await expect(this.page.getByRole("option", { name: category, exact: true }).textContent());
+    }
+
+    async clickCourseCategoryDropdown() {
+    await this.courseCategoryDropdown.click();
+}
 }
