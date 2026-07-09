@@ -75,4 +75,13 @@ export class AddCoursePage extends BasePage {
     async verifyCourseHierarchyTab() {
         await expect(this.page.getByText("Course Hierarchy and Layout", { exact: true }).first()).toBeVisible({ timeout: 10000 });
     }
+
+    async verifyCategoryAvailable(category: string) {
+        console.log(await this.page.getByRole("option", { name: category, exact: true }).textContent());
+        await expect(this.page.getByRole("option", { name: category, exact: true }).textContent());
+    }
+
+    async clickCourseCategoryDropdown() {
+    await this.courseCategoryDropdown.click();
+}
 }

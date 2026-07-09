@@ -11,8 +11,6 @@ export class CourseCategoryPage extends BasePage {
     private createCategory = this.page.getByRole('button', { name: /Create Category/i })
     private successmessage = this.page.getByRole('heading', { name: 'Category Created Successfully' });
     private CategorySearchBox = this.page.getByRole('textbox', { name: 'Search by name, description, code or courses...' });
-    private CategorySearchName =this.page.getByText('Python1', { exact: true })
-    private CourseSearchName=this.page.getByText('Playwright', { exact: true })
 
     async clickAddCategory() {
         logger.info("Clicking Add Category button");
@@ -46,16 +44,17 @@ export class CourseCategoryPage extends BasePage {
         logger.info("Category created successfully");
     }
 
-    async enterCategorySearch(category: string){
-        logger.info(`Searching category: ${category}`);
-        await this.fill(this.CategorySearchBox,category);
-        await this.CategorySearchBox.press("Enter");
-    }
-
-    async verifyCategorySearchKey(){
-        logger.info("Verifying category is displayed in the category list");
-        await expect(this.CategorySearchName).toBeVisible({ timeout: 10000 });
-        await expect(this.CourseSearchName).toBeVisible({ timeout: 10000 });
-        logger.info("Category displayed successfully");
-    }
+   async enterCategorySearch(category: string) {
+    logger.info(`Searching category: ${category}`);
+    await this.fill(this.CategorySearchBox, category);
+    await this.CategorySearchBox.press("Enter");
+}
+async verifyCategorySearchKey(categoryName: string, courseName: string) {
+    logger.info("Verifying category is displayed in the category list");
+    const categoryLocator = this.page.getByText(categoryName, { exact: true });
+    const courseLocator = this.page.getByText(courseName, { exact: true });
+    await expect(categoryLocator).toBeVisible({ timeout: 10000 });
+    await expect(courseLocator).toBeVisible({ timeout: 10000 });
+    logger.info("Category displayed successfully");
+}
 }
