@@ -11,15 +11,28 @@ import { ServiceModelPage } from '../pages/ServiceModelPage';
 import { AddCoursePage } from '../pages/AddCoursePage';
 
 
+import { logger } from '../../main/utils/logger';
 
 let browser: Browser;
 BeforeAll(async () => {
     if (config.browser === "chromium")
+    {
+        logger.info("Launching chrome browser");
         browser = await chromium.launch({ headless: config.headless, slowMo: config.slowMo });
+        logger.info("Chrome browser launched");
+    }
     else if (config.browser === "firefox")
+    {
+        logger.info("Launching firefox browser");
         browser = await firefox.launch({ headless: config.headless, slowMo: config.slowMo });
+        logger.info("Firefox browser launched");
+    }
     else
+    {
+        logger.info("Launching safari browser");
         browser = await webkit.launch({ headless: config.headless, slowMo: config.slowMo });
+        logger.info("Safari browser launched");
+    }
 });
 
 Before(async function (this: CustomWorld, scenario) {
