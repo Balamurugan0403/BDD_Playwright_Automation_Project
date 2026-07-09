@@ -1,7 +1,19 @@
 {
-    "courseClient": "PSG Tech",
-    "serviceType": "Automation Testing",
-    "serviceModel": "Automation",
-    "courseCategory": "Software Development",
-    "courseName": "Frontend"
+    "validCourseSetup": {
+        "basicConfigurationData": {
+            "courseClient": "PSG Tech",
+            "serviceType": "Automation Testing",
+            "serviceModel": "Automation",
+            "courseCategory": "Software Development",
+            "courseName": "Frontend",
+            "courseLevel": "Intermediate"
+        },
+        "courseHierarchy": {
+            "description": "This course covers frontend development fundamentals.",
+            "iDo": "Live Classes",
+            "weDo": "Assignments",
+            "youDo": "Assesments",
+            "skills": ["C", "Java", "CSS", "JavaScript", "MongoDB"]
+        }
+    }
 }
