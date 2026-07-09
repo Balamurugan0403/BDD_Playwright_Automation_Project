@@ -6,33 +6,33 @@ Feature: RohiniM_07_JUL_2026_Add_Modules
 Background:
     Given the user launched the application
     And the user logged in as admin
-    And the Admin navigates to the Course Structure page
-    
-@Rohini @Add_Module
+    When the user clicks the "Course Management" option from the sidebar
+
+@Rohini @Add_Module @Valid
 Scenario: Add module with all mandatory fields
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
     And the Admin add the module with valid details
     Then a success message should be displayed
-    Then the module should appear in the course structure
+    And the module should appear in the course structure
 
 @Rohini @Add_Module
 Scenario: Add module without Title
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
     And the Admin add the module without entering the title
-    Then the validation message should be displayed
+    Then the title validation message should be displayed
 
 @Rohini @Add_Module
 Scenario: Add module with exceed title length
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
     And the Admin add the module with exceed title length
-      | title                                  |
+      | title |
       | SampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSample |
     Then the admin shouldn't be able to add the module
 
-@Rohini @Add Module
+@Rohini @Add_Module
 Scenario Outline: Add module with special characters in the module title
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
@@ -44,9 +44,10 @@ Examples:
     | title          | description        |
     | @#$%^&*()_+{}! | Sample Description |
 
+@Rohini @Add_Module
 Scenario: Add module with existing module name
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
     And the Admin add module with existing module name
     Then a success message should be displayed
-    And the module with existing module name should appear in the course structure
+    And the module count should increase for the existing module
