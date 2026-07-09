@@ -7,8 +7,7 @@ const dataFile = path.resolve(__dirname, ".generated-category.json");
 
 export function generateCourseCategoryData(
     courseName: string,
-    description: string
-): CourseCategory {
+    description: string):CourseCategory {
     const category: CourseCategory = {
         categoryName: `Category_${Date.now()}`,
         courseName,

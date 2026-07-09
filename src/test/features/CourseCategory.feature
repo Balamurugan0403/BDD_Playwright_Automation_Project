@@ -20,9 +20,11 @@ Feature: Sowndariya_07JUL2026_LMS_Feature File For Category Management Functiona
       | Selenium   | Java automation    |
       | Playwright | Python automation   |
 
+
   Scenario: Verify the Category is displayed in the Category Management list.
     When Admin searches for the category
     Then Admin should see the category in the category list
+
 
   Scenario: Verify the category is available in Course Management
     When the user clicks the "Course Management" option from the sidebar

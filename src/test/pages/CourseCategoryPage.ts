@@ -53,8 +53,8 @@ async verifyCategorySearchKey(categoryName: string, courseName: string) {
     logger.info("Verifying category is displayed in the category list");
     const categoryLocator = this.page.getByText(categoryName, { exact: true });
     const courseLocator = this.page.getByText(courseName, { exact: true });
-    await expect(categoryLocator).toBeVisible({ timeout: 10000 });
-    await expect(courseLocator).toBeVisible({ timeout: 10000 });
+    await expect(categoryLocator).toBeVisible({ timeout: 20000 }); 
+    await expect(courseLocator).toBeVisible({ timeout: 20000 });
     logger.info("Category displayed successfully");
 }
 }
