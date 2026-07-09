@@ -1,4 +1,4 @@
-export interface addService {
+export interface Service {
     name: string;
     description: string;
 }

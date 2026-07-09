@@ -21,6 +21,7 @@ Scenario: Add module without Title
     And the Admin clicks the "Add Course Structure" button
     And the Admin add the module without entering the title
     Then the validation message should be displayed
+<<<<<<< HEAD
 
 @Rohini @Add_Module
 Scenario: Add module with exceed title length
@@ -42,3 +43,5 @@ Scenario Outline: Add module with special characters in the module title
 Examples:
     | title          | description        |
     | @#$%^&*()_+{}! | Sample Description |
+=======
+>>>>>>> abe279a18a36121489d0cbe11d1e607f7b4e910c

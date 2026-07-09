@@ -7,18 +7,20 @@ import { DynamicFieldManagementPage } from "../../test/pages/DynamicFieldManagem
 import { AddCoursePage } from "../../test/pages/AddCoursePage";
 import { SidebarPage } from "../../test/pages/SidebarPage";
 import { ServiceModelPage } from "../../test/pages/ServiceModelPage";
+import { Service } from "../types/Service";
 
-export class CustomWorld extends World {
-    browser!: Browser;
-    context!: BrowserContext;
-    page!: Page;
-    loginPage!: LoginPage;
+export class CustomWorld extends World{
+    browser!:Browser;
+    context!:BrowserContext;
+    page!:Page;
+    loginPage!:LoginPage;
+    courseCategoryPage!:CourseCategoryPage;
     courseStructurePage!: CourseStructurePage;
-    courseCategoryPage!: CourseCategoryPage;
     dynamicFieldManagementPage!: DynamicFieldManagementPage;
     addCoursePage!: AddCoursePage;
     sidebarPage!: SidebarPage;
     serviceModelPage!: ServiceModelPage;
+    service!: Service
 }
 
 setWorldConstructor(CustomWorld);
