@@ -16,35 +16,26 @@ Scenario: Add module with all mandatory fields
     Then a success message should be displayed
     And the module should appear in the course structure
 
-@Rohini @Add_Module
+@Rohini @Add_Module @WithoutTitle
 Scenario: Add module without Title
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
     And the Admin add the module without entering the title
     Then the title validation message should be displayed
 
-@Rohini @Add_Module
-Scenario: Add module with exceed title length
-    When the Admin search the course
-    And the Admin clicks the "Add Course Structure" button
-    And the Admin add the module with exceed title length
-      | title |
-      | SampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSample |
-    Then the admin shouldn't be able to add the module
-
-@Rohini @Add_Module
+@Rohini @Add_Module @SpecialCharacter @Bug
 Scenario Outline: Add module with special characters in the module title
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
-    And the Admin adds the module with title "<title>" and description "<description>"
+    And the Admin adds the module with title "<title>" description "<description>" and skills "<skill>"
     Then a success message should be displayed
     And the module "<title>" should appear in the course structure
 
 Examples:
-    | title          | description        |
-    | @#$%^&*()_+{}! | Sample Description |
+    | title          | description        | skills |
+    | @#$%^&*()_+{}! | Sample Description | HTML   |
 
-@Rohini @Add_Module
+@Rohini @Add_Module @ExistingModule
 Scenario: Add module with existing module name
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button

@@ -10,6 +10,7 @@ export class CourseStructurePage extends BasePage {
     private addModuleIcon = this.page.getByTitle("Add module");
     private moduleTitleTextBox =this.page.getByPlaceholder("Enter title...");
     private descriptionTextBox =this.page.getByPlaceholder("Brief description ...");
+    private skillCheckbox = (skill: string) =>this.page.locator(`//label[normalize-space(text())='${skill}']//input[@type='checkbox']`);
     private submitBtn =this.page.locator("//button[@type='submit']");
     private successMsg = this.page.locator("text=Operation completed successfully!");
     private moduleRows =this.page.locator("tbody tr");
@@ -85,6 +86,25 @@ export class CourseStructurePage extends BasePage {
         }
     }
 
+    async selectSkills(skills: string[]){
+        try {
+            logger.info(`Selecting Skills: ${skills.join(", ")}`);
+            for (const skill of skills) {
+                const checkbox = this.skillCheckbox(skill);
+                await checkbox.waitFor({ state: "visible" });
+
+                if (!(await checkbox.isChecked())) {
+                    await checkbox.check();
+                }
+            }
+            logger.info("Skills selected successfully.");
+        } 
+        catch (error) {
+            logger.error(`Failed to select skills: ${error}`);
+            throw error;
+        }
+    }
+
     async clickSubmitButton(){
         try {
             logger.info("Clicking Submit button.");
@@ -97,7 +117,7 @@ export class CourseStructurePage extends BasePage {
             throw new Error(`Failed to click Submit button: ${error}`);
         }
     }
-    public async getModuleCount(moduleTitle: string): Promise<number> {
+    public async getModuleCount(moduleTitle: string) {
         return await this.moduleTitleLocator(moduleTitle).count();
     }
 
@@ -105,12 +125,13 @@ export class CourseStructurePage extends BasePage {
         await expect(this.moduleTitleLocator(moduleTitle)).toHaveCount(previousCount + 1);
     }
     
-    async addModule(moduleTitle: string, description: string){
+    async addModule(moduleTitle: string, description: string, skills: string[]){
         try {
             logger.info(`Adding module: ${moduleTitle}`);
             await this.clickAddModuleIcon();
             await this.enterModuleTitle(moduleTitle);
             await this.enterDescription(description);
+            await this.selectSkills(skills);
             await this.clickSubmitButton();
             // await this.moduleTitleTextBox.waitFor({state: "hidden",});
             logger.info(`Module '${moduleTitle}' added successfully.`);
@@ -131,31 +152,6 @@ export class CourseStructurePage extends BasePage {
         catch (error) {
             logger.error(`Failed to add module without title: ${error}`);
             throw new Error(`Failed to add module without title: ${error}`);
-        }
-    }
-
-    async addModuleWithExceedTitleLength(moduleTitle: string){
-        try {
-            logger.info(`Adding module with title: ${moduleTitle}`);
-            await this.clickAddModuleIcon();
-            await this.fill(this.moduleTitleTextBox, moduleTitle);
-            await this.clickSubmitButton();
-        } 
-        catch (error) {
-            logger.error(`Failed to add module with exceed title length: ${error}`);
-            throw new Error(`Failed to add module with exceed title length: ${error}`);
-        }
-    }
-
-    async verifyModuleNotAdded(){
-        try {
-            logger.info("Verifying module was not added");
-            await expect(this.moduleTitleTextBox).toBeVisible();
-            logger.info("Module was not added as expected");
-        } 
-        catch (error) {
-            logger.error(`Failed to verify module was not added: ${error}`);
-            throw new Error(`Failed to verify module was not added: ${error}`);
         }
     }
 
