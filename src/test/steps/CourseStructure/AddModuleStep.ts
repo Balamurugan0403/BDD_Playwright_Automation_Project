@@ -41,8 +41,9 @@ When("the Admin add the module without entering the title", async function (this
     await this.courseStructurePage.addModuleWithoutTitle();
 });
 
-When("the Admin adds the module with title {string} description {string} and skills {string}",  async function (this: CustomWorld, title: string, description: string, skills: string[]) {
-    await this.courseStructurePage.addModule(title, description, skills);
+When("the Admin adds the module with title {string} description {string} and skills {string}",  async function (this: CustomWorld, title: string, description: string, skills: string) {
+    const skillArray = skills.split(",").map(skill => skill.trim());
+    await this.courseStructurePage.addModule(title, description, skillArray);
 });
 
 When("the Admin add module with existing module name", async function (this: CustomWorld) {
