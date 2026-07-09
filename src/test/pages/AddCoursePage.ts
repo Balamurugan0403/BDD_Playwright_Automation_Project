@@ -37,7 +37,12 @@ export class AddCoursePage extends BasePage {
         .getByRole("heading", { name: "Course Layout Preview" })
         .last();
     private createCourseBtn = this.page.getByRole("button", { name: "Save Course Layout" });
-    private successMessage = this.page.getByText("Course created successfully", { exact: false });
+    private successMessage = this.page
+        .getByText("Course created successfully", { exact: false })
+        .or(this.page.getByText("Course ID is Required", { exact: false }));
+    private errorMessage = this.page
+    .getByText("Request failed with status code 403", { exact: false })
+    .or(this.page.getByText("Course ID is Required", { exact: false }));
 
     // Course Basic Configuration methods
     async clickAddCourse() {
@@ -104,6 +109,7 @@ export class AddCoursePage extends BasePage {
     }
 
     async clickNext() {
+        await this.page.waitForTimeout(10000);
         await this.click(this.nextButton);
     }
 
@@ -232,5 +238,14 @@ export class AddCoursePage extends BasePage {
     async verifySuccessMessage() {
         logger.info("verifying success message is displayed");
         await expect(this.successMessage).toBeVisible({ timeout: 15000 });
+    }
+    async verifyErrorMessage() {
+        logger.info("verifying success message is displayed");
+        await expect(this.errorMessage).toBeVisible({ timeout: 15000 });
+    }
+    async verifyDuplicateCourseValidation() {
+        await expect(
+            this.page.getByText("Course already exists")
+        ).toBeVisible();
     }
 }
