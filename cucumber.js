@@ -8,22 +8,21 @@ module.exports = {
         ],
 
         paths: [
-             "src/test/features/**/*.feature"
+            "src/test/features/**/*.feature"
         ],
 
         formatOptions: {
             snippetInterface: "async-await"
         },
 
-        publishQuiet: true,
-        dryRun: false,
+        
         format: [
-      "progress",
+      
     "allure-cucumberjs/reporter",
     "json:reports/cucumber-report.json",
     "html:reports/cucumber-report.html",
-    "message:reports/messages.ndjson",
-    "rerun:rerun/@rerun.txt"
+    "rerun:rerun/@rerun.txt",
+            "progress"
     ],
         parallel: 1
     },
@@ -46,7 +45,6 @@ module.exports = {
     "allure-cucumberjs/reporter",
     "json:reports/cucumber-report.json",
     "html:reports/cucumber-report.html",
-    "message:reports/messages.ndjson",
     "rerun:rerun/@rerun.txt"
     ],
         parallel: 1
