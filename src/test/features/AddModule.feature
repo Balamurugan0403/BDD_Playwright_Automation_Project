@@ -7,7 +7,7 @@ Background:
     Given the Admin is logged into the LMS
     #And the admin has created the course
     And the Admin navigates to the Course Structure page
-@Rohini
+@Rohini @Add_Module
 Scenario: Add module with all mandatory fields
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
@@ -15,9 +15,30 @@ Scenario: Add module with all mandatory fields
     Then a success message should be displayed
     Then the module should appear in the course structure
 
-@Rohini @Invalid
+@Rohini @Add_Module
 Scenario: Add module without Title
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
     And the Admin add the module without entering the title
     Then the validation message should be displayed
+
+@Rohini @Add_Module
+Scenario: Add module with exceed title length
+    When the Admin search the course
+    And the Admin clicks the "Add Course Structure" button
+    And the Admin add the module with exceed title length
+      | title                                  |
+      | SampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSample |
+    Then the admin shouldn't be able to add the module
+
+@Rohini @Special
+Scenario Outline: Add module with special characters in the module title
+    When the Admin search the course
+    And the Admin clicks the "Add Course Structure" button
+    And the Admin adds the module with title "<title>" and description "<description>"
+    Then a success message should be displayed
+    And the module "<title>" should appear in the course structure
+
+Examples:
+    | title          | description        |
+    | @#$%^&*()_+{}! | Sample Description |
