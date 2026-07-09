@@ -38,6 +38,11 @@ Then("the login should fail", async function (this: CustomWorld) {
     await expect(this.page).toHaveURL(/login/);
 });
 
-Then("an error message should be displayed", async function (this: CustomWorld) {
-    await expect( this.page.locator("text=Invalid email or password")).toBeVisible();
-});
+Then(
+    "{string} should be displayed",
+    async function (this: CustomWorld, expectedMessage: string) {
+
+        await this.loginPage.verifyToastMessage(expectedMessage);
+
+    }
+);
