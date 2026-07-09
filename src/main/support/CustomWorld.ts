@@ -15,11 +15,11 @@ export class CustomWorld extends World{
     page!:Page;
     loginPage!:LoginPage;
     courseCategoryPage!:CourseCategoryPage;
-    courseStructurePage!: CourseStructurePage;
     dynamicFieldManagementPage!: DynamicFieldManagementPage;
-    addCoursePage!: AddCoursePage;
     sidebarPage!: SidebarPage;
-    serviceModelPage!: ServiceModelPage;
+    serviceModelPage!: ServiceModelPage; 
+    courseStructurePage!: CourseStructurePage;
+    addCoursePage!: AddCoursePage;
     service!: Service
 }
 

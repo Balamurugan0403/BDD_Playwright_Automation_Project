@@ -2,9 +2,10 @@ import {Given, When, Then} from '@cucumber/cucumber'
 import { CustomWorld } from '../../../main/support/CustomWorld';
 import { getServiceData } from '../../../resources/data/AddServiceData';
 import { expect } from 'playwright/test';
+import loginData from '../../../resources/data/loginData.json'
 
-Given('the user logged in as admin', async function (this: CustomWorld, email:string, password:string) {
-    await this.loginPage.login(email, password);
+Given('the user logged in as admin', async function (this: CustomWorld) {
+    await this.loginPage.login(loginData.validlogin.email, loginData.validlogin.password);
 });
 
 When('the user clicks the Add service button', async function (this: CustomWorld) {
