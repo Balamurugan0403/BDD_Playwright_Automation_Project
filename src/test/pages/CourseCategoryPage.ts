@@ -17,7 +17,6 @@ export class CourseCategoryPage extends BasePage {
         await this.addCategoryBtn.waitFor({ state: "visible", timeout: 10000 });
         await this.click(this.addCategoryBtn);
     }
-
     async enterCategoryName(name: string) {
         await this.categoryName.waitFor({ state: "visible", timeout: 10000 });
         await this.fill(this.categoryName, name);
@@ -49,6 +48,7 @@ export class CourseCategoryPage extends BasePage {
     await this.fill(this.CategorySearchBox, category);
     await this.CategorySearchBox.press("Enter");
 }
+
 async verifyCategorySearchKey(categoryName: string, courseName: string) {
     logger.info("Verifying category is displayed in the category list");
     const categoryLocator = this.page.getByText(categoryName, { exact: true });

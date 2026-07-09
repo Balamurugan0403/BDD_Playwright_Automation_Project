@@ -1,6 +1,5 @@
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { CustomWorld } from "../../main/support/CustomWorld";
-import categoryData from "../../resources/data/categoryData.json";
 import { generateCourseCategoryData, getCourseCategoryData } from "../../resources/data/CourseCategoryData";
 
 setDefaultTimeout(60000);
