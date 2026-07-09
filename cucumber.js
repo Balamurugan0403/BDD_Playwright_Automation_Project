@@ -29,10 +29,6 @@ module.exports = {
     rerun:{
         requireModule: ["ts-node/register"],
 
-        require: [
-            "src/test/steps/**/*.ts",
-            "src/test/hooks/**/*.ts"
-        ],
 
         formatOptions: {
             snippetInterface: "async-await"
@@ -47,6 +43,7 @@ module.exports = {
     "html:reports/cucumber-report.html",
     "rerun:rerun/@rerun.txt"
     ],
+    
         parallel: 1
     }
 };
