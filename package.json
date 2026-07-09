@@ -22,7 +22,7 @@
     "posttest": "npx ts-node src/main/utils/report.mts",
     "sowndariya": "cucumber-js  --tags @sowndariya --format progress",
     "Samiha": "cucumber-js --tags @Samiha --format progress",
-    "vignesh": "cucumber-js --tags @vignesh --format progress",
+    "vignesh": "cucumber-js --tags @searchService --format progress",
     "Rohini": "cucumber-js  --tags @Rohini --format progress",
     "bala": "cucumber-js  --tags @bala --format progress",
     "parallel": "cucumber-js  --parallel 2",
