@@ -1,5 +1,6 @@
 import { BasePage } from "./BasePage";
 import { expect } from "@playwright/test";
+import { logger } from "../../main/utils/logger";
 
 export class CourseCategoryPage extends BasePage {
 
@@ -9,8 +10,12 @@ export class CourseCategoryPage extends BasePage {
     private description = this.page.getByRole('textbox', { name: /Enter category description/i })
     private createCategory = this.page.getByRole('button', { name: /Create Category/i })
     private successmessage = this.page.getByRole('heading', { name: 'Category Created Successfully' });
+    private CategorySearchBox = this.page.getByRole('textbox', { name: 'Search by name, description, code or courses...' });
+    private CategorySearchName =this.page.getByText('Python1', { exact: true })
+    private CourseSearchName=this.page.getByText('Playwright', { exact: true })
 
     async clickAddCategory() {
+        logger.info("Clicking Add Category button");
         await this.addCategoryBtn.waitFor({ state: "visible", timeout: 10000 });
         await this.click(this.addCategoryBtn);
     }
@@ -31,10 +36,26 @@ export class CourseCategoryPage extends BasePage {
     }
 
     async clickCreateCategory() {
+        logger.info("Clicking Create Category button");
         await this.click(this.createCategory);
     }
 
     async verifyCategoryCreated() {
+        logger.info("Verifying Category Created Successfully message");
         await expect(this.successmessage).toBeVisible({ timeout: 10000 });
+        logger.info("Category created successfully");
+    }
+
+    async enterCategorySearch(category: string){
+        logger.info(`Searching category: ${category}`);
+        await this.fill(this.CategorySearchBox,category);
+        await this.CategorySearchBox.press("Enter");
+    }
+
+    async verifyCategorySearchKey(){
+        logger.info("Verifying category is displayed in the category list");
+        await expect(this.CategorySearchName).toBeVisible({ timeout: 10000 });
+        await expect(this.CourseSearchName).toBeVisible({ timeout: 10000 });
+        logger.info("Category displayed successfully");
     }
 }
