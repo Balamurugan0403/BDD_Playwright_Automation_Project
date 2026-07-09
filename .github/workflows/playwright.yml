@@ -29,7 +29,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Cucumber BDD Tests
-        run: npm test
+        run: npm run vignesh
 
       - name: Upload Cucumber Report
         if: always()
