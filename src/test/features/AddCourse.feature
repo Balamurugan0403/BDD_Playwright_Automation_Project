@@ -25,3 +25,14 @@ Feature:Add a new Course
         When the admin clicks the "Next" button without filling all mandatory fields
         Then a validation error message should be displayed
         And the admin remains on the "Create New Course Setup" tab
+
+    @duplicatecourse
+    Scenario: Verify the admin cannot create a course with an already existing course name.
+        When the admin fills in the Course Basic Configuration form using "existingCourseSetup" test data
+        And the admin clicks the "Next" button
+        Then the admin is navigated to the "Course Hierarchy and Layout" tab
+        When the admin fills the Course Hierarchy and Layout section using "existingCourseSetup" test data
+        And the admin clicks the "Preview & Create" button
+        Then the course layout preview should be displayed
+        When the admin clicks the "Create Course" button
+        Then a duplicate course error message should be displayed

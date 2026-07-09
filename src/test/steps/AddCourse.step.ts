@@ -58,3 +58,6 @@ Then('the course layout preview should be displayed', async function () {
 Then('a course success message should be displayed', async function () {
     await this.addCoursePage.verifySuccessMessage();
 });
+Then('a duplicate course error message should be displayed', async function () {
+   await this.addCoursePage.verifyErrorMessage();
+});
