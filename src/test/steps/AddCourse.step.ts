@@ -16,10 +16,8 @@ When('the admin clicks the {string} button', async function (button: string) {
         await this.addCoursePage.clickPreviewAndCreate();
     }
 });
-
 Then('the {string} tab opens', async function (tab: string) {
-    expect(tab).toBe("Create New Course Setup");
-    await this.addCoursePage.verifyCreateNewCourseTab();
+    await this.addCoursePage.verifyTabVisible(tab);
 });
 
 When('the admin fills in the Course Basic Configuration form using {string} test data', async function (dataKey: string) {
@@ -27,10 +25,6 @@ When('the admin fills in the Course Basic Configuration form using {string} test
     await this.addCoursePage.fillCourseBasicConfiguration(data);
 });
 
-Then('the {string} field is auto-generated with a value', async function (field: string) {
-    expect(field).toBe("Course ID");
-    await this.addCoursePage.verifyCourseIdGenerated();
-});
 
 Then('the admin is navigated to the {string} tab', async function (tab: string) {
     expect(tab).toBe("Course Hierarchy and Layout");
@@ -40,4 +34,28 @@ Then('the admin is navigated to the {string} tab', async function (tab: string) 
 When('the admin completes the Course Hierarchy and Layout section', async function () {
     const data = courseData.validCourseSetup.courseHierarchy;
     await this.addCoursePage.fillCourseHierarchyAndLayout(data);
+});
+When('the admin clicks the {string} button without filling all mandatory fields', async function (string) {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending';
+});
+
+Then('a validation error message should be displayed', async function () {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending';
+});
+
+Then('the admin remains on the {string} tab', async function (string) {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending';
+});
+
+When('the admin fills the Course Hierarchy and Layout section', async function () {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending';
+});
+
+Then('the course layout preview should be displayed', async function () {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending';
 });

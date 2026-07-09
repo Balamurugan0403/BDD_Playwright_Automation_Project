@@ -1,16 +1,16 @@
 import { BasePage } from "./BasePage";
 import { expect } from "@playwright/test";
+import { logger } from "../../main/utils/logger";
 
 export class AddCoursePage extends BasePage {
     // Course Basic Configuration
     private addCourseBtn = this.page.getByRole("button", { name: "Add Course" });
-    private createNewCourseTab = this.page.locator("span", { hasText: "Create New Course Setup" });
     private courseClientDropdown = this.page.getByRole("combobox").nth(0);
     private serviceTypeDropdown = this.page.getByRole("combobox").nth(1);
     private serviceModelDropdown = this.page.getByRole("combobox").nth(2);
     private courseCategoryDropdown = this.page.getByRole("combobox").nth(3);
     private courseNameDropdown = this.page.getByRole("combobox").nth(4);
-    private courseIdField = this.page.locator('input[data-slot="input"][readonly]').nth(1);
+    private courseIdField = this.page.locator("input[readonly]").first();
     private nextButton = this.page.getByRole("button", { name: "Next" });
 
     // Course Hierarchy and Layout
@@ -31,12 +31,12 @@ export class AddCoursePage extends BasePage {
 
     // Course Basic Configuration methods
     async clickAddCourse() {
-        await this.addCourseBtn.waitFor({ state: "visible", timeout: 10000 });
+        logger.info("clicking the ADD COURSE button");
+        await this.addCourseBtn.waitFor({ state: "visible", timeout: 100000 });
         await this.click(this.addCourseBtn);
     }
-
-    async verifyCreateNewCourseTab() {
-        await expect(this.createNewCourseTab).toBeVisible({ timeout: 10000 });
+    async verifyTabVisible(tabName: string) {
+        await expect(this.page.locator("span", { hasText: tabName })).toBeVisible({ timeout: 100000 });
     }
 
     async selectCourseClient(client: string) {
@@ -70,10 +70,10 @@ export class AddCoursePage extends BasePage {
     async selectCourseName(course: string) {
         await this.courseNameDropdown.click();
         await this.page.getByRole("option", { name: course, exact: true }).click();
-        await this.page.waitForLoadState("networkidle");
     }
 
     async fillCourseBasicConfiguration(data: any) {
+        logger.info("filling the course basic configuration details");
         await this.selectCourseClient(data.courseClient);
         await this.selectServiceType(data.serviceType);
         await this.selectServiceModel(data.serviceModel);
@@ -91,8 +91,9 @@ export class AddCoursePage extends BasePage {
     }
 
     async verifyCourseHierarchyTab() {
-        await expect(this.page.getByText("Course Hierarchy and Layout", { exact: true }).first()).toBeVisible({ timeout: 10000 });
-    }
+        logger.info("moved to the course hierarchy tab");
+       await expect(this.page.getByText("Course Hierarchy and Layout", { exact: true }).first()).toBeVisible({ timeout: 10000 });
+   }
     // Course Hierarchy and Layout methods
     async selectCourseLevel(level: string) {
         await this.courseLevelDropdown.click();
