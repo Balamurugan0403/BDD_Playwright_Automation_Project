@@ -1,6 +1,4 @@
 import { BasePage } from "./BasePage";
-import loginData from "../../resources/data/loginData.json";
-import { config } from "../../main/config/config";
 
 export class LoginPage extends BasePage {
 
@@ -12,24 +10,41 @@ export class LoginPage extends BasePage {
 
     async enterEmail() {
         await this.email.fill(loginData.validlogin.email);
+    async navigate() {
+        await this.page.goto(process.env.BASE_URL!);
     }
 
-    async enterPassword() {
-        await this.password.fill(loginData.validlogin.password);
+    async enterEmail(email: string) {
+        await this.email.fill(email);
+    }
+
+    async enterPassword(password: string) {
+        await this.password.fill(password);
     }
 
     async clickLoginButton() {
+<<<<<<< HEAD
 
         await Promise.all([
             this.page.waitForLoadState("networkidle"),
             this.loginButton.click()
         ]);
 
+=======
+        await this.loginButton.click();
+>>>>>>> 08a1ccb489e32c6b74e50ad33bd42aac8d10e783
     }
 
-    async login() {
-        await this.enterEmail();
-        await this.enterPassword();
+    // Reusable method for complete valid login
+    async login(email: string, password: string) {
+        await this.enterEmail(email);
+        await this.enterPassword(password);
         await this.clickLoginButton();
+    }
+
+    // Reusable method to only enter credentials
+    async enterCredentials(email: string, password: string) {
+        await this.enterEmail(email);
+        await this.enterPassword(password);
     }
 }

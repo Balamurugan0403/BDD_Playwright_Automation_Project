@@ -16,5 +16,5 @@
 
     Examples:
       | CategoryName | CourseName | Description          |
-      | Java         | Selenium   | Java automation      |
-      | Python       | Playwright | Python test category |
+      | JavaTest1         | Selenium   | Java automation      |
+      | Python2       | Playwright | Python test category |

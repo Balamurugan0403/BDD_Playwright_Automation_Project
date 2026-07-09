@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { expect } from "@playwright/test"
+=======
+import { expect } from "@playwright/test";
+>>>>>>> 08a1ccb489e32c6b74e50ad33bd42aac8d10e783
 import { Given, When, Then } from "@cucumber/cucumber";
 import courseData from "../../resources/data/CourseStructureData.json";
 
@@ -8,7 +12,12 @@ Given("the Admin is logged into the LMS", async function () {
     await this.loginPage.enterPassword();
     await this.loginPage.clickLoginButton();
 
+<<<<<<< HEAD
     await expect(this.page).toHaveURL(/admindashboard/, { timeout: 30000 });
+=======
+    await expect(this.page).toHaveURL(/admindashboard/, {timeout: 120000,});
+
+>>>>>>> 08a1ccb489e32c6b74e50ad33bd42aac8d10e783
     console.log("Admin logged in successfully");
 });
 
@@ -24,37 +33,30 @@ When("the Admin clicks the {string} button", async function (button: string) {
             await this.courseStructurePage.clickAddCourseStructure();
             break;
 
-        case "Add Module":
-            await this.courseStructurePage.clickAddModuleButton();
-            break;
-
         default:
             throw new Error(`Unknown button: ${button}`);
     }
 });
 
-When("the Admin clicks the {string} icon", async function (icon: string) {
+// When("the Admin clicks the {string} icon", async function (icon: string) {
+//     switch (icon) {
+//         case "Add module":
+//             await this.courseStructurePage.clickAddModuleIcon();
+//             break;
 
-    switch (icon) {
-        case "Add module":
-            await this.courseStructurePage.clickAddModuleIcon();
-            break;
+//         default:
+//             throw new Error(`Unknown icon: ${icon}`);
+//     }
+// });
 
-        default:
-            throw new Error(`Unknown icon: ${icon}`);
+When("the Admin add the module with valid details", async function () {
+    for (const module of courseData) {
+        await this.courseStructurePage.addModule(module.moduleTitle, module.description);
     }
 });
 
-When("the Admin enters valid module details", async function () {
-
-    await this.courseStructurePage.enterModuleTitle(courseData[0].moduleTitle);
-    await this.courseStructurePage.enterDescription(courseData[0].description);
-});
-
-// Then("a success message should be displayed", async function () {
-//     await this.courseStructurePage.verifySuccessMessage();
-// });
-
 Then("the module should appear in the course structure", async function () {
-    await this.courseStructurePage.verifyModulePresent(courseData[0].moduleTitle);
+    for (const module of courseData) {
+        await this.courseStructurePage.verifyModulePresent(module.moduleTitle);
+    }
 });

@@ -4,11 +4,8 @@ import { CustomWorld } from "../../main/support/CustomWorld";
 
 setDefaultTimeout(60000);
 
-Given("Admin is logged into the LMS application", async function (this: CustomWorld) {
-    await this.loginPage.navigate();
-    await this.loginPage.enterEmail();
-    await this.loginPage.enterPassword();
-    await this.loginPage.clickLoginButton();
+Given("Admin is logged into the LMS application", async function (this: CustomWorld, email:string, password:string) {
+    await this.loginPage.login(email, password);
 
     await expect(this.page).toHaveURL(/admindashboard/, { timeout: 15000 });
 });
