@@ -3,8 +3,8 @@ import { CustomWorld } from '../../../main/support/CustomWorld';
 import { getServiceData } from '../../../resources/data/AddServiceData';
 import { expect } from 'playwright/test';
 
-Given('the user logged in as admin', async function (this: CustomWorld) {
-    await this.loginPage.login();
+Given('the user logged in as admin', async function (this: CustomWorld, email:string, password:string) {
+    await this.loginPage.login(email, password);
 });
 
 When('the user clicks the Add service button', async function (this: CustomWorld) {
