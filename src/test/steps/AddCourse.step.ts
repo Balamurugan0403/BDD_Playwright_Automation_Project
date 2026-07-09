@@ -1,3 +1,4 @@
+import { AddCoursePage } from "./../pages/AddCoursePage";
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { CustomWorld } from "../../main/support/CustomWorld";
@@ -35,14 +36,12 @@ When('the admin completes the Course Hierarchy and Layout section', async functi
     const data = courseData.validCourseSetup.courseHierarchy;
     await this.addCoursePage.fillCourseHierarchyAndLayout(data);
 });
-When('the admin clicks the {string} button without filling all mandatory fields', async function (string) {
-  // Write code here that turns the phrase above into concrete actions
-  return 'pending';
+When('the admin clicks the {string} button without filling all mandatory fields', async function (next:string) {
+    await this.addCoursePage.clickNext();
 });
 
 Then('a validation error message should be displayed', async function () {
-  // Write code here that turns the phrase above into concrete actions
-  return 'pending';
+    const errorMessage=await expect(this.addCoursePage.
 });
 
 Then('the admin remains on the {string} tab', async function (string) {
