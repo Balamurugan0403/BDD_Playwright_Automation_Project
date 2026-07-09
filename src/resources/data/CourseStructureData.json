@@ -2,13 +2,15 @@
   "validModule": [
     {
       "moduleTitle": "Introduction to Java",
-      "description": "This module covers Java fundamentals."
+      "description": "This module covers Java fundamentals.",
+      "skills": ["Java", "MySQL"]
     }
   ],
   "existingModule": [
     {
       "moduleTitle": "Introduction to Selenium",
-      "description": "This module covers Selenium fundamentals."
+      "description": "This module covers Selenium fundamentals.",
+      "skills": ["Java", "MySQL"]
     }
   ]
 }
