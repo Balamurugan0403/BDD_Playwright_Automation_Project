@@ -2,16 +2,19 @@ import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { CustomWorld } from "../../main/support/CustomWorld";
 import categoryData from "../../resources/data/categoryData.json";
+import loginData from "../../resources/data/loginData.json";
 
 setDefaultTimeout(60000);
 
 Given("Admin is logged into the LMS application", async function (this: CustomWorld) {
-    await this.loginPage.navigate();
-    await this.loginPage.enterEmail();
-    await this.loginPage.enterPassword();
-    await this.loginPage.clickLoginButton();
+     await this.loginPage.navigate();
+     await this.loginPage.login(
+        loginData.validlogin.email,
+        loginData.validlogin.password
+    );
     await expect(this.page).toHaveURL(/admindashboard/, {timeout: 120000,});
     console.log("Admin logged in successfully");
+});
 
 Given("Admin navigates to the Dynamic Field Management page", async function (this: CustomWorld) {
     await this.dynamicFieldManagementPage.openDynamicFieldManagement();
