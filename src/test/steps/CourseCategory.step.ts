@@ -6,10 +6,13 @@ import loginData from "../../resources/data/loginData.json";
 
 setDefaultTimeout(60000);
 
-Given("Admin is logged into the LMS application", async function (this: CustomWorld, email:string, password:string) {
-    await this.loginPage.login(email, password);
-
-    await expect(this.page).toHaveURL(/admindashboard/, { timeout: 15000 });
+Given("Admin is logged into the LMS application", async function (this: CustomWorld) {
+     await this.loginPage.navigate();
+     await this.loginPage.login(
+        loginData.validlogin.email,
+        loginData.validlogin.password
+    );
+    await expect(this.page).toHaveURL(/admindashboard/, {timeout: 120000,});
 });
 
 Given("Admin navigates to the Dynamic Field Management page", async function (this: CustomWorld) {

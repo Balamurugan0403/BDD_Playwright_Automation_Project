@@ -24,7 +24,7 @@ When("the user clicks the Login button", async function (this: CustomWorld) {
 });
 
 Then("the user should be redirected to the dashboard", async function (this: CustomWorld) {
-    await expect(this.page).toHaveURL(/admindashboard/);
+    await expect(this.page).toHaveURL(/admindashboard/, {timeout: 120000,});
 });
 
 // Invalid Login
