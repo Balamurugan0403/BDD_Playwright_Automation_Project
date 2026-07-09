@@ -156,6 +156,31 @@ export class CourseStructurePage extends BasePage {
         }
     }
 
+    async addModuleWithExceedTitleLength(moduleTitle: string): Promise<void> {
+        try {
+            logger.info(`Adding module with title: ${moduleTitle}`);
+            await this.clickAddModuleIcon();
+            await this.moduleTitleTextBox.fill(moduleTitle);
+            await this.clickSubmitButton();
+        } 
+        catch (error) {
+            logger.error(`Failed to add module with exceed title length: ${error}`);
+            throw new Error(`Failed to add module with exceed title length: ${error}`);
+        }
+    }
+
+    async verifyModuleNotAdded(): Promise<void> {
+        try {
+            logger.info("Verifying module was not added");
+            await expect(this.moduleTitleTextBox).toBeVisible();
+            logger.info("Module was not added as expected");
+        } 
+        catch (error) {
+            logger.error(`Failed to verify module was not added: ${error}`);
+            throw new Error(`Failed to verify module was not added: ${error}`);
+        }
+    }
+
     async verifySuccessMessage(): Promise<void> {
         try {
             logger.info("Verifying Success Message");
