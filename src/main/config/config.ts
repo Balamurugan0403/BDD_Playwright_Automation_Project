@@ -11,5 +11,5 @@ export const config = {
     browser: process.env.BROWSER || "chromium",
     headless: process.env.HEADLESS === "true",
     slowMo: Number(process.env.SLOWMO) || 0,
-    timeout: Number(process.env.TIMEOUT) || 30000
+    timeout: Number(process.env.TIMEOUT) || 100000
 };

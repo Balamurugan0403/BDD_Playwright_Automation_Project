@@ -13,7 +13,6 @@ Given("Admin is logged into the LMS application", async function (this: CustomWo
         loginData.validlogin.password
     );
     await expect(this.page).toHaveURL(/admindashboard/, {timeout: 120000,});
-    console.log("Admin logged in successfully");
 });
 
 Given("Admin navigates to the Dynamic Field Management page", async function (this: CustomWorld) {
