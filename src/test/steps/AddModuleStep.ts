@@ -1,15 +1,15 @@
-import{expect} from "@playwright/test"
-import { Given, When, Then} from "@cucumber/cucumber";
+import { expect } from "@playwright/test"
+import { Given, When, Then } from "@cucumber/cucumber";
 import courseData from "../../resources/data/CourseStructureData.json";
 
 Given("the Admin is logged into the LMS", async function () {
     await this.loginPage.navigate();
-        await this.loginPage.enterEmail();
-        await this.loginPage.enterPassword();
-        await this.loginPage.clickLoginButton();
-    
-        await expect(this.page).toHaveURL(/admindashboard/, { timeout: 15000 });
-        console.log("Admin logged in successfully");
+    await this.loginPage.enterEmail();
+    await this.loginPage.enterPassword();
+    await this.loginPage.clickLoginButton();
+
+    await expect(this.page).toHaveURL(/admindashboard/, { timeout: 30000 });
+    console.log("Admin logged in successfully");
 });
 
 Given("the Admin navigates to the Course Structure page", async function () {

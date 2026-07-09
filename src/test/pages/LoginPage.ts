@@ -8,7 +8,7 @@ export class LoginPage extends BasePage {
     private password = this.page.locator("#password");
     private loginButton = this.page.locator("button[type='submit']");
 
-    
+
 
     async enterEmail() {
         await this.email.fill(loginData.validlogin.email);
@@ -19,8 +19,12 @@ export class LoginPage extends BasePage {
     }
 
     async clickLoginButton() {
-        await this.loginButton.click();
-       
+
+        await Promise.all([
+            this.page.waitForLoadState("networkidle"),
+            this.loginButton.click()
+        ]);
+
     }
 
     async login() {

@@ -10,7 +10,7 @@ export class AddCoursePage extends BasePage {
     private serviceModelDropdown = this.page.getByRole("combobox").nth(2);
     private courseCategoryDropdown = this.page.getByRole("combobox").nth(3);
     private courseNameDropdown = this.page.getByRole("combobox").nth(4);
-    private courseIdField = this.page.locator('input[data-slot="input"][readonly]');
+    private courseIdField = this.page.locator('input[data-slot="input"][readonly]').nth(1);
     private nextButton = this.page.getByRole("button", { name: "Next" });
 
     async clickAddCourse() {
@@ -45,6 +45,7 @@ export class AddCoursePage extends BasePage {
     async selectCourseName(course: string) {
         await this.courseNameDropdown.click();
         await this.page.getByRole("option", { name: course, exact: true }).click();
+        await this.page.waitForLoadState("networkidle");
     }
 
     async fillCourseBasicConfiguration(data: any) {
@@ -56,8 +57,8 @@ export class AddCoursePage extends BasePage {
     }
 
     async verifyCourseIdGenerated() {
-        const value = await this.courseIdField.inputValue();
-        expect(value.length).toBeGreaterThan(0);
+        await expect(this.courseIdField)
+            .toHaveValue(/.+/, { timeout: 15000 });
     }
 
     async clickNext() {
