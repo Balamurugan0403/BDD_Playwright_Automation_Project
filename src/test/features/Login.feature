@@ -15,7 +15,6 @@ Feature: Login Functionality
     And the user clicks the Login button
     Then the login should fail
     And "<message>" should be displayed
-
     Examples:
       | loginType         | message                |
       | InvalidEmail      | Email is invalid       |

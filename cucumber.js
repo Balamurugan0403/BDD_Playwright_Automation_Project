@@ -43,6 +43,7 @@ module.exports = {
     "html:reports/cucumber-report.html",
     "rerun:rerun/@rerun.txt"
     ],
+    
         parallel: 1
     }
 };

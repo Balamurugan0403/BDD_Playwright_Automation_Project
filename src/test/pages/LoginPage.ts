@@ -70,6 +70,5 @@ export class LoginPage extends BasePage {
         });
 
         return (await toast.textContent())?.trim() || "";
-
     }
 }

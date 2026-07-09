@@ -9,7 +9,6 @@ Given("the user launched the application", async function (this: CustomWorld) {
     await this.loginPage.navigate();
 });
 
-// -------------------- Valid Login --------------------
 
 When("the user enters a valid email", async function (this: CustomWorld) {
     await this.loginPage.enterEmail(loginData.validlogin.email);
