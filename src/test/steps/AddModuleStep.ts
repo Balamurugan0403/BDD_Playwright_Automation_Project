@@ -2,6 +2,7 @@ import { CourseStructurePage } from './../pages/CourseStructurePage';
 import { expect } from "@playwright/test";
 import { Given, When, Then } from "@cucumber/cucumber";
 import courseData from "../../resources/data/CourseStructureData.json";
+import { DataTable } from "@cucumber/cucumber";
 
 Given("the Admin is logged into the LMS", async function () {
     await this.loginPage.navigate();
@@ -54,6 +55,19 @@ When("the Admin add the module without entering the title", async function () {
     await this.courseStructurePage.addModuleWithoutTitle();
 });
 
+When("the Admin add the module with exceed title length", async function (dataTable: DataTable) {
+    const data = dataTable.hashes()[0];
+    await this.courseStructurePage.addModuleWithExceedTitleLength(data.title);
+});
+
+When("the Admin adds the module with title {string} and description {string}",  async function (title: string, description: string) {
+    await this.courseStructurePage.addModule(title, description);
+});
+
+Then("the admin shouldn't be able to add the module", async function () {
+    await this.courseStructurePage.verifyModuleNotAdded();
+});
+
 Then("a success message should be displayed", async function () {
     await this.courseStructurePage.verifySuccessMessage();
 });
@@ -66,4 +80,8 @@ Then("the module should appear in the course structure", async function () {
 
 Then("the validation message should be displayed", async function () {
     await this.courseStructurePage.verifyTitleValidationMessage();
+});
+
+Then("the module {string} should appear in the course structure", async function (title: string) {
+    await this.courseStructurePage.verifyModulePresent(title);
 });
