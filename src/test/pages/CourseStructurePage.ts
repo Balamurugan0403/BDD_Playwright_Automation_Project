@@ -3,32 +3,18 @@ import { BasePage } from "./BasePage";
 import { logger } from "../../main/utils/logger";
 
 export class CourseStructurePage extends BasePage {
-    private readonly courseRow: Locator;
-    private readonly addCourseStructureButton: Locator;
-    private readonly searchBox: Locator;
-    private readonly addModuleIcon: Locator;
-    private readonly moduleTitleTextBox: Locator;
-    private readonly descriptionTextBox: Locator;
-    private readonly submitBtn: Locator;
-    private readonly successMsg: Locator;
-    private readonly moduleRows: Locator;
-    private readonly titleValidationError: Locator;
-
     public static createdCourseId: string = "PT-BTI-H-005";
-
-    constructor(page: Page) {
-        super(page);
-        this.courseRow = this.page.locator("tbody tr").filter({hasText: CourseStructurePage.createdCourseId,});
-        this.addCourseStructureButton = this.courseRow.getByRole("button", { name: "Add Course Structure",});
-        this.searchBox = this.page.getByPlaceholder("Search courses, codes, clients, or categories...");
-        this.addModuleIcon = this.page.getByTitle("Add module");
-        this.moduleTitleTextBox =this.page.getByPlaceholder("Enter title...");
-        this.descriptionTextBox =this.page.getByPlaceholder("Brief description ...");
-        this.submitBtn =this.page.locator("//button[@type='submit']");
-        this.successMsg = this.page.getByText("Operation completed successfully!");
-        this.moduleRows =this.page.locator("tbody tr");
-        this.titleValidationError = this.page.getByText("Title is required for module");
-    }
+    private courseRow = this.page.locator("tbody tr").filter({hasText: CourseStructurePage.createdCourseId,});
+    private addCourseStructureButton = this.courseRow.getByRole("button", { name: "Add Course Structure",});
+    private searchBox = this.page.getByPlaceholder("Search courses, codes, clients, or categories...");
+    private addModuleIcon = this.page.getByTitle("Add module");
+    private moduleTitleTextBox =this.page.getByPlaceholder("Enter title...");
+    private descriptionTextBox =this.page.getByPlaceholder("Brief description ...");
+    private submitBtn =this.page.locator("//button[@type='submit']");
+    private successMsg = this.page.getByText("Operation completed successfully!");
+    private moduleRows =this.page.locator("tbody tr");
+    private titleValidationError = this.page.getByText("Title is required for module");
+    private moduleTitleLocator = (moduleTitle: string): Locator => this.page.locator(`//span[normalize-space()='${moduleTitle}']`);
 
     async navigateToCourseStructure(): Promise<void> {
         try {
@@ -53,7 +39,8 @@ export class CourseStructurePage extends BasePage {
             await expect(this.courseRow).toBeVisible({ timeout: 10000 });
 
             logger.info(`Course '${courseId}' found.`);
-        } catch (error) {
+        } 
+        catch (error) {
             logger.error(`Failed to search course '${courseId}': ${error}`);
             throw new Error(`Failed to search course '${courseId}': ${error}`);
         }
@@ -123,6 +110,13 @@ export class CourseStructurePage extends BasePage {
             logger.error(`Failed to click Submit button: ${error}`);
             throw new Error(`Failed to click Submit button: ${error}`);
         }
+    }
+    public async getModuleCount(moduleTitle: string): Promise<number> {
+        return await this.moduleTitleLocator(moduleTitle).count();
+    }
+
+    public async verifyModuleCountIncreased(moduleTitle: string,previousCount: number): Promise<void> {
+        await expect(this.moduleTitleLocator(moduleTitle)).toHaveCount(previousCount + 1);
     }
 
     async addModule(moduleTitle: string, description: string): Promise<void> {

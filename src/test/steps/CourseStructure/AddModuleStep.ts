@@ -1,8 +1,10 @@
-import { CourseStructurePage } from './../pages/CourseStructurePage';
+import { CourseStructurePage } from '../../pages/CourseStructurePage';
 import { expect } from "@playwright/test";
 import { Given, When, Then } from "@cucumber/cucumber";
-import courseData from "../../resources/data/CourseStructureData.json";
+import courseData from "../../../resources/data/CourseStructureData.json";
 import { DataTable } from "@cucumber/cucumber";
+
+let previousCount: number;
 
 Given("the Admin is logged into the LMS", async function () {
     await this.loginPage.navigate();
@@ -46,7 +48,7 @@ When("the Admin clicks the {string} button", async function (button: string) {
 // });
 
 When("the Admin add the module with valid details", async function () {
-    for (const module of courseData) {
+    for (const module of courseData.validModule) {
         await this.courseStructurePage.addModule(module.moduleTitle, module.description);
     }
 });
@@ -64,6 +66,19 @@ When("the Admin adds the module with title {string} and description {string}",  
     await this.courseStructurePage.addModule(title, description);
 });
 
+When("the Admin add module with existing module name", async function () {
+    for (const module of courseData.existingModule) {
+        await this.courseStructurePage.addModule(module.moduleTitle, module.description);
+    }
+});
+
+Then("the module count should increase for the existing module", async function () {
+    for (const module of courseData.existingModule) {
+        previousCount = await this.courseStructurePage.getModuleCount(module.moduleTitle);
+        await this.courseStructurePage.verifyModuleCountIncreased(module.moduleTitle,previousCount);
+    }
+});
+
 Then("the admin shouldn't be able to add the module", async function () {
     await this.courseStructurePage.verifyModuleNotAdded();
 });
@@ -73,7 +88,7 @@ Then("a success message should be displayed", async function () {
 });
 
 Then("the module should appear in the course structure", async function () {
-    for (const module of courseData) {
+    for (const module of courseData.validModule) {
         await this.courseStructurePage.verifyModulePresent(module.moduleTitle);
     }
 });

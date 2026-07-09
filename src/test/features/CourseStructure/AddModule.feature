@@ -1,12 +1,13 @@
-Feature: Add Modules to the course structure
+Feature: RohiniM_07_JUL_2026_Add_Modules
     As an admin,
     I want to add a new module to a course
     So that I can organize the course content.
 
 Background:
-    Given the Admin is logged into the LMS
-    #And the admin has created the course
+    Given the user launched the application
+    And the user logged in as admin
     And the Admin navigates to the Course Structure page
+    
 @Rohini @Add_Module
 Scenario: Add module with all mandatory fields
     When the Admin search the course
@@ -21,7 +22,6 @@ Scenario: Add module without Title
     And the Admin clicks the "Add Course Structure" button
     And the Admin add the module without entering the title
     Then the validation message should be displayed
-<<<<<<< HEAD
 
 @Rohini @Add_Module
 Scenario: Add module with exceed title length
@@ -32,7 +32,7 @@ Scenario: Add module with exceed title length
       | SampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSampleSample |
     Then the admin shouldn't be able to add the module
 
-@Rohini @Special
+@Rohini @Add Module
 Scenario Outline: Add module with special characters in the module title
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
@@ -43,5 +43,10 @@ Scenario Outline: Add module with special characters in the module title
 Examples:
     | title          | description        |
     | @#$%^&*()_+{}! | Sample Description |
-=======
->>>>>>> abe279a18a36121489d0cbe11d1e607f7b4e910c
+
+Scenario: Add module with existing module name
+    When the Admin search the course
+    And the Admin clicks the "Add Course Structure" button
+    And the Admin add module with existing module name
+    Then a success message should be displayed
+    And the module with existing module name should appear in the course structure
