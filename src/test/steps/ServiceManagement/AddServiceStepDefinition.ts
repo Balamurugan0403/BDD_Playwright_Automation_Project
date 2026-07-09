@@ -1,7 +1,7 @@
 import {Given, When, Then} from '@cucumber/cucumber'
 import { CustomWorld } from '../../../main/support/CustomWorld';
-import { addService } from '../../../main/types/AddService';
-
+import { getServiceData } from '../../../resources/data/AddServiceData';
+import { expect } from 'playwright/test';
 
 Given('the user logged in as admin', async function (this: CustomWorld, email:string, password:string) {
     await this.loginPage.login(email, password);
@@ -11,11 +11,15 @@ When('the user clicks the Add service button', async function (this: CustomWorld
     await this.serviceModelPage.clickAddService()
 });
 
-When('the user fill the name and description', async function (this: CustomWorld, dataTable) {
-    const data = dataTable.hashes()[0] as addService;
+When('the user fill the name and description', async function (this: CustomWorld) {
+    this.service = getServiceData();
+    await this.serviceModelPage.enterServiceName(this.service.name);
+    await this.serviceModelPage.enterServiceDescription(this.service.description);
+});
 
-    await this.serviceModelPage.enterServiceName(data.name);
-    await this.serviceModelPage.enterServiceDescription(data.description);
+When('the user fill the same name and description', async function (this: CustomWorld) {
+    await this.serviceModelPage.enterServiceName(this.service!.name);
+    await this.serviceModelPage.enterServiceDescription(this.service!.description);
 });
 
 When('the user clicks the create service button', async function (this: CustomWorld) {
@@ -23,7 +27,10 @@ When('the user clicks the create service button', async function (this: CustomWo
 });
 
 Then('the popup alert should be displayed as {string}', async function (this: CustomWorld, string) {
-    await this.serviceModelPage.verifyCategoryCreated(string);
+    if(string === "Service created successfully")
+        await this.serviceModelPage.verifyServiceCreated(string);
+    else 
+        await this.serviceModelPage.verifyErrorMessageDisplayed(string);
 });
 
 When('the user clicks the {string} option from the sidebar', async function (this: CustomWorld, string) {
@@ -31,24 +38,26 @@ When('the user clicks the {string} option from the sidebar', async function (thi
 });
 
 When('the user clicks the Add Course button', async function (this: CustomWorld) {
+    await this.addCoursePage.clickAddCourse();
 });
 
 When('the user clicks the Service type dropdown', async function (this: CustomWorld) {
-  
+    await this.addCoursePage.clickServiceDropdown();
 });
 
 Then('the user should see the added service as option', async function (this: CustomWorld) {
-    
+    await this.addCoursePage.verifyServiceOptionAvailable(this.service!.name);
 });
 
 When('the user fill the service name as {string}', async function (this: CustomWorld, string) {
-  
+    await this.serviceModelPage.enterServiceName(string);
 });
 
 When('the user fill the service description as {string}', async function (this: CustomWorld, string) {
-  
+    await this.serviceModelPage.enterServiceDescription(string);
 });
 
-Then('the validation message should be displayed as {string}', async function (this: CustomWorld, string) {
-  
+Then('the validation message should be displayed', async function (this: CustomWorld) {
+    const validity = await this.serviceModelPage.verifyValidity();
+    expect(validity.isNameValid && validity.isDescriptionValid).toBeFalsy();
 });

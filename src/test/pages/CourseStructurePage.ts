@@ -5,25 +5,29 @@ import { logger } from "../../main/utils/logger";
 export class CourseStructurePage extends BasePage {
     private readonly courseRow: Locator;
     private readonly addCourseStructureButton: Locator;
+    private readonly searchBox: Locator;
     private readonly addModuleIcon: Locator;
     private readonly moduleTitleTextBox: Locator;
     private readonly descriptionTextBox: Locator;
     private readonly submitBtn: Locator;
-    //private readonly successMsg: Locator;
+    private readonly successMsg: Locator;
     private readonly moduleRows: Locator;
+    private readonly titleValidationError: Locator;
 
-    public static createdCourseId: string = "J-BTI-H-010";
+    public static createdCourseId: string = "PT-BTI-H-005";
 
     constructor(page: Page) {
         super(page);
         this.courseRow = this.page.locator("tbody tr").filter({hasText: CourseStructurePage.createdCourseId,});
         this.addCourseStructureButton = this.courseRow.getByRole("button", { name: "Add Course Structure",});
+        this.searchBox = this.page.getByPlaceholder("Search courses, codes, clients, or categories...");
         this.addModuleIcon = this.page.getByTitle("Add module");
         this.moduleTitleTextBox =this.page.getByPlaceholder("Enter title...");
         this.descriptionTextBox =this.page.getByPlaceholder("Brief description ...");
         this.submitBtn =this.page.locator("//button[@type='submit']");
-        //this.successMsg =this.page.locator(".Toastify__toast--success");
+        this.successMsg = this.page.getByText("Operation completed successfully!");
         this.moduleRows =this.page.locator("tbody tr");
+        this.titleValidationError = this.page.getByText("Title is required for module");
     }
 
     async navigateToCourseStructure(): Promise<void> {
@@ -35,6 +39,23 @@ export class CourseStructurePage extends BasePage {
         catch (error) {
             logger.error(`Failed to navigate to Course Structure page: ${error}`);
             throw new Error(`Failed to navigate to Course Structure page: ${error}`);
+        }
+    }
+
+    async searchCourse(courseId: string): Promise<void> {
+        try {
+            logger.info(`Searching course: ${courseId}`);
+
+            await this.searchBox.waitFor({ state: "visible" });
+            await this.searchBox.fill(courseId);
+            await this.searchBox.press("Enter");
+
+            await expect(this.courseRow).toBeVisible({ timeout: 10000 });
+
+            logger.info(`Course '${courseId}' found.`);
+        } catch (error) {
+            logger.error(`Failed to search course '${courseId}': ${error}`);
+            throw new Error(`Failed to search course '${courseId}': ${error}`);
         }
     }
 
@@ -122,6 +143,43 @@ export class CourseStructurePage extends BasePage {
             throw new Error(`Failed to add module '${moduleTitle}': ${error}`);
         }
     }
+
+    async addModuleWithoutTitle(): Promise<void> {
+        try {
+            logger.info("Adding module without title");
+            await this.clickAddModuleIcon();
+            await this.clickSubmitButton();
+        } 
+        catch (error) {
+            logger.error(`Failed to add module without title: ${error}`);
+            throw new Error(`Failed to add module without title: ${error}`);
+        }
+    }
+
+    async verifySuccessMessage(): Promise<void> {
+        try {
+            logger.info("Verifying Success Message");
+            await expect(this.successMsg).toContainText("Operation completed successfully!");
+            logger.info("Success message verified successfully");
+        } 
+        catch (error) {
+            logger.error(`Failed to verify success message: ${error}`);
+            throw new Error(`Failed to verify success message: ${error}`);
+        }
+    }
+    
+    async verifyTitleValidationMessage(): Promise<void> {
+        try {
+            logger.info("Verifying Title Validation Message");
+            await expect(this.titleValidationError).toBeVisible();
+            await expect(this.titleValidationError).toHaveText("Title is required for module");
+        } 
+        catch (error) {
+            logger.error(`Failed to verify title validation message: ${error}`);
+            throw new Error(`Failed to verify title validation message: ${error}`);
+        }
+    }
+
 
     async verifyModulePresent(moduleTitle: string): Promise<void> {
         try {

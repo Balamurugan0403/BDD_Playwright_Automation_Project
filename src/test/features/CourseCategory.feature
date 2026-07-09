@@ -16,5 +16,10 @@
 
     Examples:
       | CategoryName | CourseName | Description          |
-      | JavaTest1         | Selenium   | Java automation      |
-      | Python2       | Playwright | Python test category |
+      | JavaTest     | Selenium   | Java automation      |
+      | Python1      | Playwright | Python automation    |
+
+  Scenario: Verify the Category is displayed in the Category Management list.
+  When Admin searches for the category
+  Then Admin should see the category in the category list
+

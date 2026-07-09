@@ -2,7 +2,6 @@ import { BasePage } from "./BasePage";
 import { expect } from "@playwright/test";
 
 export class AddCoursePage extends BasePage {
-
     // Course Basic Configuration
     private addCourseBtn = this.page.getByRole("button", { name: "Add Course" });
     private createNewCourseTab = this.page.locator("span", { hasText: "Create New Course Setup" });
@@ -45,8 +44,16 @@ export class AddCoursePage extends BasePage {
         await this.page.getByRole("option", { name: client, exact: true }).click();
     }
 
-    async selectServiceType(type: string) {
+    async clickServiceDropdown() {
         await this.serviceTypeDropdown.click();
+    }
+
+    async verifyServiceOptionAvailable(type: string) {
+        await expect(this.page.getByRole("option", { name: type, exact: true })).toBeVisible();
+    }
+
+    async selectServiceType(type: string) {
+        await this.clickServiceDropdown();
         await this.page.getByRole("option", { name: type, exact: true }).click();
     }
 

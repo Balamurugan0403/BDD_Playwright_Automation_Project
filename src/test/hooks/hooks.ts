@@ -31,7 +31,9 @@ Before(async function (this: CustomWorld, scenario) {
     this.dynamicFieldManagementPage = new DynamicFieldManagementPage(this.page);
     this.addCoursePage = new AddCoursePage(this.page);
     this.sidebarPage = new SidebarPage(this.page);
-    this.serviceModelPage = new ServiceModelPage(this.page);
+    this.serviceModelPage = new ServiceModelPage(this.page)
+    this.courseStructurePage = new CourseStructurePage(this.page);
+    this.addCoursePage=new AddCoursePage(this.page);
 });
 
 After(async function (this: CustomWorld, scenario) {

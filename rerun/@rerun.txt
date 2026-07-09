@@ -1,5 +1,8 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 src\test\features\AddCourse.feature:7
 =======
 src\test\features\Login.feature:7:21:22
 >>>>>>> 08a1ccb489e32c6b74e50ad33bd42aac8d10e783
+=======
+>>>>>>> 72bc0da632e6d04581a00db95e686e515327d412
