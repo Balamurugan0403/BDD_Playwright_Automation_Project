@@ -3,67 +3,42 @@ import { BasePage } from "./BasePage";
 import { logger } from "../../main/utils/logger";
 
 export class CourseStructurePage extends BasePage {
-    private readonly courseRow: Locator;
-    private readonly addCourseStructureButton: Locator;
-    private readonly searchBox: Locator;
-    private readonly addModuleIcon: Locator;
-    private readonly moduleTitleTextBox: Locator;
-    private readonly descriptionTextBox: Locator;
-    private readonly submitBtn: Locator;
-    private readonly successMsg: Locator;
-    private readonly moduleRows: Locator;
-    private readonly titleValidationError: Locator;
+    public static createdCourseId: string = "APL-AT-A-001";
+    private courseRow = this.page.locator("tbody tr").filter({hasText: CourseStructurePage.createdCourseId,});
+    private addCourseStructureButton = this.courseRow.getByRole("button", { name: "Add Course Structure",});
+    private searchBox = this.page.getByPlaceholder("Search courses, codes, clients, or categories...");
+    private addModuleIcon = this.page.getByTitle("Add module");
+    private moduleTitleTextBox =this.page.getByPlaceholder("Enter title...");
+    private descriptionTextBox =this.page.getByPlaceholder("Brief description ...");
+    private skillCheckbox = (skill: string) =>this.page.locator(`//label[normalize-space(text())='${skill}']//input[@type='checkbox']`);
+    private submitBtn =this.page.locator("//button[@type='submit']");
+    private successMsg = this.page.locator("text=Operation completed successfully!");
+    private moduleRows =this.page.locator("tbody tr");
+    private titleValidationError = this.page.getByText("Title is required for module");
+    private moduleTitleLocator = (moduleTitle: string): Locator => this.page.locator(`//span[normalize-space()='${moduleTitle}']`);
 
-    public static createdCourseId: string = "PT-BTI-H-005";
-
-    constructor(page: Page) {
-        super(page);
-        this.courseRow = this.page.locator("tbody tr").filter({hasText: CourseStructurePage.createdCourseId,});
-        this.addCourseStructureButton = this.courseRow.getByRole("button", { name: "Add Course Structure",});
-        this.searchBox = this.page.getByPlaceholder("Search courses, codes, clients, or categories...");
-        this.addModuleIcon = this.page.getByTitle("Add module");
-        this.moduleTitleTextBox =this.page.getByPlaceholder("Enter title...");
-        this.descriptionTextBox =this.page.getByPlaceholder("Brief description ...");
-        this.submitBtn =this.page.locator("//button[@type='submit']");
-        this.successMsg = this.page.getByText("Operation completed successfully!");
-        this.moduleRows =this.page.locator("tbody tr");
-        this.titleValidationError = this.page.getByText("Title is required for module");
-    }
-
-    async navigateToCourseStructure(): Promise<void> {
-        try {
-            logger.info("Navigating to Course Structure page.");
-            await this.page.goto(`${process.env.BASE_URL}/lms/pages/coursestructure/`);
-            logger.info("Successfully navigated to Course Structure page.");
-        } 
-        catch (error) {
-            logger.error(`Failed to navigate to Course Structure page: ${error}`);
-            throw new Error(`Failed to navigate to Course Structure page: ${error}`);
-        }
-    }
-
-    async searchCourse(courseId: string): Promise<void> {
+    async searchCourse(courseId: string){
         try {
             logger.info(`Searching course: ${courseId}`);
 
-            await this.searchBox.waitFor({ state: "visible" });
-            await this.searchBox.fill(courseId);
+            await this.searchBox.waitFor({ state: "visible", timeout: 100000 });
+            await this.fill(this.searchBox, courseId);
             await this.searchBox.press("Enter");
 
-            await expect(this.courseRow).toBeVisible({ timeout: 10000 });
-
+            await expect(this.courseRow).toBeVisible({ timeout: 100000 });
             logger.info(`Course '${courseId}' found.`);
-        } catch (error) {
+        } 
+        catch (error) {
             logger.error(`Failed to search course '${courseId}': ${error}`);
             throw new Error(`Failed to search course '${courseId}': ${error}`);
         }
     }
 
-    async clickAddCourseStructure(): Promise<void> {
+    async clickAddCourseStructure(){
         try {
             logger.info("Clicking Add Course Structure button.");
-            await this.addCourseStructureButton.waitFor({state: "visible",});
-            await this.addCourseStructureButton.click();
+            await this.addCourseStructureButton.waitFor({state: "visible",timeout: 10000});
+            await this.click(this.addCourseStructureButton);
             logger.info("Clicked Add Course Structure button.");
         } 
         catch (error) {
@@ -72,11 +47,11 @@ export class CourseStructurePage extends BasePage {
         }
     }
 
-    async clickAddModuleIcon(): Promise<void> {
+    async clickAddModuleIcon(){
         try {
             logger.info("Clicking Add Module icon.");
-            await this.addModuleIcon.waitFor({state: "visible",});
-            await this.addModuleIcon.click();
+            await this.addModuleIcon.waitFor({state: "visible",timeout: 10000});
+            await this.click(this.addModuleIcon)
             logger.info("Clicked Add Module icon.");
 
         } 
@@ -86,11 +61,11 @@ export class CourseStructurePage extends BasePage {
         }
     }
 
-    async enterModuleTitle(moduleTitle: string): Promise<void> {
+    async enterModuleTitle(moduleTitle: string){
         try {
             logger.info(`Entering module title: ${moduleTitle}`);
-            await this.moduleTitleTextBox.waitFor({state: "visible",});
-            await this.moduleTitleTextBox.fill(moduleTitle);
+            await this.moduleTitleTextBox.waitFor({state: "visible",timeout:10000});
+            await this.fill(this.moduleTitleTextBox, moduleTitle)
             logger.info(`Module title '${moduleTitle}' entered successfully.`);
         } 
         catch (error) {
@@ -99,10 +74,10 @@ export class CourseStructurePage extends BasePage {
         }
     }
 
-    async enterDescription(description: string): Promise<void> {
+    async enterDescription(description: string){
         try {
             logger.info("Entering description.");
-            await this.descriptionTextBox.fill(description);
+            await this.fill(this.descriptionTextBox, description);
             logger.info("Module description entered successfully.");
         } 
         catch (error) {
@@ -111,12 +86,30 @@ export class CourseStructurePage extends BasePage {
         }
     }
 
-    async clickSubmitButton(): Promise<void> {
+    async selectSkills(skills: string[]){
+        try {
+            logger.info(`Selecting Skills: ${skills.join(", ")}`);
+            for (const skill of skills) {
+                const checkbox = this.skillCheckbox(skill);
+                await checkbox.waitFor({ state: "visible" });
+
+                if (!(await checkbox.isChecked())) {
+                    await checkbox.check();
+                }
+            }
+            logger.info("Skills selected successfully.");
+        } 
+        catch (error) {
+            logger.error(`Failed to select skills: ${error}`);
+            throw error;
+        }
+    }
+
+    async clickSubmitButton(){
         try {
             logger.info("Clicking Submit button.");
-            await this.submitBtn.waitFor({state: "visible",});
-            await this.submitBtn.click();
-            //await expect(this.successMsg).toBeVisible({timeout: 10000,});
+            await this.submitBtn.waitFor({state: "visible",timeout: 10000});
+            await this.click(this.submitBtn);
             logger.info("Clicked Submit button.");
         } 
         catch (error) {
@@ -124,16 +117,22 @@ export class CourseStructurePage extends BasePage {
             throw new Error(`Failed to click Submit button: ${error}`);
         }
     }
+    public async getModuleCount(moduleTitle: string) {
+        return await this.moduleTitleLocator(moduleTitle).count();
+    }
 
-    async addModule(moduleTitle: string, description: string): Promise<void> {
+    public async verifyModuleCountIncreased(moduleTitle: string, previousCount: number){
+        await expect(this.moduleTitleLocator(moduleTitle)).toHaveCount(previousCount + 1);
+    }
+    
+    async addModule(moduleTitle: string, description: string, skills: string[]){
         try {
             logger.info(`Adding module: ${moduleTitle}`);
             await this.clickAddModuleIcon();
             await this.enterModuleTitle(moduleTitle);
             await this.enterDescription(description);
+            await this.selectSkills(skills);
             await this.clickSubmitButton();
-
-            // Wait for popup to close
             // await this.moduleTitleTextBox.waitFor({state: "hidden",});
             logger.info(`Module '${moduleTitle}' added successfully.`);
 
@@ -144,7 +143,7 @@ export class CourseStructurePage extends BasePage {
         }
     }
 
-    async addModuleWithoutTitle(): Promise<void> {
+    async addModuleWithoutTitle(){
         try {
             logger.info("Adding module without title");
             await this.clickAddModuleIcon();
@@ -156,9 +155,10 @@ export class CourseStructurePage extends BasePage {
         }
     }
 
-    async verifySuccessMessage(): Promise<void> {
+    async verifySuccessMessage(){
         try {
             logger.info("Verifying Success Message");
+            await this.successMsg.waitFor({state: "visible",timeout: 10000});
             await expect(this.successMsg).toContainText("Operation completed successfully!");
             logger.info("Success message verified successfully");
         } 
@@ -168,7 +168,7 @@ export class CourseStructurePage extends BasePage {
         }
     }
     
-    async verifyTitleValidationMessage(): Promise<void> {
+    async verifyTitleValidationMessage(){
         try {
             logger.info("Verifying Title Validation Message");
             await expect(this.titleValidationError).toBeVisible();
@@ -181,7 +181,7 @@ export class CourseStructurePage extends BasePage {
     }
 
 
-    async verifyModulePresent(moduleTitle: string): Promise<void> {
+    async verifyModulePresent(moduleTitle: string){
         try {
             logger.info(`Verifying module: ${moduleTitle}`);
             const moduleRow = this.moduleRows.filter({hasText: moduleTitle,}).first();

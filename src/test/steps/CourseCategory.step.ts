@@ -7,13 +7,12 @@ import loginData from "../../resources/data/loginData.json";
 setDefaultTimeout(60000);
 
 Given("Admin is logged into the LMS application", async function (this: CustomWorld) {
-     await this.loginPage.navigate();
-     await this.loginPage.login(
+    await this.loginPage.navigate();
+    await this.loginPage.login(
         loginData.validlogin.email,
         loginData.validlogin.password
     );
-    await expect(this.page).toHaveURL(/admindashboard/, {timeout: 120000,});
-    console.log("Admin logged in successfully");
+    await expect(this.page).toHaveURL(/admindashboard/, { timeout: 120000, });
 });
 
 Given("Admin navigates to the Dynamic Field Management page", async function (this: CustomWorld) {
@@ -48,10 +47,10 @@ Then("Admin should see the Category Created Successfully message", async functio
     await this.courseCategoryPage.verifyCategoryCreated();
 });
 
-When("Admin searches for the category",async function (this: CustomWorld) {
+When("Admin searches for the category", async function (this: CustomWorld) {
     await this.courseCategoryPage.enterCategorySearch(categoryData.categoryName);
 });
 
-Then ("Admin should see the category in the category list", async function(this:CustomWorld){
+Then("Admin should see the category in the category list", async function (this: CustomWorld) {
     await this.courseCategoryPage.verifyCategorySearchKey();
 });
