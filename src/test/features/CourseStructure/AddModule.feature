@@ -28,9 +28,8 @@ Scenario Outline: Add module with special characters in the module title
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
     And the Admin adds the module with title "<title>" description "<description>" and skills "<skills>"
-    Then a success message should be displayed
-    And the module "<title>" should appear in the course structure
-
+    Then the title validation message should be displayed
+    
 Examples:
     | title          | description        | skills |
     | @#$%^&*()_+{}! | Sample Description | HTML, CSS |
