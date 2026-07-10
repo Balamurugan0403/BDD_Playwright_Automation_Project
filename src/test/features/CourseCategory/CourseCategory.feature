@@ -1,4 +1,4 @@
-
+@sowndariya
 Feature: Sowndariya_07JUL2026_LMS_Feature File For Category Management Functionality
 
   Background:
@@ -20,7 +20,6 @@ Feature: Sowndariya_07JUL2026_LMS_Feature File For Category Management Functiona
       | Selenium   | Java automation    |
       | Playwright | Python automation   |
 
-@sowndariya
   Scenario: Validate adding existing Category
     When Admin clicks the Add Category button
     And Admin enters the existing Category Name
