@@ -1,77 +1,182 @@
 import { BasePage } from "./BasePage";
 import { expect } from "@playwright/test";
+import { logger } from "../../main/utils/logger";
 
 export class ServiceModelPage extends BasePage {
 
     private addServiceButton = this.page.getByRole("button", { name: "Add Service" });
-    private serviceName = this.page.locator("//input[@placeholder = \"e.g., 'Software Development'\"]")
-    private serviceDescription = this.page.locator("//textarea[@placeholder = 'Describe the service...']")
-    private searchInput = this.page.getByPlaceholder("Search services...")
+    private serviceName = this.page.locator("//input[@placeholder = \"e.g., 'Software Development'\"]");
+    private serviceDescription = this.page.locator("//textarea[@placeholder = 'Describe the service...']");
+    private searchInput = this.page.getByPlaceholder("Search services...");
     private serviceNotFoundMessage = this.page.locator("//td[text() = 'No services found ']");
-    private createService = this.page.getByRole('button', { name: "Create Service" })
+    private createService = this.page.getByRole("button", { name: "Create Service" });
     private successMessage = this.page.getByRole("alert").filter({ hasText: "Service created successfully" });
     private errorMessage = this.page.getByRole("alert").filter({ hasText: "Request failed with status code 400" });
-    private serviceNames = this.page.locator("//table/tbody/tr/td[2]/div/div[2]/div[1]")
+    private serviceNames = this.page.locator("//table/tbody/tr/td[2]/div/div[2]/div[1]");
 
     async clickAddService() {
-        await this.click(this.addServiceButton);
+        try {
+            logger.info("Clicking 'Add Service' button.");
+
+            await this.click(this.addServiceButton);
+
+            logger.info("'Add Service' button clicked successfully.");
+        } catch (error) {
+            logger.error(`Failed to click 'Add Service' button: ${error}`);
+            throw error;
+        }
     }
 
     async enterServiceName(name: string) {
-        await this.fill(this.serviceName, name);
+        try {
+            logger.info(`Entering service name: ${name}`);
+
+            await this.fill(this.serviceName, name);
+
+            logger.info("Service name entered successfully.");
+        } catch (error) {
+            logger.error(`Failed to enter service name: ${error}`);
+            throw error;
+        }
     }
 
     async enterServiceDescription(description: string) {
-        await this.fill(this.serviceDescription, description);
+        try {
+            logger.info("Entering service description.");
+
+            await this.fill(this.serviceDescription, description);
+
+            logger.info("Service description entered successfully.");
+        } catch (error) {
+            logger.error(`Failed to enter service description: ${error}`);
+            throw error;
+        }
     }
 
     async clickCreateService() {
-        await this.click(this.createService);
+        try {
+            logger.info("Clicking 'Create Service' button.");
+
+            await this.click(this.createService);
+
+            logger.info("'Create Service' button clicked successfully.");
+        } catch (error) {
+            logger.error(`Failed to click 'Create Service' button: ${error}`);
+            throw error;
+        }
     }
 
     async verifyServiceCreated(expectedMessage: string) {
-        await expect(this.successMessage).toContainText(expectedMessage,{ timeout: 10000 });
+        try {
+            logger.info(`Verifying success message: ${expectedMessage}`);
+
+            await expect(this.successMessage).toContainText(expectedMessage, {
+                timeout: 10000
+            });
+
+            logger.info("Service created successfully.");
+        } catch (error) {
+            logger.error(`Service creation verification failed: ${error}`);
+            throw error;
+        }
     }
 
     async verifyErrorMessageDisplayed(expectedMessage: string) {
-        await expect(this.errorMessage).toContainText(expectedMessage,{ timeout: 10000 });
+        try {
+            logger.info(`Verifying error message: ${expectedMessage}`);
+
+            await expect(this.errorMessage).toContainText(expectedMessage, {
+                timeout: 10000
+            });
+
+            logger.info("Error message verified successfully.");
+        } catch (error) {
+            logger.error(`Error message verification failed: ${error}`);
+            throw error;
+        }
     }
 
     async verifyValidity() {
-        const isNameValid = await this.serviceName.evaluate(
-            (el: HTMLInputElement) => el.validity.valid
-        );
+        try {
+            logger.info("Checking service form validation.");
 
-        const isDescriptionValid = await this.serviceDescription.evaluate(
-            (el: HTMLTextAreaElement) => el.validity.valid
-        );
+            const isNameValid = await this.serviceName.evaluate(
+                (el: HTMLInputElement) => el.validity.valid
+            );
 
-        return {
-            isNameValid,
-            isDescriptionValid
-        };
+            const isDescriptionValid = await this.serviceDescription.evaluate(
+                (el: HTMLTextAreaElement) => el.validity.valid
+            );
+
+            logger.info(
+                `Validation Result -> Name: ${isNameValid}, Description: ${isDescriptionValid}`
+            );
+
+            return {
+                isNameValid,
+                isDescriptionValid
+            };
+        } catch (error) {
+            logger.error(`Validation check failed: ${error}`);
+            throw error;
+        }
     }
 
     async enterServiceKey(key: string) {
-        await this.fill(this.searchInput, key);
+        try {
+            logger.info(`Searching service with keyword: ${key}`);
+
+            await this.fill(this.searchInput, key);
+
+            logger.info("Search keyword entered successfully.");
+        } catch (error) {
+            logger.error(`Failed to enter search keyword: ${error}`);
+            throw error;
+        }
     }
 
-    async verifyFoundMessage(expectedMessage:string) {
-        const actualMessage = await this.getText(this.serviceNotFoundMessage);
-        return actualMessage === expectedMessage;
+    async verifyFoundMessage(expectedMessage: string) {
+        try {
+            logger.info("Verifying 'No services found' message.");
+
+            const actualMessage = await this.getText(this.serviceNotFoundMessage);
+
+            const status = actualMessage === expectedMessage;
+
+            logger.info(`Message verification result: ${status}`);
+
+            return status;
+        } catch (error) {
+            logger.error(`Failed to verify 'No services found' message: ${error}`);
+            throw error;
+        }
     }
 
     async verifySearchResults(key: string) {
-        const serviceNameLocators  = await this.serviceNames.all(); 
-        for(const serviceNameLocator of serviceNameLocators) {
-            
-            const serviceName = "" + await serviceNameLocator.textContent(); 
-            
-            if(!serviceName.includes(key)) {
-                return false;
+        try {
+            logger.info(`Verifying search results for keyword: ${key}`);
+
+            const serviceNameLocators = await this.serviceNames.all();
+
+            for (const serviceNameLocator of serviceNameLocators) {
+
+                const serviceName = (await serviceNameLocator.textContent())?.trim() ?? "";
+
+                logger.info(`Found service: ${serviceName}`);
+
+                if (!serviceName.toLowerCase().includes(key.toLowerCase())) {
+                    logger.warn(
+                        `Search verification failed. '${serviceName}' does not contain '${key}'.`
+                    );
+                    return false;
+                }
             }
+
+            logger.info("All displayed services match the search keyword.");
+            return true;
+        } catch (error) {
+            logger.error(`Search result verification failed: ${error}`);
+            throw error;
         }
-        return true;
     }
-    
 }
