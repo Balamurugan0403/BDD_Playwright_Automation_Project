@@ -37,7 +37,7 @@ module.exports = {
         },
 
         publishQuiet: true,
-        dryRun: true,
+        dryRun: false,
         format: [
         "allure-cucumberjs/reporter",
         "json:reports/cucumber-report.json",
