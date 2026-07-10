@@ -8,6 +8,8 @@ import { AddCoursePage } from "../../test/pages/AddCoursePage";
 import { SidebarPage } from "../../test/pages/SidebarPage";
 import { ServiceModelPage } from "../../test/pages/ServiceModelPage";
 import { Service } from "../types/Service";
+import { SearchCoursePage } from "../../test/pages/SearchCoursePage";
+import { CourseFilterPage } from "../../test/pages/CourseFilterPage";
 
 export class CustomWorld extends World{
     browser!:Browser;
@@ -21,6 +23,8 @@ export class CustomWorld extends World{
     courseStructurePage!: CourseStructurePage;
     addCoursePage!: AddCoursePage;
     service!: Service
+    searchCoursePage!:SearchCoursePage;
+    courseFilterPage!:CourseFilterPage;
 }
 
 setWorldConstructor(CustomWorld);

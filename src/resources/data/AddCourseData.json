@@ -1,19 +1,58 @@
 {
     "validCourseSetup": {
         "basicConfigurationData": {
-            "courseClient": "PSG Tech",
-            "serviceType": "Automation Testing",
-            "serviceModel": "Automation",
+            "courseClient": "jamocha",
+            "serviceType": "Testing Model",
+            "serviceModel": "Tester",
             "courseCategory": "Software Development",
-            "courseName": "Frontend",
-            "courseLevel": "Intermediate"
+            "courseName": "Frontend"
         },
         "courseHierarchy": {
-            "description": "This course covers frontend development fundamentals.",
+            "courseLevel": "Intermediate",
+            "description": "This is a sample course description for automation testing.",
             "iDo": "Live Classes",
-            "weDo": "Assignments",
-            "youDo": "Assesments",
-            "skills": ["C", "Java", "CSS", "JavaScript", "MongoDB"]
+            "resourceTypes": {
+                "iDo": [
+                    "Video"
+                ]
+            },
+            "skills": [
+                "C",
+                "Java",
+                "HTML",
+                "CSS",
+                "JavaScript",
+                "MongoDB",
+                "MySQL"
+            ]
+        }
+    },
+    "existingCourseSetup": {
+        "basicConfigurationData": {
+            "courseClient": "jamocha",
+            "serviceType": "Testing Model",
+            "serviceModel": "Tester",
+            "courseCategory": "Software Development",
+            "courseName": "Frontend"
+        },
+        "courseHierarchy": {
+            "courseLevel": "Intermediate",
+            "description": "This is a sample course description for automation testing.",
+            "iDo": "Live Classes",
+            "resourceTypes": {
+                "iDo": [
+                    "Video"
+                ]
+            },
+            "skills": [
+                "C",
+                "Java",
+                "HTML",
+                "CSS",
+                "JavaScript",
+                "MongoDB",
+                "MySQL"
+            ]
         }
     }
 }

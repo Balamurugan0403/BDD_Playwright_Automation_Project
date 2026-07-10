@@ -34,17 +34,28 @@ When("the user enters {string} credentials", async function (this: CustomWorld, 
     await this.loginPage.enterCredentials(credentials.email, credentials.password);
 });
 
-Then("the login should fail", async function (this: CustomWorld) {
+Then("the login should fail And {string} should be displayed", async function (this: CustomWorld,expectedMessage:string) {
     await expect(this.page).toHaveURL(/login/);
+    await this.loginPage.verifyToastMessage(expectedMessage);
+});
+When("User leaves the email field empty", async function (this: CustomWorld) {
+
+    await this.loginPage.enterEmail("");
+
 });
 
-Then(
-    "{string} should be displayed",
-    async function (this: CustomWorld, expectedMessage: string) {
+When("User leaves the password field empty", async function (this: CustomWorld) {
 
-        await this.loginPage.verifyToastMessage(expectedMessage);
+    await this.loginPage.enterPassword("");
 
-    }
-);
+});
+Then("User should see the required field validation message", async function (this: CustomWorld) {
+
+    await this.loginPage.verifyRequiredField(loginData.expected.requiredField);
+
+});
+
+
+
 
 
