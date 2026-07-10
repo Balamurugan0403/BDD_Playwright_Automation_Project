@@ -18,12 +18,9 @@ Feature: Login Functionality_SAMIHA_07_07_2026
       | loginType         | message                |
       | InvalidEmail      | Email is invalid       |
       | InvalidPassword   | Password is incorrect  |
-<<<<<<< HEAD
-@invalid
+
 Scenario: Verify login with an empty email and password field
     When User leaves the email field empty
     And User leaves the password field empty
     And the user clicks the Login button
     Then User should see the required field validation message
-=======
->>>>>>> main
