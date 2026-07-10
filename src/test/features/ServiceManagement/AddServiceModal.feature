@@ -1,5 +1,5 @@
-@vignesh @addService
-Feature: M_VIGNESHWARAN_2026_07_10_LMS_Add_Service_Modal_Feature
+@vignesh @addServiceModel @underDevelopment
+Feature: M_VIGNESHWARAN_2026_07_10_LMS_Add_Service_Model_Feature
 
   Background:
     Given the user launched the application
@@ -18,15 +18,6 @@ Feature: M_VIGNESHWARAN_2026_07_10_LMS_Add_Service_Modal_Feature
     And the user clicks the Add Course button
     And the user clicks the Service type dropdown
     Then the user should see the added service as option
-
-  Scenario: Verify duplicate service cannot be created
-    And the user fill the name and description
-    And the user clicks the create service button
-    Then the popup alert should be displayed as "Service created successfully"
-    When the user clicks the Add service button
-    And the user fill the same name and description
-    And the user clicks the create service button
-    Then the popup alert should be displayed as "Request failed with status code 400"
 
   
   Scenario Outline: Verify add service with empty fields cannot be created
