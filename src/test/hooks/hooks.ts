@@ -10,6 +10,7 @@ import { SidebarPage } from '../pages/SidebarPage';
 import { ServiceModelPage } from '../pages/ServiceModelPage';
 import { AddCoursePage } from '../pages/AddCoursePage';
 import {SearchCoursePage} from '../pages/SearchCoursePage';
+import { CourseFilterPage } from "../../test/pages/CourseFilterPage";
 
 import { logger } from '../../main/utils/logger';
 
@@ -50,6 +51,7 @@ Before(async function (this: CustomWorld, scenario) {
     this.courseStructurePage = new CourseStructurePage(this.page);
     this.addCoursePage=new AddCoursePage(this.page);
     this.searchCoursePage=new SearchCoursePage(this.page);
+    this.courseFilterPage=new CourseFilterPage(this.page);
 });
 
 After(async function (this: CustomWorld, scenario) {
