@@ -1,5 +1,7 @@
 # Dependencies
 node_modules/
+rerun/
+package-lock.json
 
 # Build output
 dist/
@@ -46,4 +48,4 @@ package-lock.json.bak
 /playwright/.auth/
 
 
-rerun/@rerun.txt
+

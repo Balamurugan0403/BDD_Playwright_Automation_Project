@@ -6,10 +6,12 @@ export class ServiceModelPage extends BasePage {
     private addServiceButton = this.page.getByRole("button", { name: "Add Service" });
     private serviceName = this.page.locator("//input[@placeholder = \"e.g., 'Software Development'\"]")
     private serviceDescription = this.page.locator("//textarea[@placeholder = 'Describe the service...']")
+    private searchInput = this.page.getByPlaceholder("Search services...")
+    private serviceNotFoundMessage = this.page.locator("//td[text() = 'No services found ']");
     private createService = this.page.getByRole('button', { name: "Create Service" })
     private successMessage = this.page.getByRole("alert").filter({ hasText: "Service created successfully" });
     private errorMessage = this.page.getByRole("alert").filter({ hasText: "Request failed with status code 400" });
-    
+    private serviceNames = this.page.locator("//table/tbody/tr/td[2]/div/div[2]/div[1]")
 
     async clickAddService() {
         await this.click(this.addServiceButton);
@@ -48,6 +50,28 @@ export class ServiceModelPage extends BasePage {
             isNameValid,
             isDescriptionValid
         };
+    }
+
+    async enterServiceKey(key: string) {
+        await this.fill(this.searchInput, key);
+    }
+
+    async verifyFoundMessage(expectedMessage:string) {
+        const actualMessage = await this.getText(this.serviceNotFoundMessage);
+        return actualMessage === expectedMessage;
+    }
+
+    async verifySearchResults(key: string) {
+        const serviceNameLocators  = await this.serviceNames.all(); 
+        for(const serviceNameLocator of serviceNameLocators) {
+            
+            const serviceName = "" + await serviceNameLocator.textContent(); 
+            
+            if(!serviceName.includes(key)) {
+                return false;
+            }
+        }
+        return true;
     }
     
 }
