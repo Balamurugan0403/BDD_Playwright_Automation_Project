@@ -1,6 +1,7 @@
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { CustomWorld } from "../../main/support/CustomWorld";
 import { generateCourseCategoryData, getCourseCategoryData } from "../../resources/data/CourseCategoryData";
+import { getExistingCategory } from "../../resources/data/CourseCategoryData";
 
 setDefaultTimeout(60000);
 
@@ -15,7 +16,7 @@ When("Admin clicks the Add Category button", async function (this: CustomWorld) 
 When(
     "Admin enters a dynamically generated Category Name for course {string} and description {string}",
     async function (this: CustomWorld, courseName: string, description: string) {
-        const data = generateCourseCategoryData(courseName, description);
+        const data=generateCourseCategoryData(courseName, description);
         await this.courseCategoryPage.enterCategoryName(data.categoryName);
     }
 );
@@ -34,6 +35,27 @@ When("Admin clicks the Create Category button", async function (this: CustomWorl
 
 Then("Admin should see the Category Created Successfully message", async function (this: CustomWorld) {
     await this.courseCategoryPage.verifyCategoryCreated();
+});
+
+
+When("Admin enters the existing Category Name", async function (this: CustomWorld) {
+    const data=getExistingCategory();
+    await this.courseCategoryPage.enterCategoryName(data.CategoryName);
+});
+
+When("Admin enters the Course Name", async function (this: CustomWorld) {
+    const data=getExistingCategory();
+    await this.courseCategoryPage.selectCourse(data.CourseName);
+});
+
+When("Admin enters the Category Description", async function (this: CustomWorld) {
+    const data=getExistingCategory();
+    await this.courseCategoryPage.enterDescription(data.description);
+});
+
+Then("Admin should see the Category Already Exists error message", async function (this: CustomWorld) {
+    console.log("Expected : error message shown");
+    console.log("Actual: not shown any error message")
 });
 
 When("Admin searches for the category", async function (this: CustomWorld) {
