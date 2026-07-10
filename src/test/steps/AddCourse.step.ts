@@ -28,8 +28,8 @@ Then('the {string} tab opens', async function (tab: string) {
     await this.addCoursePage.verifyTabVisible(tab);
 });
 
-When('the admin fills in the Course Basic Configuration form using {string} test data', async function (dataKey: string) {
-    const data = (courseData as any)[dataKey].basicConfigurationData;
+When('the admin fills in the Course Basic Configuration form with valid details', async function () {
+    const data = courseData.validCourseSetup.basicConfigurationData;
     await this.addCoursePage.fillCourseBasicConfiguration(data);
 });
 
@@ -38,8 +38,8 @@ Then('the admin is navigated to the {string} tab', async function (tab: string) 
     await this.addCoursePage.verifyCourseHierarchyTab();
 });
 
-When('the admin fills the Course Hierarchy and Layout section using {string} test data', async function (dataKey: string) {
-    const data = (courseData as any)[dataKey].courseHierarchy;
+When('the admin fills the Course Hierarchy and Layout section with valid details', async function () {
+    const data = courseData.validCourseSetup.courseHierarchy;
     await this.addCoursePage.fillCourseHierarchyAndLayout(data);
 });
 
