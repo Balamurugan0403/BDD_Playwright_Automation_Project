@@ -8,6 +8,7 @@ import { AddCoursePage } from "../../test/pages/AddCoursePage";
 import { SidebarPage } from "../../test/pages/SidebarPage";
 import { ServiceModelPage } from "../../test/pages/ServiceModelPage";
 import { Service } from "../types/Service";
+import { SearchCoursePage } from "../../test/pages/SearchCoursePage";
 
 export class CustomWorld extends World{
     browser!:Browser;
@@ -21,6 +22,7 @@ export class CustomWorld extends World{
     courseStructurePage!: CourseStructurePage;
     addCoursePage!: AddCoursePage;
     service!: Service
+    searchCoursePage!:SearchCoursePage;
 }
 
 setWorldConstructor(CustomWorld);
