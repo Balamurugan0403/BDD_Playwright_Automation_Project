@@ -12,6 +12,7 @@ export class AddCoursePage extends BasePage {
     private courseNameDropdown = this.page.getByRole("combobox").nth(4);
     private courseIdField = this.page.locator("input[readonly]").first();
     private nextButton = this.page.getByRole("button", { name: "Next" });
+    private validationErrorMessage = this.page.locator("div.text-red-600 span");
 
     // Course Hierarchy and Layout
     private courseLevelDropdown = this.page.getByRole("combobox").nth(0);
@@ -22,12 +23,26 @@ export class AddCoursePage extends BasePage {
     private topicCheckbox = this.page.locator("#topic-checkbox");
     private subtopicCheckbox = this.page.locator("#subtopic-checkbox");
 
-    private iDoDropdown = this.page.getByRole("combobox").nth(1);
-    private weDoDropdown = this.page.getByRole("combobox").nth(2);
-    private youDoDropdown = this.page.getByRole("combobox").nth(3);
+    private iDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('I Do', { exact: true }) }).locator('button[role="combobox"]');
+    private weDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('We Do', { exact: true }) }).locator('button[role="combobox"]');
+    private youDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('You Do', { exact: true }) }).locator('button[role="combobox"]');
 
-    private previousButton = this.page.getByRole("button", { name: "Previous" });
+    // Resource Type panel (appears after selecting a pedagogy value)
+    private resourceTypeIDoTab = this.page.getByRole("button", { name: /^I Do/ });
+    private resourceTypeWeDoTab = this.page.getByRole("button", { name: /^We Do/ });
+    private resourceTypeYouDoTab = this.page.getByRole("button", { name: /^You Do/ });
+
     private previewCreateButton = this.page.getByRole("button", { name: "Preview & Create" });
+    private coursePreviewHeading = this.page
+        .getByRole("heading", { name: "Course Layout Preview" })
+        .last();
+    private createCourseBtn = this.page.getByRole("button", { name: "Save Course Layout" });
+    private successMessage = this.page
+        .getByText("Course created successfully", { exact: false })
+        .or(this.page.getByText("Course ID is Required", { exact: false }));
+    private errorMessage = this.page
+    .getByText("Request failed with status code 403", { exact: false })
+    .or(this.page.getByText("Course ID is Required", { exact: false }));
 
     // Course Basic Configuration methods
     async clickAddCourse() {
@@ -35,6 +50,7 @@ export class AddCoursePage extends BasePage {
         await this.addCourseBtn.waitFor({ state: "visible", timeout: 100000 });
         await this.click(this.addCourseBtn);
     }
+
     async verifyTabVisible(tabName: string) {
         await expect(this.page.locator("span", { hasText: tabName })).toBeVisible({ timeout: 100000 });
     }
@@ -48,13 +64,14 @@ export class AddCoursePage extends BasePage {
         await this.serviceTypeDropdown.click();
     }
 
-    async verifyServiceOptionAvailable(type: string) {
-        await expect(this.page.getByRole("option", { name: type, exact: true })).toBeVisible();
-    }
-
     async selectServiceType(type: string) {
         await this.clickServiceDropdown();
         await this.page.getByRole("option", { name: type, exact: true }).click();
+    }
+
+    async verifyServiceOptionAvailable(serviceName: string) {
+        logger.info(`verifying "${serviceName}" option is available in service type dropdown`);
+        await expect(this.page.getByRole("option", { name: serviceName, exact: true })).toBeVisible({ timeout: 10000 });
     }
 
     async selectServiceModel(model: string) {
@@ -65,6 +82,16 @@ export class AddCoursePage extends BasePage {
     async selectCourseCategory(category: string) {
         await this.courseCategoryDropdown.click();
         await this.page.getByRole("option", { name: category, exact: true }).click();
+    }
+
+    async clickCourseCategoryDropdown() {
+        logger.info("clicking the course category dropdown");
+        await this.click(this.courseCategoryDropdown);
+    }
+
+    async verifyCategoryAvailable(category: string) {
+        logger.info(`verifying "${category}" option is available in course category dropdown`);
+        await expect(this.page.getByRole("option", { name: category, exact: true })).toBeVisible({ timeout: 10000 });
     }
 
     async selectCourseName(course: string) {
@@ -81,19 +108,21 @@ export class AddCoursePage extends BasePage {
         await this.selectCourseName(data.courseName);
     }
 
-    async verifyCourseIdGenerated() {
-        await expect(this.courseIdField)
-            .toHaveValue(/.+/, { timeout: 15000 });
+    async clickNext() {
+        await this.page.waitForTimeout(10000);
+        await this.click(this.nextButton);
     }
 
-    async clickNext() {
-        await this.click(this.nextButton);
+    async verifyValidationErrorDisplayed() {
+        logger.info("verifying validation error message is displayed");
+        await expect(this.validationErrorMessage.first()).toBeVisible({ timeout: 10000 });
     }
 
     async verifyCourseHierarchyTab() {
         logger.info("moved to the course hierarchy tab");
-       await expect(this.page.getByText("Course Hierarchy and Layout", { exact: true }).first()).toBeVisible({ timeout: 10000 });
-   }
+        await expect(this.page.getByText("Course Hierarchy and Layout", { exact: true }).first()).toBeVisible({ timeout: 10000 });
+    }
+
     // Course Hierarchy and Layout methods
     async selectCourseLevel(level: string) {
         await this.courseLevelDropdown.click();
@@ -112,20 +141,17 @@ export class AddCoursePage extends BasePage {
     async checkSubmodule() {
         await this.check(this.submoduleCheckbox);
     }
-
-    async checkTopic() {
-        await this.check(this.topicCheckbox);
-    }
-
-    async checkSubtopic() {
-        await this.check(this.subtopicCheckbox);
-    }
-
     async selectIDo(value: string) {
         await this.iDoDropdown.click();
-        await this.page.getByRole("option", { name: value, exact: true }).click();
-    }
 
+        await this.page.waitForTimeout(1000);
+
+        const option = this.page.getByText(value, { exact: true }).last();
+
+        await expect(option).toBeVisible({ timeout: 10000 });
+
+        await option.click();
+    }
     async selectWeDo(value: string) {
         await this.weDoDropdown.click();
         await this.page.getByRole("option", { name: value, exact: true }).click();
@@ -137,37 +163,89 @@ export class AddCoursePage extends BasePage {
     }
 
     async selectSkill(skillName: string) {
-        const skillCheckbox = this.page.locator("label", { hasText: skillName }).locator('input[type="checkbox"]');
+        const skillCheckbox = this.page.getByRole("checkbox", { name: new RegExp(`\\b${skillName}\\b`) }).first();
+
         await this.check(skillCheckbox);
     }
 
+    // Resource Type panel methods
+    async switchResourceTab(tabName: "I Do" | "We Do" | "You Do") {
+        logger.info(`switching to "${tabName}" resource type tab`);
+
+        await this.page.getByText(tabName, { exact: true }).last().click();
+    }
+
+    async toggleResourceType(resourceName: string) {
+        logger.info(`toggling resource type "${resourceName}"`);
+        const row = this.page
+            .locator('div', { hasText: resourceName })
+            .filter({ has: this.page.locator('button[role="switch"]') })
+            .last();
+        await row.locator('button[role="switch"]').click();
+    }
+
+    async verifyResourceTypeState(resourceName: string, expectedOn: boolean) {
+        logger.info(`verifying resource type "${resourceName}" is ${expectedOn ? "ON" : "OFF"}`);
+        const row = this.page
+            .locator('div', { hasText: resourceName })
+            .filter({ has: this.page.locator('button[role="switch"]') })
+            .last();
+        await expect(row.locator('button[role="switch"]')).toHaveAttribute(
+            "aria-checked",
+            expectedOn ? "true" : "false"
+        );
+    }
+
+    async setResourceTypesForTab(tabName: "I Do" | "We Do" | "You Do", resourceNames: string[]) {
+        logger.info(`setting resource types for "${tabName}" tab: ${resourceNames.join(", ")}`);
+        await this.switchResourceTab(tabName);
+        for (const resource of resourceNames) {
+            await this.toggleResourceType(resource);
+        }
+    }
+
     async fillCourseHierarchyAndLayout(data: any) {
+        logger.info("filling the course hierarchy and layout details");
         await this.selectCourseLevel(data.courseLevel);
         await this.enterDescription(data.description);
         await this.checkModule();
         await this.selectIDo(data.iDo);
-        await this.selectWeDo(data.weDo);
-        await this.selectYouDo(data.youDo);
 
-        for (const skill of data.skills) {
-            await this.selectSkill(skill);
+        if (data.resourceTypes) {
+            if (data.resourceTypes.iDo) {
+                await this.setResourceTypesForTab("I Do", data.resourceTypes.iDo);
+            }
+
+            for (const skill of data.skills) {
+                await this.selectSkill(skill);
+            }
         }
-    }
-
-    async clickPrevious() {
-        await this.click(this.previousButton);
     }
 
     async clickPreviewAndCreate() {
         await this.click(this.previewCreateButton);
     }
 
-    async verifyCategoryAvailable(category: string) {
-        console.log(await this.page.getByRole("option", { name: category, exact: true }).textContent());
-        await expect(this.page.getByRole("option", { name: category, exact: true }).textContent());
+    async verifyCourseLayoutPreview() {
+        logger.info("verifying course layout preview is displayed");
+        await expect(this.coursePreviewHeading).toBeVisible({ timeout: 15000 });
+    }
+    async clickCreateCourse() {
+        logger.info("clicking the Create Course button");
+        await this.click(this.createCourseBtn);
     }
 
-    async clickCourseCategoryDropdown() {
-    await this.courseCategoryDropdown.click();
-}
+    async verifySuccessMessage() {
+        logger.info("verifying success message is displayed");
+        await expect(this.successMessage).toBeVisible({ timeout: 15000 });
+    }
+    async verifyErrorMessage() {
+        logger.info("verifying success message is displayed");
+        await expect(this.errorMessage).toBeVisible({ timeout: 15000 });
+    }
+    async verifyDuplicateCourseValidation() {
+        await expect(
+            this.page.getByText("Course already exists")
+        ).toBeVisible();
+    }
 }

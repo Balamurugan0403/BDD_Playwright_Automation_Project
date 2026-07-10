@@ -58,3 +58,32 @@ Then("Admin should see the category in the Category dropdown", async function (t
     await this.addCoursePage.verifyCategoryAvailable(getCourseCategoryData().categoryName);
   }
 );
+
+When("Admin clicks the Action button for the category", async function (this: CustomWorld) {
+    const data = getCourseCategoryData();
+    await this.courseCategoryPage.clickActionButton(data.categoryName);
+});
+
+When("Admin clicks the Edit option", async function (this: CustomWorld) {
+    await this.courseCategoryPage.clickEditOption();
+});
+
+When("Admin updates the Category Description as {string}", async function (this: CustomWorld, description: string) {
+    await this.courseCategoryPage.updateDescription(description);
+});
+
+When("Admin clicks the Save button", async function (this: CustomWorld) {
+    await this.courseCategoryPage.clickSaveButton();
+});
+
+When("Admin clicks the Delete option", async function (this: CustomWorld) {
+    await this.courseCategoryPage.clickDeleteOption();
+});
+
+When("Admin clicks the Confirm Delete button", async function (this: CustomWorld) {
+    await this.courseCategoryPage.clickConfirmDelete();
+});
+
+Then("Admin should see the No Data Found message", async function (this: CustomWorld) {
+    await this.courseCategoryPage.verifyNoDataFound();
+});
