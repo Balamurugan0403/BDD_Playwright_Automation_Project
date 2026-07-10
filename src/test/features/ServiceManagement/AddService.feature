@@ -1,4 +1,4 @@
-@vignesh
+@vignesh @addService
 Feature: M_VIGNESHWARAN_2026_07_07_LMS_Add_Service_Feature
 
   Background:
