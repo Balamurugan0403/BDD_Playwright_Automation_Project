@@ -17,6 +17,12 @@ export class CourseStructurePage extends BasePage {
     private titleValidationError = this.page.getByText("Title is required for module");
     //private moduleTitleLocator = (moduleTitle: string): Locator => this.page.locator("tbody").locator(`xpath=.//span[normalize-space()='${moduleTitle}']`);
 
+
+    private moreButton = this.page.locator(".hidden sm:inline tracking-tight");
+    private hierarchyToggle = this.page.locator(".sr-only").nth(0);
+    private deleteOption = this.page.getByText("Delete", { exact: true });
+    private confirmDeleteButton = this.page.getByRole("button", {name: /^Delete$/i,});
+
     async searchCourse(courseId: string){
         try {
             await this.searchBox.waitFor({ state: "visible", timeout: 100000 });
