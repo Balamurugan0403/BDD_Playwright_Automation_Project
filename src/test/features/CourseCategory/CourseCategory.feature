@@ -20,6 +20,14 @@ Feature: Sowndariya_07JUL2026_LMS_Feature File For Category Management Functiona
       | Selenium   | Java automation    |
       | Playwright | Python automation   |
 
+  Scenario: Validate adding existing Category
+    When Admin clicks the Add Category button
+    And Admin enters the existing Category Name
+    And Admin enters the Course Name
+    And Admin enters the Category Description
+    And Admin clicks the Create Category button
+    Then Admin should see the Category Already Exists error message
+
 
   Scenario: Verify the Category is displayed in the Category Management list.
     When Admin searches for the category
