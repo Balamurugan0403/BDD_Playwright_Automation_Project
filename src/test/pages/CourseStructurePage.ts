@@ -13,7 +13,7 @@ export class CourseStructurePage extends BasePage {
     private skillCheckbox = (skill: string) =>this.page.locator(`//label[normalize-space(text())='${skill}']//input[@type='checkbox']`);
     private submitBtn =this.page.locator("//button[@type='submit']");
     private successMsg = this.page.locator("text=Operation completed successfully!");
-    private moduleRows =this.page.locator("tbody tr");
+    private moduleRows = this.page.locator("table").nth(1).locator("tbody > tr");
     private titleValidationError = this.page.getByText("Title is required for module");
     //private moduleTitleLocator = (moduleTitle: string): Locator => this.page.locator("tbody").locator(`xpath=.//span[normalize-space()='${moduleTitle}']`);
 
@@ -113,11 +113,15 @@ export class CourseStructurePage extends BasePage {
         }
     }
     public async getModuleCount() {
-        return await this.courseRow.count();
+        await expect(this.moduleRows.first()).toBeVisible({ timeout: 100000 });
+        return await this.moduleRows.count();
     }
 
     public async verifyModuleCountIncreased(previousCount: number){
-        await expect(this.getModuleCount).toBe(previousCount+1);
+        const currentCount = await this.getModuleCount();
+        // console.log("Previous Count:", previousCount);
+        // console.log("Current Count:", currentCount);
+        expect(currentCount).toBe(previousCount + 1);
     }
     
     async addModule(moduleTitle: string, description: string, skills: string[]){

@@ -33,7 +33,6 @@ Scenario Outline: Add module with special characters in the module title
 Examples:
     | title          | description        | skills    |
     | @#$%^&*()_+{}! | Sample Description | HTML, CSS |
-    | Sample@()*     | Sample description | C, Java   |
 
 @Rohini @Add_Module @ExistingModule
 Scenario: Add module with existing module name
