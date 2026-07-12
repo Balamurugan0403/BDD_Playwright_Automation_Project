@@ -28,7 +28,7 @@ Scenario: Verify filtering courses by Level displays only matching courses
     And User selects a level from the Level dropdown
     Then Only courses matching the selected level should be displayed
 
-  Scenario: Verify Sort By Date displays courses sorted correctly
+ Scenario: Verify Sort By Course Name displays courses sorted 
     When User opens the Sort By dropdown
-    And User selects "Date" from the Sort By dropdown
-    Then Courses should be displayed in date order
+    When User selects Course Name from the Sort By dropdown
+    Then Courses should be displayed in reverse alphabetical order by course name
