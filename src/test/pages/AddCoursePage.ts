@@ -3,14 +3,12 @@ import { expect } from "@playwright/test";
 import { logger } from "../../main/utils/logger";
 
 export class AddCoursePage extends BasePage {
-    // Course Basic Configuration
     private addCourseBtn = this.page.getByRole("button", { name: "Add Course" });
     private courseClientDropdown = this.page.getByRole("combobox").nth(0);
     private serviceTypeDropdown = this.page.getByRole("combobox").nth(1);
     private serviceModelDropdown = this.page.getByRole("combobox").nth(2);
     private courseCategoryDropdown = this.page.getByRole("combobox").nth(3);
     private courseNameDropdown = this.page.getByRole("combobox").nth(4);
-    private courseIdField = this.page.locator("input[readonly]").first();
     private nextButton = this.page.getByRole("button", { name: "Next" });
     private validationErrorMessage = this.page.locator("div.text-red-600 span");
 
@@ -20,17 +18,10 @@ export class AddCoursePage extends BasePage {
 
     private moduleCheckbox = this.page.locator("#module-checkbox");
     private submoduleCheckbox = this.page.locator("#submodule-checkbox");
-    private topicCheckbox = this.page.locator("#topic-checkbox");
-    private subtopicCheckbox = this.page.locator("#subtopic-checkbox");
 
     private iDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('I Do', { exact: true }) }).locator('button[role="combobox"]');
     private weDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('We Do', { exact: true }) }).locator('button[role="combobox"]');
     private youDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('You Do', { exact: true }) }).locator('button[role="combobox"]');
-
-    // Resource Type panel (appears after selecting a pedagogy value)
-    private resourceTypeIDoTab = this.page.getByRole("button", { name: /^I Do/ });
-    private resourceTypeWeDoTab = this.page.getByRole("button", { name: /^We Do/ });
-    private resourceTypeYouDoTab = this.page.getByRole("button", { name: /^You Do/ });
 
     private previewCreateButton = this.page.getByRole("button", { name: "Preview & Create" });
     private coursePreviewHeading = this.page
@@ -38,11 +29,9 @@ export class AddCoursePage extends BasePage {
         .last();
     private createCourseBtn = this.page.getByRole("button", { name: "Save Course Layout" });
     private successMessage = this.page
-        .getByText("Course created successfully", { exact: false })
-        .or(this.page.getByText("Course ID is Required", { exact: false }));
+        .getByText("Course created successfully", { exact: false });
     private errorMessage = this.page
-    .getByText("Request failed with status code 403", { exact: false })
-    .or(this.page.getByText("Course ID is Required", { exact: false }));
+        .getByText("Request failed with status code 403", { exact: false })
 
     // Course Basic Configuration methods
     async clickAddCourse() {
@@ -167,8 +156,6 @@ export class AddCoursePage extends BasePage {
 
         await this.check(skillCheckbox);
     }
-
-    // Resource Type panel methods
     async switchResourceTab(tabName: "I Do" | "We Do" | "You Do") {
         logger.info(`switching to "${tabName}" resource type tab`);
 
@@ -185,7 +172,6 @@ export class AddCoursePage extends BasePage {
     }
 
     async verifyResourceTypeState(resourceName: string, expectedOn: boolean) {
-        logger.info(`verifying resource type "${resourceName}" is ${expectedOn ? "ON" : "OFF"}`);
         const row = this.page
             .locator('div', { hasText: resourceName })
             .filter({ has: this.page.locator('button[role="switch"]') })
