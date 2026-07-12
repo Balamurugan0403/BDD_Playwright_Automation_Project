@@ -120,4 +120,5 @@ async verifyNoDataFound() {
     await expect(this.noDataMessage).toBeVisible({ timeout: 10000 });
     logger.info("Category deleted successfully, no data found");
 }
+
 }

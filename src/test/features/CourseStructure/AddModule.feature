@@ -27,13 +27,12 @@ Scenario: Add module without Title
 Scenario Outline: Add module with special characters in the module title
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
-    And the Admin adds the module with title "<title>" description "<description>" and skills "<skill>"
-    Then a success message should be displayed
-    And the module "<title>" should appear in the course structure
-
+    And the Admin adds the module with title "<title>" description "<description>" and skills "<skills>"
+    Then the title validation message should be displayed
+    
 Examples:
-    | title          | description        | skills |
-    | @#$%^&*()_+{}! | Sample Description | HTML   |
+    | title          | description        | skills    |
+    | @#$%^&*()_+{}! | Sample Description | HTML, CSS |
 
 @Rohini @Add_Module @ExistingModule
 Scenario: Add module with existing module name

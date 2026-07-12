@@ -28,10 +28,8 @@ export class AddCoursePage extends BasePage {
         .getByRole("heading", { name: "Course Layout Preview" })
         .last();
     private createCourseBtn = this.page.getByRole("button", { name: "Save Course Layout" });
-    private successMessage = this.page
-        .getByText("Course created successfully", { exact: false });
-    private errorMessage = this.page
-        .getByText("Request failed with status code 403", { exact: false })
+    private successMessage = this.page.getByText("Course created successfully", { exact: false });
+    private errorMessage = this.page.getByText("Request failed with status code 403", { exact: false });
 
     // Course Basic Configuration methods
     async clickAddCourse() {

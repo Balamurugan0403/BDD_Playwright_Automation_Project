@@ -6,6 +6,8 @@ export class LoginPage extends BasePage {
     private email = this.page.locator("#email");
     private password = this.page.locator("#password");
     private loginButton = this.page.locator("button[type='submit']");
+    readonly emailError = this.page.getByText("Email is invalid");
+    readonly passwordError = this.page.getByText("Password is incorrect");
 
     constructor(page: Page) {
         super(page);
@@ -37,13 +39,7 @@ export class LoginPage extends BasePage {
 
         await expect(this.loginButton).toBeEnabled();
 
-        await Promise.all([
-            this.page.waitForResponse(response =>
-                response.url().includes("login") &&
-                response.request().method() === "POST"
-            ),
-            this.loginButton.click()
-        ]);
+        await this.loginButton.click();
 
     }
 
@@ -68,5 +64,13 @@ export class LoginPage extends BasePage {
         });
 
         return (await toast.textContent())?.trim() || "";
+    }
+    async verifyRequiredField(expectedMessage: string) {
+
+        const validationMessage = await this.email.evaluate(
+            (element: any) => element.validationMessage
+        );
+
+        expect(validationMessage).toBe(expectedMessage);
     }
 }
