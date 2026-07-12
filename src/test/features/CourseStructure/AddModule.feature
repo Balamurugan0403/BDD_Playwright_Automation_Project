@@ -31,7 +31,7 @@ Scenario Outline: Add module with special characters in the module title
     Then the title validation message should be displayed
     
 Examples:
-    | title          | description        | skills |
+    | title          | description        | skills    |
     | @#$%^&*()_+{}! | Sample Description | HTML, CSS |
 
 @Rohini @Add_Module @ExistingModule
