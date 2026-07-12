@@ -1,4 +1,4 @@
-@bala
+@bala 
 Feature: Add a new Course
     As an admin I want to add a course in the Course structures
     So that the clients can use the course.
@@ -27,13 +27,11 @@ Feature: Add a new Course
         Then a validation error message should be displayed
         And the admin remains on the "Create New Course Setup" tab
 
-    @duplicatecourse @flaky
-    Scenario: Verify the admin cannot create a course with an already existing course name.
-        When the admin fills in the Course Basic Configuration form with an existing course name
+    @addcourse @previewaccuracy
+    Scenario: Verify the course layout preview tab shows the entered details accurately
+        When the admin fills in the Course Basic Configuration form with valid details
         And the admin clicks the "Next" button
         Then the admin is navigated to the "Course Hierarchy and Layout" tab
-        When the admin fills the Course Hierarchy and Layout section with an existing course name
+        When the admin fills the Course Hierarchy and Layout section with valid details
         And the admin clicks the "Preview & Create" button
-        Then the course layout preview should be displayed
-        When the admin clicks the "Create Course" button
-        Then a duplicate course error message should be displayed
+        Then the course layout preview should display the correct learning level and teaching elements

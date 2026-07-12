@@ -15,3 +15,7 @@ Feature:Search a Course
             | searchTerm |
             | Frontend   |
             | J-TM-T-006 |
+    @searchcourse @noresults
+    Scenario: Verify searching with a non-existing courses
+        When the admin enters a random search term in the course search bar
+        Then no courses should be displayed in the course list

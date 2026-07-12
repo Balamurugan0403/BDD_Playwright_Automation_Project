@@ -11,6 +11,6 @@ Feature: Edit a Course
     Scenario: Verify the admin can edit an existing course with updated details
         When the admin searches for the course by client name
         And the admin selects the "Edit Course" option for the searched course
-        And the admin updates the course details using "editCourseSetup" test data
+        And the admin updates the course details with valid changes
         And the admin saves the changes
         Then the course list should reflect the updated details
