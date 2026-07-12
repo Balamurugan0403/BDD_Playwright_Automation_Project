@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
-import { CustomWorld } from "../../main/support/CustomWorld";
-import loginData from "../../resources/data/loginData.json";
+import { CustomWorld } from "../../../main/support/CustomWorld";
+import loginData from "../../../resources/data/loginData.json";
 
 setDefaultTimeout(60000);
 
