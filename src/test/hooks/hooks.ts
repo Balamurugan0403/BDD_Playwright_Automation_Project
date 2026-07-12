@@ -11,6 +11,7 @@ import { ServiceModelPage } from '../pages/ServiceModelPage';
 import { AddCoursePage } from '../pages/AddCoursePage';
 import {SearchCoursePage} from '../pages/SearchCoursePage';
 import { CourseFilterPage } from "../../test/pages/CourseFilterPage";
+import { PedagogyPage } from "../../test/pages/PedagogyPage";
 
 import { logger } from '../../main/utils/logger';
 
@@ -52,6 +53,7 @@ Before(async function (this: CustomWorld, scenario) {
     this.addCoursePage=new AddCoursePage(this.page);
     this.searchCoursePage=new SearchCoursePage(this.page);
     this.courseFilterPage=new CourseFilterPage(this.page);
+    this.pedagogyPage=new PedagogyPage(this.page);
 });
 
 After(async function (this: CustomWorld, scenario) {
