@@ -13,14 +13,20 @@ export class CourseStructurePage extends BasePage {
     private skillCheckbox = (skill: string) =>this.page.locator(`//label[normalize-space(text())='${skill}']//input[@type='checkbox']`);
     private submitBtn =this.page.locator("//button[@type='submit']");
     private successMsg = this.page.locator("text=Operation completed successfully!");
-    private moduleRows =this.page.locator("tbody tr");
+    private moduleRows = this.page.locator("table").nth(1).locator("tbody > tr");
     private titleValidationError = this.page.getByText("Title is required for module");
-    private moduleTitleLocator = (moduleTitle: string): Locator => this.page.locator(`//span[normalize-space()='${moduleTitle}']`);
+    //private moduleTitleLocator = (moduleTitle: string): Locator => this.page.locator("tbody").locator(`xpath=.//span[normalize-space()='${moduleTitle}']`);
+
+
+    private moreButton = this.page.getByText("More");
+    private hierarchyToggle = this.page.locator("label:has(input.sr-only)").nth(0);
+    private moduleMoreButton = (row: Locator) => row.locator("button").first();
+    private deleteOption = this.page.getByText("Delete", { exact: true });
+    private confirmDeleteButton = this.page.getByRole("button", {name: /^Delete$/i,});
+    private cancelDeleteButton = this.page.getByRole("button", {name: /^Cancel$/i,});
 
     async searchCourse(courseId: string){
         try {
-            logger.info(`Searching course: ${courseId}`);
-
             await this.searchBox.waitFor({ state: "visible", timeout: 100000 });
             await this.fill(this.searchBox, courseId);
             await this.searchBox.press("Enter");
@@ -36,10 +42,9 @@ export class CourseStructurePage extends BasePage {
 
     async clickAddCourseStructure(){
         try {
-            logger.info("Clicking Add Course Structure button.");
             await this.addCourseStructureButton.waitFor({state: "visible",timeout: 10000});
             await this.click(this.addCourseStructureButton);
-            logger.info("Clicked Add Course Structure button.");
+            logger.info("Navigated to adding course structure page");
         } 
         catch (error) {
             logger.error(`Failed to click Add Course Structure button: ${error}`);
@@ -49,7 +54,6 @@ export class CourseStructurePage extends BasePage {
 
     async clickAddModuleIcon(){
         try {
-            logger.info("Clicking Add Module icon.");
             await this.addModuleIcon.waitFor({state: "visible",timeout: 10000});
             await this.click(this.addModuleIcon)
             logger.info("Clicked Add Module icon.");
@@ -63,7 +67,6 @@ export class CourseStructurePage extends BasePage {
 
     async enterModuleTitle(moduleTitle: string){
         try {
-            logger.info(`Entering module title: ${moduleTitle}`);
             await this.moduleTitleTextBox.waitFor({state: "visible",timeout:10000});
             await this.fill(this.moduleTitleTextBox, moduleTitle)
             logger.info(`Module title '${moduleTitle}' entered successfully.`);
@@ -76,7 +79,6 @@ export class CourseStructurePage extends BasePage {
 
     async enterDescription(description: string){
         try {
-            logger.info("Entering description.");
             await this.fill(this.descriptionTextBox, description);
             logger.info("Module description entered successfully.");
         } 
@@ -92,12 +94,9 @@ export class CourseStructurePage extends BasePage {
             for (const skill of skills) {
                 const checkbox = this.skillCheckbox(skill);
                 await checkbox.waitFor({ state: "visible" });
-
-                if (!(await checkbox.isChecked())) {
-                    await checkbox.check();
-                }
+                await checkbox.check();
             }
-            logger.info("Skills selected successfully.");
+            logger.info("Skills selected");
         } 
         catch (error) {
             logger.error(`Failed to select skills: ${error}`);
@@ -107,22 +106,24 @@ export class CourseStructurePage extends BasePage {
 
     async clickSubmitButton(){
         try {
-            logger.info("Clicking Submit button.");
             await this.submitBtn.waitFor({state: "visible",timeout: 10000});
             await this.click(this.submitBtn);
-            logger.info("Clicked Submit button.");
         } 
         catch (error) {
             logger.error(`Failed to click Submit button: ${error}`);
             throw new Error(`Failed to click Submit button: ${error}`);
         }
     }
-    public async getModuleCount(moduleTitle: string) {
-        return await this.moduleTitleLocator(moduleTitle).count();
+    public async getModuleCount() {
+        await expect(this.moduleRows.first()).toBeVisible({ timeout: 100000 });
+        return await this.moduleRows.count();
     }
 
-    public async verifyModuleCountIncreased(moduleTitle: string, previousCount: number){
-        await expect(this.moduleTitleLocator(moduleTitle)).toHaveCount(previousCount + 1);
+    public async verifyModuleCountIncreased(previousCount: number){
+        const currentCount = await this.getModuleCount();
+        // console.log("Previous Count:", previousCount);
+        // console.log("Current Count:", currentCount);
+        expect(currentCount).toBe(previousCount + 1);
     }
     
     async addModule(moduleTitle: string, description: string, skills: string[]){
@@ -133,7 +134,6 @@ export class CourseStructurePage extends BasePage {
             await this.enterDescription(description);
             await this.selectSkills(skills);
             await this.clickSubmitButton();
-            // await this.moduleTitleTextBox.waitFor({state: "hidden",});
             logger.info(`Module '${moduleTitle}' added successfully.`);
 
         } 
@@ -145,9 +145,9 @@ export class CourseStructurePage extends BasePage {
 
     async addModuleWithoutTitle(){
         try {
-            logger.info("Adding module without title");
             await this.clickAddModuleIcon();
             await this.clickSubmitButton();
+            logger.info("Module added without mandatory fields")
         } 
         catch (error) {
             logger.error(`Failed to add module without title: ${error}`);
@@ -157,10 +157,9 @@ export class CourseStructurePage extends BasePage {
 
     async verifySuccessMessage(){
         try {
-            logger.info("Verifying Success Message");
             await this.successMsg.waitFor({state: "visible",timeout: 10000});
             await expect(this.successMsg).toContainText("Operation completed successfully!");
-            logger.info("Success message verified successfully");
+            logger.info("Module added success message displayed");
         } 
         catch (error) {
             logger.error(`Failed to verify success message: ${error}`);
@@ -170,27 +169,81 @@ export class CourseStructurePage extends BasePage {
     
     async verifyTitleValidationMessage(){
         try {
-            logger.info("Verifying Title Validation Message");
             await expect(this.titleValidationError).toBeVisible();
             await expect(this.titleValidationError).toHaveText("Title is required for module");
+            logger.info("Mandatory field required error message displayed")
         } 
         catch (error) {
-            logger.error(`Failed to verify title validation message: ${error}`);
-            throw new Error(`Failed to verify title validation message: ${error}`);
+            logger.error(`Failed to verify mandatory field validation message: ${error}`);
+            throw new Error(`Failed to verify mandatory field validation message: ${error}`);
         }
     }
 
 
     async verifyModulePresent(moduleTitle: string){
         try {
-            logger.info(`Verifying module: ${moduleTitle}`);
             const moduleRow = this.moduleRows.filter({hasText: moduleTitle,}).first();
             await expect(moduleRow).toBeVisible({timeout: 10000,});
-            logger.info(`Verified module '${moduleTitle}'.`);
+            logger.info(`Module '${moduleTitle}' is present.`);
         } 
         catch (error) {
             logger.error(`Module '${moduleTitle}' was not found: ${error}`);
             throw new Error(`Module '${moduleTitle}' was not found: ${error}`);
         }
     }
+
+    async enableHierarchyOption() {
+    try {
+        await this.moreButton.click();
+
+        if (!(await this.hierarchyToggle.isChecked())) {
+            await this.hierarchyToggle.check();
+            logger.info("Hierarchy option enabled");
+        } else {
+            logger.info("Hierarchy option is already enabled");
+        }
+
+        await this.page.locator("body").click({ position: { x: 10, y: 10 } });
+    } catch (error) {
+        logger.error("Failed to enable the Hierarchy option");
+        throw error;
+    }
+}
+    async deleteModule(moduleTitle: string) {
+        try {
+            const row = this.moduleRows.filter({has: this.page.getByText(moduleTitle, { exact: true })}).first();
+            await expect(row).toBeVisible();
+            await this.moduleMoreButton(row).click();
+            await expect(this.deleteOption).toBeVisible();
+            await this.deleteOption.click();
+        } 
+        catch (error) {
+            logger.error(`Failed to delete module '${moduleTitle}'`);
+            throw new Error(`Failed to delete module '${moduleTitle}'`);
+        }
+
+    }
+
+    async confirmDeleteAction(){
+        await this.confirmDeleteButton.click();
+        await expect(this.successMsg).toBeVisible({ timeout: 120000 });
+        logger.info(`Module deleted successfully`);
+    }
+
+    async cancelDeleteAction(){
+        await this.cancelDeleteButton.click();
+        await expect(this.moreButton).toBeVisible({ timeout: 120000 });
+        logger.info("Module delete cancelled");
+    }
+
+    async verifyModuleDeleted(moduleTitle: string) {
+        try {
+        await expect(this.successMsg).toBeVisible({timeout: 120000});
+
+        logger.info(`Verified module '${moduleTitle}' is deleted.`);
+    } catch (error) {
+        logger.error(`Deleted module '${moduleTitle}' is still present.`);
+        throw error;
+    }
+}
 }

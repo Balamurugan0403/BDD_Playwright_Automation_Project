@@ -10,7 +10,6 @@ export class AddCoursePage extends BasePage {
     private serviceModelDropdown = this.page.getByRole("combobox").nth(2);
     private courseCategoryDropdown = this.page.getByRole("combobox").nth(3);
     private courseNameDropdown = this.page.getByRole("combobox").nth(4);
-    private courseIdField = this.page.locator("input[readonly]").first();
     private nextButton = this.page.getByRole("button", { name: "Next" });
     private validationErrorMessage = this.page.locator("div.text-red-600 span");
 
@@ -27,22 +26,13 @@ export class AddCoursePage extends BasePage {
     private weDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('We Do', { exact: true }) }).locator('button[role="combobox"]');
     private youDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('You Do', { exact: true }) }).locator('button[role="combobox"]');
 
-    // Resource Type panel (appears after selecting a pedagogy value)
-    private resourceTypeIDoTab = this.page.getByRole("button", { name: /^I Do/ });
-    private resourceTypeWeDoTab = this.page.getByRole("button", { name: /^We Do/ });
-    private resourceTypeYouDoTab = this.page.getByRole("button", { name: /^You Do/ });
-
     private previewCreateButton = this.page.getByRole("button", { name: "Preview & Create" });
     private coursePreviewHeading = this.page
         .getByRole("heading", { name: "Course Layout Preview" })
         .last();
     private createCourseBtn = this.page.getByRole("button", { name: "Save Course Layout" });
-    private successMessage = this.page
-        .getByText("Course created successfully", { exact: false })
-        .or(this.page.getByText("Course ID is Required", { exact: false }));
-    private errorMessage = this.page
-    .getByText("Request failed with status code 403", { exact: false })
-    .or(this.page.getByText("Course ID is Required", { exact: false }));
+    private successMessage = this.page.getByText("Course created successfully", { exact: false });
+    private errorMessage = this.page.getByText("Request failed with status code 403", { exact: false });
 
     // Course Basic Configuration methods
     async clickAddCourse() {
@@ -167,8 +157,6 @@ export class AddCoursePage extends BasePage {
 
         await this.check(skillCheckbox);
     }
-
-    // Resource Type panel methods
     async switchResourceTab(tabName: "I Do" | "We Do" | "You Do") {
         logger.info(`switching to "${tabName}" resource type tab`);
 

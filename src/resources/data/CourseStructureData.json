@@ -4,6 +4,11 @@
       "moduleTitle": "Introduction to Java",
       "description": "This module covers Java fundamentals.",
       "skills": ["Java", "MySQL"]
+    },
+    {
+      "moduleTitle": "Module@1",
+      "description": "Title with digits and special characters",
+      "skills": ["C", "C++"]
     }
   ],
   "existingModule": [
