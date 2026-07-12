@@ -18,10 +18,12 @@ export class CourseStructurePage extends BasePage {
     //private moduleTitleLocator = (moduleTitle: string): Locator => this.page.locator("tbody").locator(`xpath=.//span[normalize-space()='${moduleTitle}']`);
 
 
-    private moreButton = this.page.locator(".hidden sm:inline tracking-tight");
-    private hierarchyToggle = this.page.locator(".sr-only").nth(0);
+    private moreButton = this.page.getByText("More");
+    private hierarchyToggle = this.page.locator("label:has(input.sr-only)").nth(0);
+    private moduleMoreButton = (row: Locator) => row.locator("button").first();
     private deleteOption = this.page.getByText("Delete", { exact: true });
     private confirmDeleteButton = this.page.getByRole("button", {name: /^Delete$/i,});
+    private cancelDeleteButton = this.page.getByRole("button", {name: /^Cancel$/i,});
 
     async searchCourse(courseId: string){
         try {
@@ -189,4 +191,59 @@ export class CourseStructurePage extends BasePage {
             throw new Error(`Module '${moduleTitle}' was not found: ${error}`);
         }
     }
+
+    async enableHierarchyOption() {
+    try {
+        await this.moreButton.click();
+
+        if (!(await this.hierarchyToggle.isChecked())) {
+            await this.hierarchyToggle.check();
+            logger.info("Hierarchy option enabled");
+        } else {
+            logger.info("Hierarchy option is already enabled");
+        }
+
+        await this.page.locator("body").click({ position: { x: 10, y: 10 } });
+    } catch (error) {
+        logger.error("Failed to enable the Hierarchy option");
+        throw error;
+    }
+}
+    async deleteModule(moduleTitle: string) {
+        try {
+            const row = this.moduleRows.filter({has: this.page.getByText(moduleTitle, { exact: true })}).first();
+            await expect(row).toBeVisible();
+            await this.moduleMoreButton(row).click();
+            await expect(this.deleteOption).toBeVisible();
+            await this.deleteOption.click();
+        } 
+        catch (error) {
+            logger.error(`Failed to delete module '${moduleTitle}'`);
+            throw new Error(`Failed to delete module '${moduleTitle}'`);
+        }
+
+    }
+
+    async confirmDeleteAction(){
+        await this.confirmDeleteButton.click();
+        await expect(this.successMsg).toBeVisible({ timeout: 120000 });
+        logger.info(`Module deleted successfully`);
+    }
+
+    async cancelDeleteAction(){
+        await this.cancelDeleteButton.click();
+        await expect(this.moreButton).toBeVisible({ timeout: 120000 });
+        logger.info("Module delete cancelled");
+    }
+
+    async verifyModuleDeleted(moduleTitle: string) {
+        try {
+        await expect(this.successMsg).toBeVisible({timeout: 120000});
+
+        logger.info(`Verified module '${moduleTitle}' is deleted.`);
+    } catch (error) {
+        logger.error(`Deleted module '${moduleTitle}' is still present.`);
+        throw error;
+    }
+}
 }
