@@ -1,4 +1,4 @@
-@Samiha
+@CourseFilter
 Feature: Course Filter_SAMIHA_08_JULY_2026
 
   As an LMS user
