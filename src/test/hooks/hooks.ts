@@ -12,6 +12,7 @@ import { AddCoursePage } from '../pages/AddCoursePage';
 import { SearchCoursePage } from '../pages/SearchCoursePage';
 import { CourseFilterPage } from "../../test/pages/CourseFilterPage";
 import { EditCoursePage } from '../pages/EditCoursePage';
+import { PedagogyPage } from "../../test/pages/PedagogyPage";
 
 import { logger } from '../../main/utils/logger';
 
@@ -51,6 +52,7 @@ Before(async function (this: CustomWorld, scenario) {
     this.searchCoursePage = new SearchCoursePage(this.page);
     this.courseFilterPage = new CourseFilterPage(this.page);
     this.editCoursePage = new EditCoursePage(this.page);
+    this.pedagogyPage=new PedagogyPage(this.page);
 });
 
 After(async function (this: CustomWorld, scenario) {
