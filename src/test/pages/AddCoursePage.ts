@@ -3,7 +3,6 @@ import { expect } from "@playwright/test";
 import { logger } from "../../main/utils/logger";
 
 export class AddCoursePage extends BasePage {
-    // Course Basic Configuration
     private addCourseBtn = this.page.getByRole("button", { name: "Add Course" });
     private courseClientDropdown = this.page.getByRole("combobox").nth(0);
     private serviceTypeDropdown = this.page.getByRole("combobox").nth(1);
@@ -19,8 +18,6 @@ export class AddCoursePage extends BasePage {
 
     private moduleCheckbox = this.page.locator("#module-checkbox");
     private submoduleCheckbox = this.page.locator("#submodule-checkbox");
-    private topicCheckbox = this.page.locator("#topic-checkbox");
-    private subtopicCheckbox = this.page.locator("#subtopic-checkbox");
 
     private iDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('I Do', { exact: true }) }).locator('button[role="combobox"]');
     private weDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('We Do', { exact: true }) }).locator('button[role="combobox"]');
@@ -173,7 +170,6 @@ export class AddCoursePage extends BasePage {
     }
 
     async verifyResourceTypeState(resourceName: string, expectedOn: boolean) {
-        logger.info(`verifying resource type "${resourceName}" is ${expectedOn ? "ON" : "OFF"}`);
         const row = this.page
             .locator('div', { hasText: resourceName })
             .filter({ has: this.page.locator('button[role="switch"]') })

@@ -33,6 +33,11 @@ When('the admin fills in the Course Basic Configuration form with valid details'
     await this.addCoursePage.fillCourseBasicConfiguration(data);
 });
 
+When('the admin fills in the Course Basic Configuration form with an existing course name', async function () {
+    const data = courseData.existingCourseSetup.basicConfigurationData;
+    await this.addCoursePage.fillCourseBasicConfiguration(data);
+});
+
 Then('the admin is navigated to the {string} tab', async function (tab: string) {
     expect(tab).toBe("Course Hierarchy and Layout");
     await this.addCoursePage.verifyCourseHierarchyTab();
@@ -40,6 +45,11 @@ Then('the admin is navigated to the {string} tab', async function (tab: string) 
 
 When('the admin fills the Course Hierarchy and Layout section with valid details', async function () {
     const data = courseData.validCourseSetup.courseHierarchy;
+    await this.addCoursePage.fillCourseHierarchyAndLayout(data);
+});
+
+When('the admin fills the Course Hierarchy and Layout section with an existing course name', async function () {
+    const data = courseData.existingCourseSetup.courseHierarchy;
     await this.addCoursePage.fillCourseHierarchyAndLayout(data);
 });
 
@@ -58,6 +68,7 @@ Then('the course layout preview should be displayed', async function () {
 Then('a course success message should be displayed', async function () {
     await this.addCoursePage.verifySuccessMessage();
 });
+
 Then('a duplicate course error message should be displayed', async function () {
-   await this.addCoursePage.verifyErrorMessage();
+    await this.addCoursePage.verifyErrorMessage();
 });

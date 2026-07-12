@@ -30,8 +30,6 @@ export class LoginPage extends BasePage {
         await this.enterEmail(email);
         await this.enterPassword(password);
     }
-
-    // Keep this method because other step files use it
     async login(email: string, password: string) {
         await this.enterCredentials(email, password);
         await this.clickLoginButton();
