@@ -10,22 +10,24 @@ import { ServiceModelPage } from "../../test/pages/ServiceModelPage";
 import { Service } from "../types/Service";
 import { SearchCoursePage } from "../../test/pages/SearchCoursePage";
 import { CourseFilterPage } from "../../test/pages/CourseFilterPage";
+import { EditCoursePage } from "../../test/pages/EditCoursePage";
 import { PedagogyPage } from "../../test/pages/PedagogyPage";
 
-export class CustomWorld extends World{
-    browser!:Browser;
-    context!:BrowserContext;
-    page!:Page;
-    loginPage!:LoginPage;
-    courseCategoryPage!:CourseCategoryPage;
+export class CustomWorld extends World {
+    browser!: Browser;
+    context!: BrowserContext;
+    page!: Page;
+    loginPage!: LoginPage;
+    courseCategoryPage!: CourseCategoryPage;
     dynamicFieldManagementPage!: DynamicFieldManagementPage;
     sidebarPage!: SidebarPage;
-    serviceModelPage!: ServiceModelPage; 
+    serviceModelPage!: ServiceModelPage;
     courseStructurePage!: CourseStructurePage;
     addCoursePage!: AddCoursePage;
     service!: Service
-    searchCoursePage!:SearchCoursePage;
-    courseFilterPage!:CourseFilterPage;
+    searchCoursePage!: SearchCoursePage;
+    courseFilterPage!: CourseFilterPage;
+    editCoursePage!: EditCoursePage;
     pedagogyPage!:PedagogyPage;
 }
 
