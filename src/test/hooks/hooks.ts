@@ -9,27 +9,26 @@ import { config } from '../../main/config/config';
 import { SidebarPage } from '../pages/SidebarPage';
 import { ServiceModelPage } from '../pages/ServiceModelPage';
 import { AddCoursePage } from '../pages/AddCoursePage';
-import {SearchCoursePage} from '../pages/SearchCoursePage';
+import { SearchCoursePage } from '../pages/SearchCoursePage';
 import { CourseFilterPage } from "../../test/pages/CourseFilterPage";
+import { EditCoursePage } from '../pages/EditCoursePage';
+import { PedagogyPage } from "../../test/pages/PedagogyPage";
 
 import { logger } from '../../main/utils/logger';
 
 let browser: Browser;
 BeforeAll(async () => {
-    if (config.browser === "chromium")
-    {
+    if (config.browser === "chromium") {
         logger.info("Launching chrome browser");
         browser = await chromium.launch({ headless: config.headless, slowMo: config.slowMo });
         logger.info("Chrome browser launched");
     }
-    else if (config.browser === "firefox")
-    {
+    else if (config.browser === "firefox") {
         logger.info("Launching firefox browser");
         browser = await firefox.launch({ headless: config.headless, slowMo: config.slowMo });
         logger.info("Firefox browser launched");
     }
-    else
-    {
+    else {
         logger.info("Launching safari browser");
         browser = await webkit.launch({ headless: config.headless, slowMo: config.slowMo });
         logger.info("Safari browser launched");
@@ -49,9 +48,11 @@ Before(async function (this: CustomWorld, scenario) {
     this.sidebarPage = new SidebarPage(this.page);
     this.serviceModelPage = new ServiceModelPage(this.page)
     this.courseStructurePage = new CourseStructurePage(this.page);
-    this.addCoursePage=new AddCoursePage(this.page);
-    this.searchCoursePage=new SearchCoursePage(this.page);
-    this.courseFilterPage=new CourseFilterPage(this.page);
+    this.addCoursePage = new AddCoursePage(this.page);
+    this.searchCoursePage = new SearchCoursePage(this.page);
+    this.courseFilterPage = new CourseFilterPage(this.page);
+    this.editCoursePage = new EditCoursePage(this.page);
+    this.pedagogyPage=new PedagogyPage(this.page);
 });
 
 After(async function (this: CustomWorld, scenario) {

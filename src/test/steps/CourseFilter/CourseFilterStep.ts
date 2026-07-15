@@ -1,6 +1,6 @@
 import { When, Then } from "@cucumber/cucumber";
-import { CustomWorld } from "../../main/support/CustomWorld";
-import { readExcelData } from "../../main/utils/excelReader";
+import { CustomWorld } from "../../../main/support/CustomWorld";
+import { readExcelData } from "../../../main/utils/excelReader";
 
 When("User navigates to the Course Management page", async function (this: CustomWorld) {
     await this.courseFilterPage.clickCourseManagement();
@@ -21,9 +21,7 @@ Then("Only {string} courses should be displayed", async function (this: CustomWo
 
 
 When("User selects a level from the Level dropdown", async function (this: CustomWorld) {
-
-    const data = readExcelData("FilterLevels.xlsx", "Levels") as { Level: string }[];
-
+    const data = readExcelData("CourseFilter.xlsx", "Levels") as { Level: string }[];
     for (const row of data) {
         await this.courseFilterPage.selectLevel(row.Level);
     }
@@ -31,9 +29,7 @@ When("User selects a level from the Level dropdown", async function (this: Custo
 });
 
 Then("Only courses matching the selected level should be displayed", async function (this: CustomWorld) {
-
-    const data = readExcelData("FilterLevels.xlsx", "Levels") as { Level: string }[];
-
+    const data = readExcelData("CourseFilter.xlsx", "Levels") as { Level: string }[];
     for (const row of data) {
         await this.courseFilterPage.selectLevel(row.Level);
         await this.courseFilterPage.verifySelectedLevel(row.Level);
@@ -42,24 +38,19 @@ Then("Only courses matching the selected level should be displayed", async funct
 
 
 When("User opens the Level dropdown", async function (this: CustomWorld) {
-
     await this.courseFilterPage.clickLevelDropdown();
 
 });
 
 When("User opens the Sort By dropdown", async function (this: CustomWorld) {
-
     await this.courseFilterPage.clickSortByDropdown();
 
 });
-When("User selects {string} from the Sort By dropdown", async function (this: CustomWorld, sortOption: string) {
-
-    await this.courseFilterPage.selectSortBy(sortOption);
-
+When("User selects Course Name from the Sort By dropdown", async function (this: CustomWorld) {
+    await this.courseFilterPage.selectSortByCourseName();
 });
 
-Then("Courses should be displayed in date order", async function (this: CustomWorld) {
-
-    await this.courseFilterPage.verifySortedByDate();
-
+Then("Courses should be displayed in reverse alphabetical order by course name", async function (this: CustomWorld) {
+    await this.courseFilterPage.verifySortedByCourseName();
+    
 });

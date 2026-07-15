@@ -48,4 +48,28 @@ export class BasePage{
         await locator.uncheck();
     }
 
+     async getAllText(locator: Locator): Promise<string[]> {
+        try {
+            return await locator.allInnerTexts();
+        } catch (error) {
+            throw error;
+        }
+    }
+
+     async clickUntilDisabled(nextButtonLocator: Locator): Promise<void> {
+        try {
+            let pageCount = 1;
+            while (true) {
+                const isDisabled = await nextButtonLocator.getAttribute('disabled');
+                if (isDisabled !== null) {
+                    break;
+                }
+                await this.click(nextButtonLocator);
+                pageCount++;
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }

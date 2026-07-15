@@ -13,9 +13,17 @@ export class CourseStructurePage extends BasePage {
     private skillCheckbox = (skill: string) =>this.page.locator(`//label[normalize-space(text())='${skill}']//input[@type='checkbox']`);
     private submitBtn =this.page.locator("//button[@type='submit']");
     private successMsg = this.page.locator("text=Operation completed successfully!");
-    private moduleRows =this.page.locator("tbody tr");
+    private moduleRows = this.page.locator("table").nth(1).locator("tbody > tr");
     private titleValidationError = this.page.getByText("Title is required for module");
     //private moduleTitleLocator = (moduleTitle: string): Locator => this.page.locator("tbody").locator(`xpath=.//span[normalize-space()='${moduleTitle}']`);
+
+
+    private moreButton = this.page.getByText("More");
+    private hierarchyToggle = this.page.locator("label:has(input.sr-only)").nth(0);
+    private moduleMoreButton = (row: Locator) => row.locator("button").first();
+    private deleteOption = this.page.getByText("Delete", { exact: true });
+    private confirmDeleteButton = this.page.getByRole("button", {name: /^Delete$/i,});
+    private cancelDeleteButton = this.page.getByRole("button", {name: /^Cancel$/i,});
 
     async searchCourse(courseId: string){
         try {
@@ -107,11 +115,15 @@ export class CourseStructurePage extends BasePage {
         }
     }
     public async getModuleCount() {
-        return await this.courseRow.count();
+        await expect(this.moduleRows.first()).toBeVisible({ timeout: 100000 });
+        return await this.moduleRows.count();
     }
 
     public async verifyModuleCountIncreased(previousCount: number){
-        await expect(this.getModuleCount).toBe(previousCount+1);
+        const currentCount = await this.getModuleCount();
+        // console.log("Previous Count:", previousCount);
+        // console.log("Current Count:", currentCount);
+        expect(currentCount).toBe(previousCount + 1);
     }
     
     async addModule(moduleTitle: string, description: string, skills: string[]){
@@ -179,4 +191,59 @@ export class CourseStructurePage extends BasePage {
             throw new Error(`Module '${moduleTitle}' was not found: ${error}`);
         }
     }
+
+    async enableHierarchyOption() {
+    try {
+        await this.moreButton.click();
+
+        if (!(await this.hierarchyToggle.isChecked())) {
+            await this.hierarchyToggle.check();
+            logger.info("Hierarchy option enabled");
+        } else {
+            logger.info("Hierarchy option is already enabled");
+        }
+
+        await this.page.locator("body").click({ position: { x: 10, y: 10 } });
+    } catch (error) {
+        logger.error("Failed to enable the Hierarchy option");
+        throw error;
+    }
+}
+    async deleteModule(moduleTitle: string) {
+        try {
+            const row = this.moduleRows.filter({has: this.page.getByText(moduleTitle, { exact: true })}).first();
+            await expect(row).toBeVisible();
+            await this.moduleMoreButton(row).click();
+            await expect(this.deleteOption).toBeVisible();
+            await this.deleteOption.click();
+        } 
+        catch (error) {
+            logger.error(`Failed to delete module '${moduleTitle}'`);
+            throw new Error(`Failed to delete module '${moduleTitle}'`);
+        }
+
+    }
+
+    async confirmDeleteAction(){
+        await this.confirmDeleteButton.click();
+        await expect(this.successMsg).toBeVisible({ timeout: 120000 });
+        logger.info(`Module deleted successfully`);
+    }
+
+    async cancelDeleteAction(){
+        await this.cancelDeleteButton.click();
+        await expect(this.moreButton).toBeVisible({ timeout: 120000 });
+        logger.info("Module delete cancelled");
+    }
+
+    async verifyModuleDeleted(moduleTitle: string) {
+        try {
+        await expect(this.successMsg).toBeVisible({timeout: 120000});
+
+        logger.info(`Verified module '${moduleTitle}' is deleted.`);
+    } catch (error) {
+        logger.error(`Deleted module '${moduleTitle}' is still present.`);
+        throw error;
+    }
+}
 }
