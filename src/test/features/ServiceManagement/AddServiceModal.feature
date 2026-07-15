@@ -5,29 +5,19 @@ Feature: M_VIGNESHWARAN_2026_07_10_LMS_Add_Service_Model_Feature
     Given the user launched the application
     And the user logged in as admin
     When the user clicks the "Dynamic Field Settings" option from the sidebar
-    And the user clicks the Add service button
-    And the user fill the name and description
-    And the user clicks the create service button
-    Then the popup alert should be displayed as "Service created successfully"
+    And the user creates a new service
 
-  Scenario: Verify add service with name and description
-    And the user fill the name and description
-    And the user clicks the create service button
-    Then the popup alert should be displayed as "Service created successfully"
-    When the user clicks the "Course Management" option from the sidebar
-    And the user clicks the Add Course button
-    And the user clicks the Service type dropdown
-    Then the user should see the added service as option
-
-  
-  Scenario Outline: Verify add service with empty fields cannot be created
-    When the user fill the service name as "<name>"
-    And the user fill the service description as "<description>"
-    And the user clicks the create service button
-    Then the validation message should be displayed
+  Scenario Outline: Verify add service model with empty fields cannot be created
+    And the user enter the service name in the search field
+    And the user clicks the click to view button in the search result
+    And the user clicks the Add model button
+    And the user fill the "testcase" service model details
+    And the user clicks the create model button
+    Then the validation message should be displayed as "<message>"
 
     Examples:
-      | name                 | description                    |
-      | Software Development |                                |
-      |                      | Full Stack Development Service |
-      |                      |                                |
+      | testcase                           | message                   |
+      | valid                              | Model Crated successfully |
+      | without model name                 | Validation Error          |
+      | with model description             | Validation Error          |
+      | without model name and description | Validation Error          |
