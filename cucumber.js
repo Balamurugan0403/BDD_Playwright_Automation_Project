@@ -42,7 +42,8 @@ module.exports = {
         "allure-cucumberjs/reporter",
         "json:reports/cucumber-report.json",
         "html:reports/cucumber-report.html",
-        "rerun:rerun/@rerun.txt"
+        "rerun:rerun/@rerun.txt",
+        "junit:reports/junit-report.xml"
         ],
 
         parallel: 1
