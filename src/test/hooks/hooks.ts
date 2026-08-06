@@ -9,7 +9,7 @@ import { config } from '../../main/config/config';
 import { SidebarPage } from '../pages/SidebarPage';
 import { ServiceModelPage } from '../pages/ServiceModelPage';
 import { AddCoursePage } from '../pages/AddCoursePage';
-import { SearchCoursePage } from '../pages/SearchCoursePage';
+//import { SearchCoursePage } from '../pages/SearchCoursePage';
 import { CourseFilterPage } from "../../test/pages/CourseFilterPage";
 import { EditCoursePage } from '../pages/EditCoursePage';
 import { PedagogyPage } from "../../test/pages/PedagogyPage";
@@ -49,7 +49,7 @@ Before(async function (this: CustomWorld, scenario) {
     this.serviceModelPage = new ServiceModelPage(this.page)
     this.courseStructurePage = new CourseStructurePage(this.page);
     this.addCoursePage = new AddCoursePage(this.page);
-    this.searchCoursePage = new SearchCoursePage(this.page);
+    //this.searchCoursePage = new SearchCoursePage(this.page);
     this.courseFilterPage = new CourseFilterPage(this.page);
     this.editCoursePage = new EditCoursePage(this.page);
     this.pedagogyPage=new PedagogyPage(this.page);
