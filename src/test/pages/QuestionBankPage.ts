@@ -37,6 +37,7 @@ export class QuestionBankPage extends BasePage {
     private searchQuestionsInput = this.page.locator(
         "//input[@placeholder='Search questions...']"
     );
+    private deleteIcon = this.page.locator(".lucide-trash2").locator("..");
 
     async clickCreateQuestion() {
         logger.info("Clicking Create Question button");
@@ -45,18 +46,23 @@ export class QuestionBankPage extends BasePage {
         await this.mcqQuestionOption.click();
     }
 
-    async fillQuestionDetails() {
+    async fillQuestionDetails(data: {
+        Question: string;
+        Category: string;
+        Option1: string;
+        Option2: string;
+        CorrectOptionIndex: number;
+    }) {
         logger.info("Filling question details");
-        await this.questionInput.fill(
-            "Which operating system component is responsible for managing processes and allocating CPU time?"
-        );
-        await this.categoryInput.fill("Operating Systems");
-        await this.firstOptionInput.fill("Process Scheduler");
-        await this.secondOptionInput.fill("File System");
+        await this.questionInput.fill(data.Question);
+        await this.categoryInput.fill(data.Category);
+        await this.firstOptionInput.fill(data.Option1);
+        await this.secondOptionInput.fill(data.Option2);
         logger.info("Opening Answer Key");
         await this.answerKeyButton.click();
         logger.info("Selecting the correct answer");
-        await this.correctAnswer.click();
+        const correctOptionText = data.CorrectOptionIndex === 1 ? data.Option1 : data.Option2;
+        await this.page.getByRole("button", { name: correctOptionText, exact: true }).click();
         logger.info("Clicking Done");
         await this.doneButton.click();
     }
@@ -66,18 +72,40 @@ export class QuestionBankPage extends BasePage {
         await this.saveQuestionsButton.click();
     }
 
-    async verifyQuestionDisplayed() {
+    async verifyQuestionDisplayed(category: string, questionText: string) {
         logger.info("Searching for created question");
-        await this.searchQuestionsInput.fill("Operating Systems");
+        await this.searchQuestionsInput.fill(category);
         await this.page.waitForTimeout(2000);
         logger.info("Verifying the matching question is displayed");
         await expect(
-            this.page.getByText(
-                "Which operating system component is responsible for managing processes and allocating CPU time?",
-                { exact: true }
-            ).first()
+            this.page.getByText(questionText, { exact: true }).first()
         ).toBeVisible({
             timeout: 15000
         });
+    }
+
+    async searchQuestion(category: string) {
+        logger.info("Searching for question");
+        await this.searchQuestionsInput.fill(category);
+        await this.page.waitForTimeout(2000);
+    }
+
+    async clickDeleteIcon() {
+        logger.info("Clicking delete icon");
+        this.page.once("dialog", async (dialog) => {
+            await dialog.accept();
+        });
+        await this.deleteIcon.first().click();
+    }
+
+    async confirmDeletion() {
+        logger.info("Deletion confirmed");
+    }
+
+    async verifyQuestionNotDisplayed(questionText: string) {
+        logger.info("Verifying question is no longer displayed");
+        await expect(
+            this.page.getByText(questionText, { exact: true })
+        ).toHaveCount(0);
     }
 }

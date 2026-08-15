@@ -31,6 +31,7 @@ export class CustomWorld extends World {
     editCoursePage!: EditCoursePage;
     pedagogyPage!:PedagogyPage;
     questionBankPage!: QuestionBankPage;
+    questionData!: QuestionData;
 }
 
 setWorldConstructor(CustomWorld);

@@ -8,20 +8,7 @@ let currentCategory: string;
 let currentQuestionText: string;
 
 
-When("the user clicks the {string} button", async function (
-    this: CustomWorld,
-    buttonName: string
-) {
-    if (buttonName === "Create Question") {
-        await this.questionBankPage.clickCreateQuestion();
-
-    } else if (buttonName === "Save Questions") {
-        await this.questionBankPage.clickSaveQuestions();
-    }
-});
-
-
-When("the user fills the question details for {string}", async function (
+When("the user searches for the question {string}", async function (
     this: CustomWorld,
     testCase: string
 ) {
@@ -39,12 +26,27 @@ When("the user fills the question details for {string}", async function (
     }
     currentCategory = data.Category;
     currentQuestionText = data.Question;
-    await this.questionBankPage.fillQuestionDetails(data);
+    await this.questionBankPage.searchQuestion(currentCategory);
 });
 
 
-Then("the question should be displayed in the question list", async function (
+When("the user clicks the {string} icon for the question", async function (
+    this: CustomWorld,
+    iconName: string
+) {
+    if (iconName === "Delete") {
+        await this.questionBankPage.clickDeleteIcon();
+    }
+});
+
+
+When("the user confirms the deletion", async function (this: CustomWorld) {
+    await this.questionBankPage.confirmDeletion();
+});
+
+
+Then("the question should not be displayed in the question list", async function (
     this: CustomWorld
 ) {
-    await this.questionBankPage.verifyQuestionDisplayed(currentCategory, currentQuestionText);
+    await this.questionBankPage.verifyQuestionNotDisplayed(currentQuestionText);
 });
