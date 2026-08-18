@@ -5,9 +5,10 @@ Feature: M_VIGNESHWARAN_2026_07_07_LMS_Add_Service_Feature
     Given the user launched the application
     And the user logged in as admin
     When the user clicks the "Dynamic Field Settings" option from the sidebar
-    And the user clicks the Add service button
+    
 
   Scenario: Verify add service with name and description
+    And the user clicks the Add service button
     And the user fill the name and description
     And the user clicks the create service button
     Then the popup alert should be displayed as "Service created successfully"
@@ -17,9 +18,7 @@ Feature: M_VIGNESHWARAN_2026_07_07_LMS_Add_Service_Feature
     Then the user should see the added service as option
 
   Scenario: Verify duplicate service cannot be created
-    And the user fill the name and description
-    And the user clicks the create service button
-    Then the popup alert should be displayed as "Service created successfully"
+    And the user creates a new service
     When the user clicks the Add service button
     And the user fill the same name and description
     And the user clicks the create service button
@@ -27,6 +26,7 @@ Feature: M_VIGNESHWARAN_2026_07_07_LMS_Add_Service_Feature
 
   
   Scenario Outline: Verify add service with empty fields cannot be created
+    And the user clicks the Add service button
     When the user fill the service name as "<name>"
     And the user fill the service description as "<description>"
     And the user clicks the create service button

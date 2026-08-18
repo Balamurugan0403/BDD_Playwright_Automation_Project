@@ -7,9 +7,14 @@ export class ServiceModelPage extends BasePage {
     private addServiceButton = this.page.getByRole("button", { name: "Add Service" });
     private serviceName = this.page.locator("//input[@placeholder = \"e.g., 'Software Development'\"]");
     private serviceDescription = this.page.locator("//textarea[@placeholder = 'Describe the service...']");
+    private modelName = this.page.locator("//input[@placeholder = \"e.g., 'Frontend Development'\"]");
+    private modelDescription = this.page.locator("//textarea[@placeholder = 'Describe the model...']");
     private searchInput = this.page.getByPlaceholder("Search services...");
     private serviceNotFoundMessage = this.page.locator("//td[text() = 'No services found ']");
     private createService = this.page.getByRole("button", { name: "Create Service" });
+    private createModelButton = this.page.getByRole("button", { name: "Create Modal" });
+    private AddModelButton = this.page.getByRole("button", { name: "Add Modal" });
+    private clickToAddButton = this.page.locator("//div[contains(text() , 'Click to')]");           
     private successMessage = this.page.getByRole("alert").filter({ hasText: "Service created successfully" });
     private errorMessage = this.page.getByRole("alert").filter({ hasText: "Request failed with status code 400" });
     private serviceNames = this.page.locator("//table/tbody/tr/td[2]/div/div[2]/div[1]");
@@ -178,5 +183,12 @@ export class ServiceModelPage extends BasePage {
             logger.error(`Search result verification failed: ${error}`);
             throw error;
         }
+    }
+
+    async addService(name: string, description: string) {
+        await this.clickAddService();
+        await this.enterServiceName(name);
+        await this.enterServiceDescription(description);
+        await this.clickCreateService();
     }
 }

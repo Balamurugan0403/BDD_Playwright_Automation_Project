@@ -40,12 +40,12 @@ Then("Admin should see the Category Created Successfully message", async functio
 
 When("Admin enters the existing Category Name", async function (this: CustomWorld) {
     const data=getExistingCategory();
-    await this.courseCategoryPage.enterCategoryName(data.CategoryName);
+    await this.courseCategoryPage.enterCategoryName(data.categoryName);
 });
 
 When("Admin enters the Course Name", async function (this: CustomWorld) {
     const data=getExistingCategory();
-    await this.courseCategoryPage.selectCourse(data.CourseName);
+    await this.courseCategoryPage.selectCourse(data.courseName);
 });
 
 When("Admin enters the Category Description", async function (this: CustomWorld) {

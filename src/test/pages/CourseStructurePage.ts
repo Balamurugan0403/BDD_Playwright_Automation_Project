@@ -3,7 +3,7 @@ import { BasePage } from "./BasePage";
 import { logger } from "../../main/utils/logger";
 
 export class CourseStructurePage extends BasePage {
-    public static createdCourseId: string = "APL-AT-A-001";
+    public static createdCourseId: string = "K-BTI-PT-001";
     private courseRow = this.page.locator("tbody tr").filter({hasText: CourseStructurePage.createdCourseId,});
     private addCourseStructureButton = this.courseRow.getByRole("button", { name: "Add Course Structure",});
     private searchBox = this.page.getByPlaceholder("Search courses, codes, clients, or categories...");

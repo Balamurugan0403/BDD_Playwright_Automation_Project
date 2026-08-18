@@ -3,7 +3,6 @@ import { expect } from "@playwright/test";
 import { logger } from "../../main/utils/logger";
 
 export class AddCoursePage extends BasePage {
-    // Course Basic Configuration
     private addCourseBtn = this.page.getByRole("button", { name: "Add Course" });
     private courseClientDropdown = this.page.getByRole("combobox").nth(0);
     private serviceTypeDropdown = this.page.getByRole("combobox").nth(1);
@@ -12,6 +11,10 @@ export class AddCoursePage extends BasePage {
     private courseNameDropdown = this.page.getByRole("combobox").nth(4);
     private nextButton = this.page.getByRole("button", { name: "Next" });
     private validationErrorMessage = this.page.locator("div.text-red-600 span");
+    private previewTable = this.page.locator('div[role="dialog"] table');
+    private previewIDoValueCell = this.previewTable.locator('thead tr:nth-child(3) th').nth(0);
+    private previewWeDoValueCell = this.previewTable.locator('thead tr:nth-child(3) th').nth(1);
+    private previewYouDoValueCell = this.previewTable.locator('thead tr:nth-child(3) th').nth(2);
 
     // Course Hierarchy and Layout
     private courseLevelDropdown = this.page.getByRole("combobox").nth(0);
@@ -19,8 +22,6 @@ export class AddCoursePage extends BasePage {
 
     private moduleCheckbox = this.page.locator("#module-checkbox");
     private submoduleCheckbox = this.page.locator("#submodule-checkbox");
-    private topicCheckbox = this.page.locator("#topic-checkbox");
-    private subtopicCheckbox = this.page.locator("#subtopic-checkbox");
 
     private iDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('I Do', { exact: true }) }).locator('button[role="combobox"]');
     private weDoDropdown = this.page.locator('div.space-y-2').filter({ has: this.page.getByText('We Do', { exact: true }) }).locator('button[role="combobox"]');
@@ -32,7 +33,6 @@ export class AddCoursePage extends BasePage {
         .last();
     private createCourseBtn = this.page.getByRole("button", { name: "Save Course Layout" });
     private successMessage = this.page.getByText("Course created successfully", { exact: false });
-    private errorMessage = this.page.getByText("Request failed with status code 403", { exact: false });
 
     // Course Basic Configuration methods
     async clickAddCourse() {
@@ -153,8 +153,9 @@ export class AddCoursePage extends BasePage {
     }
 
     async selectSkill(skillName: string) {
+        logger.info(`selecting skill "${skillName}"`);
         const skillCheckbox = this.page.getByRole("checkbox", { name: new RegExp(`\\b${skillName}\\b`) }).first();
-
+        await expect(skillCheckbox).toBeVisible({ timeout: 10000 });
         await this.check(skillCheckbox);
     }
     async switchResourceTab(tabName: "I Do" | "We Do" | "You Do") {
@@ -173,7 +174,6 @@ export class AddCoursePage extends BasePage {
     }
 
     async verifyResourceTypeState(resourceName: string, expectedOn: boolean) {
-        logger.info(`verifying resource type "${resourceName}" is ${expectedOn ? "ON" : "OFF"}`);
         const row = this.page
             .locator('div', { hasText: resourceName })
             .filter({ has: this.page.locator('button[role="switch"]') })
@@ -227,13 +227,62 @@ export class AddCoursePage extends BasePage {
         logger.info("verifying success message is displayed");
         await expect(this.successMessage).toBeVisible({ timeout: 15000 });
     }
-    async verifyErrorMessage() {
-        logger.info("verifying success message is displayed");
-        await expect(this.errorMessage).toBeVisible({ timeout: 15000 });
+    async verifyPreviewMatchesData(data: any) {
+        logger.info("verifying course layout preview reflects entered details accurately");
+
+        // Verify "I Do" teaching element matches what was filled
+        await expect(this.previewIDoValueCell).toHaveText(data.iDo, { timeout: 10000 });
+        logger.info(`verified I Do = "${data.iDo}"`);
+
+        // We Do / You Do were not filled in this dataset, so the preview should show them empty
+        await expect(this.previewWeDoValueCell).toHaveText("", { timeout: 10000 });
+        await expect(this.previewYouDoValueCell).toHaveText("", { timeout: 10000 });
+        logger.info("verified We Do and You Do are empty, as expected");
     }
-    async verifyDuplicateCourseValidation() {
-        await expect(
-            this.page.getByText("Course already exists")
-        ).toBeVisible();
+    async updateCourseDetails(data:any){
+
+    logger.info("Updating course details using AddCourse locators");
+
+
+    // Course Category
+    await this.selectCourseCategory(
+        data.updatedCourseCategory
+    );
+
+
+    // Course Name
+    await this.selectCourseName(
+        data.updatedCourseName
+    );
+
+
+    // Course Level
+    await this.selectCourseLevel(
+        data.updatedCourseLevel
+    );
+
+
+    // Description
+    await this.enterDescription(
+        data.updatedDescription
+    );
+
+
+    // Skills
+    for(const skill of data.updatedSkills.split(",")){
+
+        await this.selectSkill(
+            skill.trim()
+        );
+
     }
+
+
+    // I Do
+    await this.selectIDo(
+        data.updatedIDo
+    );
+
+
+}
 }

@@ -1,4 +1,4 @@
-import { AddCoursePage } from "./../pages/AddCoursePage";
+import { AddCoursePage } from "../pages/AddCoursePage";
 import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { CustomWorld } from "../../main/support/CustomWorld";
@@ -58,6 +58,7 @@ Then('the course layout preview should be displayed', async function () {
 Then('a course success message should be displayed', async function () {
     await this.addCoursePage.verifySuccessMessage();
 });
-Then('a duplicate course error message should be displayed', async function () {
-   await this.addCoursePage.verifyErrorMessage();
+Then('the course layout preview should display the correct learning level and teaching elements', async function () {
+    const data = courseData.validCourseSetup.courseHierarchy;
+    await this.addCoursePage.verifyPreviewMatchesData(data);
 });

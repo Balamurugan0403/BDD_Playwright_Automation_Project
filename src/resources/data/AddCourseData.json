@@ -2,38 +2,10 @@
     "validCourseSetup": {
         "basicConfigurationData": {
             "courseClient": "jamocha",
-            "serviceType": "Testing Model",
-            "serviceModel": "Tester",
+            "serviceType": "business to institution",
+            "serviceModel": "skilling",
             "courseCategory": "Software Development",
-            "courseName": "Frontend"
-        },
-        "courseHierarchy": {
-            "courseLevel": "Intermediate",
-            "description": "This is a sample course description for automation testing.",
-            "iDo": "Live Classes",
-            "resourceTypes": {
-                "iDo": [
-                    "Video"
-                ]
-            },
-            "skills": [
-                "C",
-                "Java",
-                "HTML",
-                "CSS",
-                "JavaScript",
-                "MongoDB",
-                "MySQL"
-            ]
-        }
-    },
-    "existingCourseSetup": {
-        "basicConfigurationData": {
-            "courseClient": "jamocha",
-            "serviceType": "Testing Model",
-            "serviceModel": "Tester",
-            "courseCategory": "Software Development",
-            "courseName": "Frontend"
+            "courseName": "Mern Development"
         },
         "courseHierarchy": {
             "courseLevel": "Intermediate",
