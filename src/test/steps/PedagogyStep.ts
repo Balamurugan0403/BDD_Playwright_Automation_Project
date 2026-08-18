@@ -53,7 +53,6 @@ Then('the user should be able to see the created element in the list of pedagogy
 });
 
 When('the user Clicks on the edit button', async function (this: CustomWorld) {
-  
         await this.pedagogyPage.clickNextPageButton();
     const elementsList = await this.pedagogyPage.getElementNamesFromPage();
  const index = elementsList.length - 1;
@@ -62,13 +61,10 @@ When('the user Clicks on the edit button', async function (this: CustomWorld) {
 });
 
 When('the user edits the content of element name', async function (this: CustomWorld) {
-    // You can hardcode a modified string or make this step dynamic by adding {string}
-    
-    await this.pedagogyPage.editElementName(data.EditedElementName);
+     await this.pedagogyPage.editElementName(data.EditedElementName);
 });
 
 When('the user clicks on the Update Element button', async function (this: CustomWorld) {
-    // Triggers the save/update action and waits for structural DOM stability
     await this.pedagogyPage.clickUpdateElementButton();
     await this.page.waitForLoadState('networkidle');
 });
