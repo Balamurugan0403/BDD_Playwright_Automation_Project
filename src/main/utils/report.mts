@@ -1,6 +1,6 @@
 import * as report from "multiple-cucumber-html-reporter";
 report.generate({
-    jsonDir: "reports",
+    jsonDir: "reports/cucumber",
     reportPath: "./reports/detailed-html",
     reportName: "Playwright BDD Report",
     pageTitle: "LMS test Report",
