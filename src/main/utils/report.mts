@@ -1,8 +1,12 @@
-import * as report from "multiple-cucumber-html-reporter";
+import { generate } from "multiple-cucumber-html-reporter";
+import path from "path";
 
-report.generate({
-    jsonDir: "reports/cucumber",
-    reportPath: "./reports/detailed-html",
+const jsonDir = path.resolve(process.cwd(), "reports", "cucumber");
+const reportPath = path.resolve(process.cwd(), "reports", "detailed-html");
+
+generate({
+    jsonDir: jsonDir,
+    reportPath: reportPath,
     reportName: "Playwright BDD Report",
     pageTitle: "LMS test Report",
     displayDuration: false,
