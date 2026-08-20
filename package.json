@@ -19,7 +19,7 @@
   },
   "scripts": {
     "test": "cucumber-js",
-    "posttest": "npx ts-node --esm src/main/utils/report.mts"
+    "posttest": "npx ts-node --esm src/main/utils/report.mts",
     "CourseFilter": "cucumber-js --tags @CourseFilter",
     "sowndariya": "cucumber-js  --tags @sowndariya",
     "Samiha": "cucumber-js --tags @Samiha",
