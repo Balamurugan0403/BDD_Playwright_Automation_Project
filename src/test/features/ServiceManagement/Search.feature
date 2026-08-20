@@ -8,7 +8,7 @@ Feature: M_VIGNESHWARAN_2026_07_09_LMS_Search_Service_Feature
     And the user creates a new service
 
   Scenario Outline: Verify search with valid keyword and case-insensitivity
-    When the user enter the service name in the search field in "<case>"
+    When the user enter the service name in the search field in "<case>" case
     Then the services matching to the service name should be displyed
 
     Examples:

@@ -16,6 +16,7 @@ export class ServiceModelPage extends BasePage {
     private AddModelButton = this.page.getByRole("button", { name: "Add Modal" });
     private clickToAddButton = this.page.locator("//div[contains(text() , 'Click to')]");           
     private successMessage = this.page.getByRole("alert").filter({ hasText: "Service created successfully" });
+    private modelSuccessMessage = this.page.getByRole("alert").filter({ hasText: "Model created successfully" });
     private errorMessage = this.page.getByRole("alert").filter({ hasText: "Request failed with status code 400" });
     private serviceNames = this.page.locator("//table/tbody/tr/td[2]/div/div[2]/div[1]");
 
@@ -127,6 +128,33 @@ export class ServiceModelPage extends BasePage {
         }
     }
 
+    async verifyValidityOfModelForm() {
+        try {
+            logger.info("Checking model form validation.");
+
+            const isNameValid = await this.modelName.evaluate(
+                (el: HTMLInputElement) => el.validity.valid
+            );
+
+            const isDescriptionValid = await this.modelDescription.evaluate(
+                (el: HTMLTextAreaElement) => el.validity.valid
+            );
+
+            logger.info(
+                `Validation Result -> Name: ${isNameValid}, Description: ${isDescriptionValid}`
+            );
+
+            return {
+                isNameValid,
+                isDescriptionValid
+            };
+        } catch (error) {
+            logger.error(`Validation check failed: ${error}`);
+            throw error;
+        }
+    }
+
+
     async enterServiceKey(key: string) {
         try {
             logger.info(`Searching service with keyword: ${key}`);
@@ -190,5 +218,85 @@ export class ServiceModelPage extends BasePage {
         await this.enterServiceName(name);
         await this.enterServiceDescription(description);
         await this.clickCreateService();
+    }
+
+    async enterModelName(name: string) {
+        try {
+            logger.info(`Entering model name: ${name}`);
+
+            await this.fill(this.modelName, name);
+
+            logger.info("Model name entered successfully.");
+        } catch (error) {
+            logger.error(`Failed to enter model name: ${error}`);
+            throw error;
+        }
+    }
+
+    async enterModelDescription(description: string) {
+        try {
+            logger.info("Entering model description.");
+
+            await this.fill(this.modelDescription, description);
+
+            logger.info("Model description entered successfully.");
+        } catch (error) {
+            logger.error(`Failed to enter model description: ${error}`);
+            throw error;
+        }
+    }
+
+    async clickCreateModel() {
+        try {
+            logger.info("Clicking 'Create Model' button.");
+
+            await this.click(this.createModelButton);
+
+            logger.info("'Create Model' button clicked successfully.");
+        } catch (error) {
+            logger.error(`Failed to click 'Create Model' button: ${error}`);
+            throw error;
+        }
+    }
+
+    async clickClickToView() {
+        try {
+            logger.info("Clicking 'Click to View' button.");
+
+            await this.click(this.clickToAddButton);
+
+            logger.info("'Click To View' button clicked successfully.");
+        } catch (error) {
+            logger.error(`Failed to click 'Click To View' button: ${error}`);
+            throw error;
+        }
+    }
+
+    async clickAddModel() {
+        try {
+            logger.info("Clicking 'Add Model' button.");
+
+            await this.click(this.AddModelButton);
+
+            logger.info("'Add Model' button clicked successfully.");
+        } catch (error) {
+            logger.error(`Failed to click 'Add Model' button: ${error}`);
+            throw error;
+        }
+    }
+
+    async verifyModelCreated(expectedMessage: string) {
+        try {
+            logger.info(`Verifying success message: ${expectedMessage}`);
+
+            await expect(this.modelSuccessMessage).toContainText(expectedMessage, {
+                timeout: 10000
+            });
+
+            logger.info("Model created successfully.");
+        } catch (error) {
+            logger.error(`Model creation verification failed: ${error}`);
+            throw error;
+        }
     }
 }

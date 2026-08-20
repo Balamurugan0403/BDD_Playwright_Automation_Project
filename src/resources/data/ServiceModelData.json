@@ -1,0 +1,21 @@
+{
+    "valid" : {
+        "name" : "Test Model",
+        "Description" : "Test Description"
+    },
+
+    "without model name" : {
+        "name" : "",
+        "Description" : "Test Description"
+    },
+
+    "without description" : {
+        "name" : "Test Model",
+        "Description" : ""
+    },
+
+    "without model name and description" : {
+        "name" : "",
+        "Description" : ""
+    }
+}

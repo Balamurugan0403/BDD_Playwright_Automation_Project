@@ -67,3 +67,4 @@ When('the user creates a new service', async function(this: CustomWorld) {
     this.service = getServiceData();
     await this.serviceModelPage.addService(this.service.name, this.service.description);
 })
+

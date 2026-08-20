@@ -1,5 +1,0 @@
-src\test\features\AddCourse.feature:14
-src\test\features\CourseCategory\Pedagogy.feature:10
-src\test\features\CourseStructure\AddModule.feature:35
-src\test\features\EditCourse.feature:11
-src\test\features\ServiceManagement\AddServiceModal.feature:20:21:22:23

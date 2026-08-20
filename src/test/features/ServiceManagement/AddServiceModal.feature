@@ -1,4 +1,4 @@
-@vignesh @addServiceModel @underDevelopment
+@vignesh @addServiceModel
 Feature: M_VIGNESHWARAN_2026_07_10_LMS_Add_Service_Model_Feature
 
   Background:
@@ -8,7 +8,7 @@ Feature: M_VIGNESHWARAN_2026_07_10_LMS_Add_Service_Model_Feature
     And the user creates a new service
 
   Scenario Outline: Verify add service model with empty fields cannot be created
-    And the user enter the service name in the search field
+    When the user enter the service name in the search field in "normal" case
     And the user clicks the click to view button in the search result
     And the user clicks the Add model button
     And the user fill the "testcase" service model details

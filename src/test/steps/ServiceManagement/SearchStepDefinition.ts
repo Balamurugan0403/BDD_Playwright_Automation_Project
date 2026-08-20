@@ -3,7 +3,7 @@ import { CustomWorld } from './../../../main/support/CustomWorld';
 import {When, Then} from '@cucumber/cucumber'
 import { getServiceData } from '../../../resources/data/AddServiceData';
 
-When('the user enter the service name in the search field in {string}', async function (this: CustomWorld, string) {
+When('the user enter the service name in the search field in {string} case', async function (this: CustomWorld, string) {
     
     this.service = getServiceData();
 
