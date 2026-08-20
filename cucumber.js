@@ -16,6 +16,8 @@ module.exports = {
         },
 
         format: [
+            "progress-bar",
+            "junit:reports/junit-report.xml",
             "allure-cucumberjs/reporter",
             "json:reports/cucumber/cucumber-report.json",
             "html:reports/cucumber-report.html",
@@ -38,6 +40,8 @@ module.exports = {
         publishQuiet: true,
         dryRun: false,
         format: [
+            "progress-bar",
+            "junit:reports/junit-report.xml",
             "allure-cucumberjs/reporter",
             "json:reports/cucumber/cucumber-report.json",
             "html:reports/cucumber-report.html",
