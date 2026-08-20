@@ -3,6 +3,7 @@ import { expect } from "@playwright/test";
 import { CustomWorld } from "../../main/support/CustomWorld";
 import { readExcelData } from "../../main/utils/excelReader";
 import { PedagogyAddElement,PedagogySearchData } from "../../main/types/PedagogyElement";
+import loginData from "../../resources/data/loginData.json";
 
 setDefaultTimeout(60000);
 const addElementData = readExcelData<PedagogyAddElement>(
@@ -37,22 +38,19 @@ When('the user clicks on the Create Element button', async function (this: Custo
 });
 
 Then('the user should be able to see the created element in the list of pedagogy elements', async function (this: CustomWorld) {
-    await this.pedagogyPage.clickNextPageButton();
+    // Searching for the element (instead of paging to the last page and
+    // scanning) avoids relying on the list's sort order / page count, which
+    // drifts as more elements accumulate across test runs.
+    await this.pedagogyPage.searchPedagogyActivity(data.NewElementName);
     const elementsList = await this.pedagogyPage.getElementNamesFromPage();
-    let isElementFound = false;
-    for (const name of elementsList) {
-        if (name.trim() === data.NewElementName) {
-            isElementFound = true;
-            console.log("Element found in the list");
-            break;
-        }
-    }
+    const isElementFound = elementsList.some(name => name.trim() === data.NewElementName);
     if (!isElementFound) {
-        throw new Error(`Scenario Failed: Element 'kps' was not found anywhere in the list.`);
+        throw new Error(`Scenario Failed: Element '${data.NewElementName}' was not found in the pedagogy elements list.`);
     }
 });
 
 When('the user Clicks on the edit button', async function (this: CustomWorld) {
+  
         await this.pedagogyPage.clickNextPageButton();
     const elementsList = await this.pedagogyPage.getElementNamesFromPage();
  const index = elementsList.length - 1;
@@ -61,27 +59,24 @@ When('the user Clicks on the edit button', async function (this: CustomWorld) {
 });
 
 When('the user edits the content of element name', async function (this: CustomWorld) {
-     await this.pedagogyPage.editElementName(data.EditedElementName);
+    // You can hardcode a modified string or make this step dynamic by adding {string}
+    
+    await this.pedagogyPage.editElementName(data.EditedElementName);
 });
 
 When('the user clicks on the Update Element button', async function (this: CustomWorld) {
+    // Triggers the save/update action and waits for structural DOM stability
     await this.pedagogyPage.clickUpdateElementButton();
     await this.page.waitForLoadState('networkidle');
 });
 
 Then('the user should be able to see the updated element', async function (this: CustomWorld) {
     const expectedUpdatedName = data.EditedElementName;
-    await this.pedagogyPage.clickNextPageButton();
+    // Same fix as the "created element" step: search instead of paging to
+    // the last page, since page count/order drifts as data accumulates.
+    await this.pedagogyPage.searchPedagogyActivity(expectedUpdatedName);
     const elementsList = await this.pedagogyPage.getElementNamesFromPage();
-    let isElementFound = false;
-
-    for (const name of elementsList) {
-        if (name.trim() === expectedUpdatedName) {
-            isElementFound = true;
-            console.log(`Success: Found the updated element target '${expectedUpdatedName}'`);
-            break;
-        }
-    }
+    const isElementFound = elementsList.some(name => name.trim() === expectedUpdatedName);
     if (!isElementFound) {
         throw new Error(`Scenario Failed: Updated element text '${expectedUpdatedName}' was missing from the registry view.`);
     }
@@ -134,3 +129,27 @@ Then( "the user should be able to see the corresponding activity", async functio
         expect(actualResult.trim()).toBe(expectedResult.trim());
     }
 );
+
+// ---------------------------------------------------------------------
+// New step definitions added to support the additional scenarios
+// ---------------------------------------------------------------------
+
+When("the user leaves the element name field empty", async function (this: CustomWorld) {
+    await this.pedagogyPage.enterElementName("");
+});
+
+Then("the user should see a required field validation message for element name", async function (this: CustomWorld) {
+    // Reuses the same expected required-field text already verified against
+    // the live app for the login form (see loginData.json -> expected.requiredField).
+    await this.pedagogyPage.verifyElementNameRequired(loginData.expected.requiredField);
+});
+
+When("the user clicks the Cancel button while adding an element", async function (this: CustomWorld) {
+    await this.pedagogyPage.clickCancelButton();
+});
+
+Then("the Add Element modal should be closed", async function (this: CustomWorld) {
+    await this.pedagogyPage.verifyAddElementModalClosed();
+});
+
+

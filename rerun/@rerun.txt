@@ -1,1 +1,1 @@
-src\test\features\QuestionBank\CreateQuestion.feature:33
+src\test\features\CourseCategory\Pedagogy.feature:10
