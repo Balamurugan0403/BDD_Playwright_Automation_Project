@@ -2,6 +2,8 @@ import { Given, When, Then, setDefaultTimeout } from "@cucumber/cucumber";
 import { CustomWorld } from "../../main/support/CustomWorld";
 import { generateCourseCategoryData, getCourseCategoryData } from "../../resources/data/CourseCategoryData";
 import { getExistingCategory } from "../../resources/data/CourseCategoryData";
+import { generateUniqueCourseCategoryData, generateTempUniqueCourseCategoryData } from "../../resources/data/CourseCategoryData";
+import loginData from "../../resources/data/loginData.json";
 
 setDefaultTimeout(60000);
 
@@ -108,4 +110,56 @@ When("Admin clicks the Confirm Delete button", async function (this: CustomWorld
 
 Then("Admin should see the No Data Found message", async function (this: CustomWorld) {
     await this.courseCategoryPage.verifyNoDataFound();
+});
+
+
+//new scenario
+When("Admin enters an automatically generated Category Name, Course and Description", async function (this: CustomWorld) {
+    const data = generateUniqueCourseCategoryData();
+    await this.courseCategoryPage.fillCategoryForm(data);
+});
+
+When("Admin enters a temporary automatically generated Category Name, Course and Description", async function (this: CustomWorld) {
+    const data = generateTempUniqueCourseCategoryData();
+    await this.courseCategoryPage.fillCategoryForm(data);
+});
+
+When("Admin enters a temporary automatically generated Category Name", async function (this: CustomWorld) {
+    const data = generateTempUniqueCourseCategoryData();
+    await this.courseCategoryPage.enterCategoryName(data.categoryName);
+});
+
+When("Admin leaves the Category Name field empty", async function (this: CustomWorld) {
+    await this.courseCategoryPage.enterCategoryName("");
+});
+
+When("Admin clicks the Cancel button", async function (this: CustomWorld) {
+    await this.courseCategoryPage.clickCancelButton();
+});
+
+Then("Admin should see the Add Category modal closed", async function (this: CustomWorld) {
+    await this.courseCategoryPage.verifyAddCategoryModalClosed();
+});
+
+Then("Admin should see a required field validation message for Category Name", async function (this: CustomWorld) {
+    await this.courseCategoryPage.verifyCategoryNameRequired(loginData.expected.requiredField);
+});
+
+Then("Admin should see the category creation blocked due to missing course name", async function (this: CustomWorld) {
+    await this.courseCategoryPage.verifyCreateCategoryBlocked();
+});
+
+When("Admin searches for a non-existent category", async function (this: CustomWorld) {
+    await this.courseCategoryPage.searchNonExistentCategory();
+});
+
+When("Admin searches using a partial category name", async function (this: CustomWorld) {
+    const data = getCourseCategoryData();
+    await this.courseCategoryPage.searchPartialCategoryName(data.categoryName);
+});
+
+Then("Admin should see the category matching the partial search", async function (this: CustomWorld) {
+    const data = getCourseCategoryData();
+    const partial = data.categoryName.substring(0, Math.min(6, data.categoryName.length));
+    await this.courseCategoryPage.verifyPartialSearchResultVisible(partial);
 });
