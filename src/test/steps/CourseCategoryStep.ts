@@ -114,6 +114,7 @@ Then("Admin should see the No Data Found message", async function (this: CustomW
 
 
 //new scenario
+
 When("Admin enters an automatically generated Category Name, Course and Description", async function (this: CustomWorld) {
     const data = generateUniqueCourseCategoryData();
     await this.courseCategoryPage.fillCategoryForm(data);

@@ -33,7 +33,6 @@ Feature: Sowndariya_07JUL2026_LMS_Feature File For Category Management Functiona
     When Admin searches for the category
     Then Admin should see the category in the category list
 
-
   Scenario: Verify the category is available in Course Management
     When the user clicks the "Course Management" option from the sidebar
     And the user clicks the Add Course button
@@ -49,7 +48,6 @@ Feature: Sowndariya_07JUL2026_LMS_Feature File For Category Management Functiona
     And Admin clicks the Save button
     Then Admin should see the Category Created Successfully message
 
-
   Scenario: Verify Admin can delete a category
     When Admin searches for the category
     And Admin clicks the Action button for the category
@@ -59,7 +57,7 @@ Feature: Sowndariya_07JUL2026_LMS_Feature File For Category Management Functiona
     Then Admin should see the No Data Found message
 
   # New scenarios 
-
+  
   Scenario: Verify Admin can cancel adding a new category
     When Admin clicks the Add Category button
     And Admin enters a temporary automatically generated Category Name, Course and Description
