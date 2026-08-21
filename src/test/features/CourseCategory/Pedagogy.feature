@@ -1,4 +1,4 @@
-@sowndariya
+
 Feature: SOWNDARIYA_K_15-07-2026_Pedagogy Management _UPDATED_20-08-2026
 
   Background:
@@ -54,5 +54,8 @@ Feature: SOWNDARIYA_K_15-07-2026_Pedagogy Management _UPDATED_20-08-2026
        And the user enters the element details
        And the user clicks the Cancel button while adding an element
        Then the Add Element modal should be closed
-
+  
+  Scenario: Verify no results are found when searching an unmatched pedagogy activity
+       And the user searches for a non-matching pedagogy activity
+       Then the user should see no matching pedagogy activity
 

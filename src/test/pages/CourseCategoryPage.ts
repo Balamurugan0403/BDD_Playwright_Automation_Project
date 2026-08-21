@@ -17,6 +17,7 @@ export class CourseCategoryPage extends BasePage {
     private confirmDeleteButton = this.page.getByRole('button', { name: 'Delete', exact: true });
     private closeToastBtn = this.page.locator(".lucide.lucide-x.w-5.h-5");
     private noDataMessage = this.page.getByText('No users found', { exact: true });
+    private cancelButton = this.page.getByRole('button', { name: /Cancel/i });
 
     private getActionButton(categoryName: string) {
         return this.page.locator('tr', { hasText: categoryName }).locator('button[data-slot="dropdown-menu-trigger"]');
@@ -119,6 +120,59 @@ async verifyNoDataFound() {
     logger.info("Verifying No Data Found message after delete");
     await expect(this.noDataMessage).toBeVisible({ timeout: 10000 });
     logger.info("Category deleted successfully, no data found");
+}
+
+async fillCategoryForm(data: { categoryName: string; courseName: string; description: string }) {
+    logger.info(`Filling category form with auto-generated data: ${JSON.stringify(data)}`);
+    await this.enterCategoryName(data.categoryName);
+    await this.selectCourse(data.courseName);
+    await this.enterDescription(data.description);
+}
+
+async clickCancelButton() {
+    logger.info("Clicking Cancel button to discard category creation");
+    await this.cancelButton.waitFor({ state: "visible", timeout: 10000 });
+    await this.click(this.cancelButton);
+}
+
+async verifyAddCategoryModalClosed() {
+    logger.info("Verifying Add Category modal is closed");
+    await expect(this.categoryName).not.toBeVisible({ timeout: 10000 });
+}
+
+
+async verifyCategoryNameRequired(expectedMessage: string) {
+    logger.info("Verifying required field validation for Category Name");
+    const validationMessage = await this.categoryName.evaluate(
+        (element: any) => element.validationMessage
+    );
+    expect(validationMessage).toBe(expectedMessage);
+}
+
+async verifyCreateCategoryBlocked() {
+    logger.info("Verifying category creation is blocked due to missing Course Name");
+    await expect(this.categoryName).toBeVisible({ timeout: 5000 });
+    await expect(this.successmessage).not.toBeVisible({ timeout: 5000 });
+}
+
+async searchNonExistentCategory() {
+    const randomTerm = `NoSuchCategory_${Date.now()}`;
+    logger.info(`Searching for a non-existent category: ${randomTerm}`);
+    await this.fill(this.CategorySearchBox, randomTerm);
+    await this.CategorySearchBox.press("Enter");
+}
+
+async searchPartialCategoryName(categoryName: string) {
+    const partial = categoryName.substring(0, Math.min(6, categoryName.length));
+    logger.info(`Searching category using partial name: ${partial}`);
+    await this.fill(this.CategorySearchBox, partial);
+    await this.CategorySearchBox.press("Enter");
+}
+
+async verifyPartialSearchResultVisible(partialName: string) {
+    logger.info(`Verifying a result matching partial name is visible: ${partialName}`);
+    const partialMatch = this.page.getByText(new RegExp(partialName, "i")).first();
+    await expect(partialMatch).toBeVisible({ timeout: 20000 });
 }
 
 }
