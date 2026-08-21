@@ -24,7 +24,7 @@ Scenario: Add module without Title
     Then the title validation message should be displayed
 
 @Rohini @Add_Module @SpecialCharacter @Bug
-Scenario Outline: Add module with special characters in the module title
+Scenario Outline: Add module with only special characters in the module title
     When the Admin search the course
     And the Admin clicks the "Add Course Structure" button
     And the Admin adds the module with title "<title>" description "<description>" and skills "<skills>"
@@ -33,6 +33,17 @@ Scenario Outline: Add module with special characters in the module title
 Examples:
     | title          | description        | skills    |
     | @#$%^&*()_+{}! | Sample Description | HTML, CSS |
+
+@Rohini @Add_Module @SpaceTitle @Bug
+Scenario Outline: Add module with only spaces only in title
+    When the Admin search the course
+    And the Admin clicks the "Add Course Structure" button
+    And the Admin adds the module with title "<title>" description "<description>" and skills "<skills>"
+    Then the title validation message should be displayed
+
+Examples:
+    | title        | description | skills |
+    | [Spaces]     | Only spaces | HTML   |
 
 @Rohini @Add_Module @ExistingModule
 Scenario: Add module with existing module name

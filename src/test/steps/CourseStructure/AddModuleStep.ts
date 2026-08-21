@@ -31,6 +31,9 @@ When("the Admin add the module without entering the title", async function (this
 });
 
 When("the Admin adds the module with title {string} description {string} and skills {string}",  async function (this: CustomWorld, title: string, description: string, skills: string) {
+    if (title === '[Spaces]') {
+      title = '     '; 
+    }
     const skillArray = skills.split(",").map(skill => skill.trim());
     await this.courseStructurePage.addModule(title, description, skillArray);
 });
@@ -56,9 +59,6 @@ Then("the module should appear in the course structure", async function (this: C
     for (const module of courseData.validModule) {
         await this.courseStructurePage.verifyModulePresent(module.moduleTitle);
     }
-
-    // const totalModules = await this.courseStructurePage.moduleRows.count();
-    // console.log(`Total modules in the course: ${totalModules}`);
 });
 
 Then("the title validation message should be displayed", async function (this: CustomWorld) {
