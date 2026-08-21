@@ -21,9 +21,13 @@ export class CourseStructurePage extends BasePage {
     private moreButton = this.page.getByText("More");
     private hierarchyToggle = this.page.locator("label:has(input.sr-only)").nth(0);
     private moduleMoreButton = (row: Locator) => row.locator("button").first();
+    private cancelButton = this.page.getByRole("button", {name: /^Cancel$/i,});
+
     private deleteOption = this.page.getByText("Delete", { exact: true });
     private confirmDeleteButton = this.page.getByRole("button", {name: /^Delete$/i,});
-    private cancelDeleteButton = this.page.getByRole("button", {name: /^Cancel$/i,});
+    
+    private editOption = this.page.getByText("Edit", { exact: true });
+    private saveChangesButton = this.page.getByRole("button", {name: "Save Changes", exact: true});
 
     async searchCourse(courseId: string){
         try {
@@ -192,23 +196,26 @@ export class CourseStructurePage extends BasePage {
         }
     }
 
+    //Enable hierarchy option
     async enableHierarchyOption() {
-    try {
-        await this.moreButton.click();
+        try {
+            await this.moreButton.click();
 
-        if (!(await this.hierarchyToggle.isChecked())) {
-            await this.hierarchyToggle.check();
-            logger.info("Hierarchy option enabled");
-        } else {
-            logger.info("Hierarchy option is already enabled");
+            if (!(await this.hierarchyToggle.isChecked())) {
+                await this.hierarchyToggle.check();
+                logger.info("Hierarchy option enabled");
+            } else {
+                logger.info("Hierarchy option is already enabled");
+            }
+
+            await this.page.locator("body").click({ position: { x: 10, y: 10 } });
+        } catch (error) {
+            logger.error("Failed to enable the Hierarchy option");
+            throw new Error("Failed to enable the Hierarchy option");
         }
-
-        await this.page.locator("body").click({ position: { x: 10, y: 10 } });
-    } catch (error) {
-        logger.error("Failed to enable the Hierarchy option");
-        throw error;
     }
-}
+
+    //Delete Module
     async deleteModule(moduleTitle: string) {
         try {
             const row = this.moduleRows.filter({has: this.page.getByText(moduleTitle, { exact: true })}).first();
@@ -224,26 +231,92 @@ export class CourseStructurePage extends BasePage {
 
     }
 
-    async confirmDeleteAction(){
-        await this.confirmDeleteButton.click();
-        await expect(this.successMsg).toBeVisible({ timeout: 120000 });
-        logger.info(`Module deleted successfully`);
+    async confirmDeleteAction() {
+        try {
+            await this.confirmDeleteButton.click();
+            await expect(this.successMsg).toBeVisible({ timeout: 120000 });
+
+            logger.info("Module deleted successfully");
+        } 
+        catch (error) {
+            logger.error("Failed to delete the module.");
+            throw new Error("Failed to delete the module.");
+        }
     }
 
-    async cancelDeleteAction(){
-        await this.cancelDeleteButton.click();
-        await expect(this.moreButton).toBeVisible({ timeout: 120000 });
-        logger.info("Module delete cancelled");
+    async cancelDeleteAction() {
+        try {
+            await this.cancelButton.click();
+            await expect(this.moreButton).toBeVisible({ timeout: 120000 });
+
+            logger.info("Module delete cancelled");
+        }
+        catch (error) {
+            logger.error("Failed to cancel module deletion.");
+            throw new Error("Failed to cancel module deletion.");
+        }
     }
 
     async verifyModuleDeleted(moduleTitle: string) {
         try {
-        await expect(this.successMsg).toBeVisible({timeout: 120000});
-
-        logger.info(`Verified module '${moduleTitle}' is deleted.`);
-    } catch (error) {
-        logger.error(`Deleted module '${moduleTitle}' is still present.`);
-        throw error;
+            await expect(this.successMsg).toBeVisible({timeout: 120000});
+            logger.info(`Verified module '${moduleTitle}' is deleted.`);
+        } 
+        catch (error) {
+            logger.error(`Deleted module '${moduleTitle}' is still present.`);
+            throw new Error(`Deleted module '${moduleTitle}' is still present.`);
+        }
     }
-}
+
+    //Edit Module
+    async editModule(moduleTitle: string) {
+        try {
+            const row = this.moduleRows.filter({has: this.page.getByText(moduleTitle, { exact: true })}).first();
+            await expect(row).toBeVisible();
+            await this.moduleMoreButton(row).click();
+            await expect(this.editOption).toBeVisible();
+            await this.editOption.click();
+            logger.info(`Edit option clicked for module '${moduleTitle}'.`);
+        }
+        catch (error) {
+            logger.error(`Failed to click edit option for module '${moduleTitle}'`);
+            throw error;
+        }
+    }
+
+    async updateModule(title: string,description: string,skills: string[]) {
+        try {
+            await this.moduleTitleTextBox.fill(title);
+            await this.descriptionTextBox.fill(description);
+            await this.selectSkills(skills);
+            logger.info(`Module details updated with title '${title}'.`);
+        }
+        catch (error) {
+            logger.error("Failed to update module details.");
+            throw new Error("Failed to update module details.");
+        }
+    }
+    
+    async saveModule() {
+        try {
+            await this.saveChangesButton.waitFor({state: "visible",timeout: 10000});
+            await this.saveChangesButton.click();
+            await expect(this.successMsg).toBeVisible({timeout: 120000});
+            logger.info("Module changes saved successfully.");
+        }
+        catch (error) {
+            logger.error("Failed to save module changes.");
+            throw new Error("Failed to save module changes.");
+        }
+    }
+    async verifyModuleUpdated(moduleTitle: string) {
+        try {
+            await expect(this.page.getByText(moduleTitle, { exact: true })).toBeVisible({timeout: 120000});
+            logger.info(`Verified module '${moduleTitle}' is updated successfully.`);
+        } 
+        catch (error) {
+            logger.error(`Module '${moduleTitle}' was not updated successfully.`);
+            throw new Error(`Module '${moduleTitle}' was not updated successfully.`);
+        }
+    }
 }
