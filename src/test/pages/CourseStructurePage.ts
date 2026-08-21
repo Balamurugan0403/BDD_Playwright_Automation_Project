@@ -297,45 +297,26 @@ export class CourseStructurePage extends BasePage {
         }
     }
     
-async saveModule() {
-    try {
-        await this.saveChangesButton.waitFor({
-            state: "visible",
-            timeout: 10000
-        });
-
-        await this.saveChangesButton.click();
-
-        await expect(this.successMsg).toBeVisible({
-            timeout: 120000
-        });
-
-        logger.info(`Module changes saved successfully.`);
+    async saveModule() {
+        try {
+            await this.saveChangesButton.waitFor({state: "visible",timeout: 10000});
+            await this.saveChangesButton.click();
+            await expect(this.successMsg).toBeVisible({timeout: 120000});
+            logger.info("Module changes saved successfully.");
+        }
+        catch (error) {
+            logger.error("Failed to save module changes.");
+            throw new Error("Failed to save module changes.");
+        }
     }
-    catch (error) {
-        logger.error(`Failed to save module changes.`);
-        throw error;
+    async verifyModuleUpdated(moduleTitle: string) {
+        try {
+            await expect(this.page.getByText(moduleTitle, { exact: true })).toBeVisible({timeout: 120000});
+            logger.info(`Verified module '${moduleTitle}' is updated successfully.`);
+        } 
+        catch (error) {
+            logger.error(`Module '${moduleTitle}' was not updated successfully.`);
+            throw new Error(`Module '${moduleTitle}' was not updated successfully.`);
+        }
     }
-}async verifyModuleUpdated(moduleTitle: string) {
-    try {
-
-        await expect(
-            this.page.getByText(moduleTitle, { exact: true })
-        ).toBeVisible({
-            timeout: 120000
-        });
-
-        logger.info(
-            `Verified module '${moduleTitle}' is updated successfully.`
-        );
-
-    } catch (error) {
-
-        logger.error(
-            `Module '${moduleTitle}' was not updated successfully.`
-        );
-
-        throw error;
-    }
-}
 }
