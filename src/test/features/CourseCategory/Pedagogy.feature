@@ -1,5 +1,5 @@
 @sowndariya
-Feature: Pedagogy Management
+Feature: SOWNDARIYA_K_15-07-2026_Pedagogy Management _UPDATED_20-08-2026
 
   Background:
     Given the user launched the application
@@ -33,9 +33,26 @@ Feature: Pedagogy Management
        Then the user should be able to see the corresponding activity
 
     Examples:
-            |data type|
-            |I DO     |
-            |We DO    |
-            |You DO   |
+            |data type       |
+            |I DO            |
+            |We DO           |
+            |You DO          |
+            |Lowercase Search|
 
- 
+  # --- New scenarios ---
+
+  Scenario: Verify validation message when Element Name field is left blank
+       And the user clicks on the Pedagogy view elements button
+       And the user clicks on the Add Element button
+       And the user leaves the element name field empty
+       And the user clicks on the Create Element button
+       Then the user should see a required field validation message for element name
+
+  Scenario: Verify the User can cancel adding a new pedagogy element
+       And the user clicks on the Pedagogy view elements button
+       And the user clicks on the Add Element button
+       And the user enters the element details
+       And the user clicks the Cancel button while adding an element
+       Then the Add Element modal should be closed
+
+
