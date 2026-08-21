@@ -152,4 +152,11 @@ Then("the Add Element modal should be closed", async function (this: CustomWorld
     await this.pedagogyPage.verifyAddElementModalClosed();
 });
 
+When("the user searches for a non-matching pedagogy activity", async function (this: CustomWorld) {
+    await this.pedagogyPage.searchPedagogyActivity(`zzz_nonexistent_activity_${Date.now()}`);
+});
 
+Then("the user should see no matching pedagogy activity", async function (this: CustomWorld) {
+    const count = await this.pedagogyPage.getSearchResultCount();
+    expect(count).toBe(0);
+});
