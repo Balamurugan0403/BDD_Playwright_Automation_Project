@@ -106,7 +106,6 @@ async clickConfirmDelete() {
 
     logger.info("Waiting a few seconds after delete");
     await this.page.waitForTimeout(5000);
-
     logger.info("Closing the confirmation toast if it appears");
     try {
         await this.closeToastBtn.waitFor({ state: "visible", timeout: 5000 });
