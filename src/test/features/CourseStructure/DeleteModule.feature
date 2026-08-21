@@ -13,7 +13,7 @@ Feature: RohiniM_11_JUL_2026_Delete_Module
     And the Admin enables hierarchy action
     And the Admin deletes the following module
       | moduleTitle         |
-      | Introduction to Java |
+      | @#$%^&*()_+{}! |
     And the Admin confirms the delete action
     Then a success message should be displayed
     And the module "Introduction to Java" should not appear in the course structure
@@ -25,5 +25,5 @@ Feature: RohiniM_11_JUL_2026_Delete_Module
     And the Admin enables hierarchy action
     And the Admin deletes the following module
       | moduleTitle         |
-      | Introduction to Java |
+      | @#$%^&*()_+{}! |
     And the Admin cancels the delete action
