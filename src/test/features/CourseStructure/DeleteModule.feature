@@ -1,5 +1,5 @@
 @Rohini @Delete_Module
-Feature: Delete Module
+Feature: RohiniM_11_JUL_2026_Delete_Module
 
   Background:
     Given the user launched the application
