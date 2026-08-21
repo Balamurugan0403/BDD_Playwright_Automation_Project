@@ -14,8 +14,13 @@ export class LoginPage extends BasePage {
     }
 
     async navigate() {
-        await this.page.goto(process.env.BASE_URL!);
-        await expect(this.email).toBeVisible();
+        await this.page.goto(process.env.BASE_URL!, {
+            waitUntil: "domcontentloaded",
+            timeout: 60000
+        });
+        await expect(this.email).toBeVisible({
+            timeout: 60000
+        });
     }
 
     async enterEmail(email: string) {

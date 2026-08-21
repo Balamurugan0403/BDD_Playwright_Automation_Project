@@ -1,5 +1,5 @@
-
-Feature: Sowndariya_07JUL2026_LMS_Feature File For Category Management Functionality
+@sowndariya
+Feature: Sowndariya_07JUL2026_LMS_Feature File For Category Management Functionality _Updated_21AUG2026
 
   Background:
     Given the user launched the application
@@ -57,3 +57,31 @@ Feature: Sowndariya_07JUL2026_LMS_Feature File For Category Management Functiona
     And Admin clicks the Confirm Delete button
     And Admin searches for the category
     Then Admin should see the No Data Found message
+
+  # New scenarios 
+
+  Scenario: Verify Admin can cancel adding a new category
+    When Admin clicks the Add Category button
+    And Admin enters a temporary automatically generated Category Name, Course and Description
+    And Admin clicks the Cancel button
+    Then Admin should see the Add Category modal closed
+
+  Scenario: Verify mandatory field validation when Category Name is left empty
+    When Admin clicks the Add Category button
+    And Admin leaves the Category Name field empty
+    And Admin clicks the Create Category button
+    Then Admin should see a required field validation message for Category Name
+
+  Scenario: Verify category creation is blocked when Course Name is not selected
+    When Admin clicks the Add Category button
+    And Admin enters a temporary automatically generated Category Name
+    And Admin clicks the Create Category button
+    Then Admin should see the category creation blocked due to missing course name
+
+  Scenario: Verify Admin sees No Data Found message when searching for a non-existent category
+    When Admin searches for a non-existent category
+    Then Admin should see the No Data Found message
+
+  Scenario: Verify Admin can search using a partial category name
+    When Admin searches using a partial category name
+    Then Admin should see the category matching the partial search

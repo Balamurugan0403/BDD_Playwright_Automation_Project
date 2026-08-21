@@ -8,10 +8,11 @@ import { AddCoursePage } from "../../test/pages/AddCoursePage";
 import { SidebarPage } from "../../test/pages/SidebarPage";
 import { ServiceModelPage } from "../../test/pages/ServiceModelPage";
 import { Service } from "../types/Service";
-//import { SearchCoursePage } from "../../test/pages/SearchCoursePage";
+import { SearchCoursePage } from "../../test/pages/SearchCoursePage";
 import { CourseFilterPage } from "../../test/pages/CourseFilterPage";
 import { EditCoursePage } from "../../test/pages/EditCoursePage";
 import { PedagogyPage } from "../../test/pages/PedagogyPage";
+import { QuestionBankPage } from "../../test/pages/QuestionBankPage";
 
 export class CustomWorld extends World {
     browser!: Browser;
@@ -25,10 +26,12 @@ export class CustomWorld extends World {
     courseStructurePage!: CourseStructurePage;
     addCoursePage!: AddCoursePage;
     service!: Service
-    //searchCoursePage!: SearchCoursePage;
+    searchCoursePage!: SearchCoursePage;
     courseFilterPage!: CourseFilterPage;
     editCoursePage!: EditCoursePage;
     pedagogyPage!:PedagogyPage;
+    questionBankPage!: QuestionBankPage;
+    questionData!: QuestionData;
 }
 
 setWorldConstructor(CustomWorld);
